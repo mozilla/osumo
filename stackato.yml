@@ -1,0 +1,11 @@
+name: osumo
+framework:
+  type: python
+  runtime: python27
+
+processes:
+  web: gunicorn -b 0.0.0.0:$PORT osumo:app
+
+mem: 64M
+instances: 1
+services: {}
