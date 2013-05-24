@@ -3,7 +3,23 @@
 (function() {
   var angularIndexedDb = angular.module('angularIndexedDb', []);
 
-  angularIndexedDb.factory('IndexedDb', ['$q', function($q) {
+  angularIndexedDb.factory('angularIndexedDb', ['$q', '$rootScope', function($q, $rootScope) {
+
+    var genericSuccess = function(deferred) {
+      return function(e) {
+        $rootScope.$apply(function() {
+          deferred.resolve(e.target.result);
+        });
+      };
+    };
+
+    var genericError = function(deferred) {
+      return function(e) {
+        $rootScope.$apply(function() {
+          deferred.reject(e.target.error);
+        });
+      };
+    };
 
     var Cursor = function(idbCursor) {
       this._cursor = idbCursor;
@@ -35,13 +51,8 @@
       var deferred = $q.defer();
 
       var request = this._cursor.delete();
-      request.onsuccess = function(e) {
-        deferred.resolve();
-      };
-
-      request.onerror = function(e) {
-        deferred.reject(request.error);
-      };
+      request.onsuccess = genericSuccess(deferred);
+      request.onerror = genericError(deferred);
 
       return deferred.promise;
     };
@@ -50,13 +61,8 @@
       var deferred = $q.defer();
 
       var request = this._cursor.update(value);
-      request.onsuccess = function(e) {
-        deferred.resolve(request.result);
-      };
-
-      request.onerror = function(e) {
-        deferred.reject(request.error);
-      };
+      request.onsuccess = genericSuccess(deferred);
+      request.onerror = genericError(deferred);
 
       return deferred.promise;
     };
@@ -78,12 +84,11 @@
 
       var request = this._index.openCursor(range, direction);
       request.onsuccess = function(e) {
-        deferred.resolve(new Cursor(request.result));
+        $rootScope.$apply(function() {
+          deferred.resolve(new Cursor(request.result));
+        });
       };
-
-      request.onerror = function(e) {
-        deferred.reject(request.error);
-      };
+      request.onerror = genericError(deferred);
 
       return deferred.promise;
     };
@@ -95,12 +100,11 @@
 
       var request = this._index.openKeyCursor(range, direction);
       request.onsuccess = function(e) {
-        deferred.resolve(new Cursor(request.result));
+        $rootScope.$apply(function() {
+          deferred.resolve(new Cursor(request.result));
+        });
       };
-
-      request.onerror = function(e) {
-        deferred.reject(request.error);
-      };
+      request.onerror = genericError(deferred);
 
       return deferred.promise;
     };
@@ -109,13 +113,8 @@
       var deferred = $q.defer();
 
       var request = this._index.get(key);
-      request.onsuccess = function(e) {
-        deferred.resolve(request.result);
-      };
-
-      request.onerror = function(e) {
-        deferred.reject(request.error);
-      };
+      request.onsuccess = genericSuccess(deferred);
+      request.onerror = genericError(deferred);
 
       return deferred.promise;
     };
@@ -124,13 +123,8 @@
       var deferred = $q.defer();
 
       var request = this._index.getKey(key);
-      request.onsuccess = function(e) {
-        deferred.resolve(request.result);
-      };
-
-      request.onerror = function(e) {
-        deferred.reject(request.error);
-      };
+      request.onsuccess = genericSuccess(deferred);
+      request.onerror = genericError(deferred);
 
       return deferred.promise;
     };
@@ -139,13 +133,8 @@
       var deferred = $q.defer();
 
       var request = this._index.count(key);
-      request.onsuccess = function(e) {
-        deferred.resolve(request.result);
-      };
-
-      request.onerror = function(e) {
-        deferred.reject(request.error);
-      };
+      request.onsuccess = genericSuccess(deferred);
+      request.onerror = genericError(deferred);
 
       return deferred.promise;
     };
@@ -169,13 +158,8 @@
       var deferred = $q.defer();
 
       var request = this._objectStore.put(value, key);
-      request.onsuccess = function(e) {
-        deferred.resolve();
-      };
-
-      request.onerror = function(e) {
-        deffered.reject(request.error);
-      };
+      request.onsuccess = genericSuccess(deferred);
+      request.onerror = genericError(deferred);
 
       return deferred.promise;
     };
@@ -184,13 +168,8 @@
       var deferred = $q.defer();
 
       var request = this._objectStore.delete(key);
-      request.onsuccess = function(e) {
-        deferred.resolve();
-      };
-
-      request.onerror = function(e) {
-        deferred.reject(request.error);
-      };
+      request.onsuccess = genericSuccess(deferred);
+      request.onerror = genericError(deferred);
 
       return deferred.promise;
     };
@@ -199,13 +178,8 @@
       var deferred = $q.defer();
 
       var request = this._objectStore.get(key);
-      request.onsuccess = function(e) {
-        deferred.resolve(request.result);
-      };
-
-      request.onerror = function(e) {
-        deferred.reject(request.error);
-      };
+      request.onsuccess = genericSuccess(deferred);
+      request.onerror = genericError(deferred);
 
       return deferred.promise;
     };
@@ -214,13 +188,8 @@
       var deferred = $q.defer();
 
       var request = this._objectStore.clear();
-      request.onsuccess = function(e) {
-        deferred.resolve();
-      };
-
-      request.onerror = function(e) {
-        deferred.reject(request.error);
-      };
+      request.onsuccess = genericSuccess(deferred);
+      request.onerror = genericError(deferred);
 
       return deferred.promise;
     };
@@ -231,12 +200,11 @@
 
       var request = this._objectStore.openCursor(range, direction);
       request.onsuccess = function(e) {
-        deferred.resolve(new Cursor(request.result));
+        $rootScope.$apply(function() {
+          deferred.resolve(new Cursor(request.result));
+        });
       };
-
-      request.onerror = function(e) {
-        deferred.reject(request.error);
-      };
+      request.onerror = genericError(deferred);
 
       return deferred.promise;
     };
@@ -262,21 +230,16 @@
       var deferred = $q.defer();
 
       var request = this._objectStore.count(key);
-      request.onsuccess = function(e) {
-        deferred.resolve(request.result);
-      };
-
-      request.onerror = function(e) {
-        deferred.reject(request.error);
-      };
+      request.onsuccess = genericSuccess(deferred);
+      request.onerror = genericError(deferred);
 
       return deferred.promise;
     };
 
     var Transaction = function(idbTransaction) {
       this._transaction = idbTransaction;
-      this.db = db;
-      this.mode = mode;
+      this.db = idbTransaction.db;
+      this.mode = idbTransaction.mode;
 
       // This is to conform to the w3c standard.
       this._objectStoreCache = {};
@@ -332,20 +295,15 @@
       open: function(name, version, onupgrade) {
         var deferred = $q.defer();
 
-
         var request = window.indexedDB.open(name, version);
 
         request.onsuccess = function(e) {
-          deferred.resolve(new Database(request.result));
+          $rootScope.$apply(function() {
+            deferred.resolve(new Database(request.result));
+          });
         };
 
-        request.onerror = function(e) {
-          deferred.reject(result.error);
-        };
-
-        request.onblocked = function(e) {
-          deferred.reject(result.error);
-        };
+        request.onerror = request.onblocked = genericError(deferred);
 
         request.onupgradeneeded = function(e) {
           onupgrade(new Database(request.result));
@@ -357,21 +315,10 @@
       deleteDatabase: function(name) {
         var deferred = $q.defer();
 
-
         var request = window.indexedDB.deleteDatabase(name);
 
-        request.onsuccess = function(e) {
-          deferred.resolve();
-        };
-
-        request.onerror = function(e) {
-          deferred.reject(result.error);
-        };
-
-        request.onblocked = function(e) {
-          deferred.reject(result.error);
-        };
-
+      request.onsuccess = genericSuccess(deferred);
+      request.onerror = request.onblocked = genericError(deferred);
 
         return deferred.promise;
       },
