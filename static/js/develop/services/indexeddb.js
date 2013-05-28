@@ -299,7 +299,8 @@
 
         request.onsuccess = function(e) {
           $rootScope.$apply(function() {
-            deferred.resolve(new Database(request.result));
+            var database = new Database(request.result);
+            deferred.resolve(database);
           });
         };
 

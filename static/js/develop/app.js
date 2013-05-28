@@ -2,7 +2,7 @@
 
 (function() {
 
-var app = angular.module('osumo', []);
+var app = angular.module('osumo', ['angularIndexedDb']);
 
 app.config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider) {
     $locationProvider.html5Mode(true);
