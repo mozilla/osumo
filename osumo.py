@@ -2,7 +2,7 @@ import os
 
 from flask import Flask, render_template, make_response
 
-from settings import DEBUG
+from settings import DEBUG, BASE_URL
 
 app_folder = os.path.dirname(os.path.abspath(__file__))
 
@@ -36,6 +36,7 @@ app = Flask(__name__)
 
 @app.before_request
 def before_request():
+  app.jinja_env.globals['BASE_URL'] = BASE_URL
   app.jinja_env.globals['scripts'] = get_all_script_paths()
 
 @app.route('/manifest.webapp')
@@ -46,7 +47,9 @@ def manifest_file():
 
 @app.route('/cache.manifest')
 def cache_manifest():
-  return make_response(FILES['cache.manifest'])
+  response = make_response(FILES['cache.manifest'])
+  response.mimetype = 'text/cache-manifest'
+  return response
 
 # Catch all URL for HTML push state
 @app.route('/', defaults={'path': ''})

@@ -2,16 +2,32 @@
 
 (function(){
 
-angular.module('osumo').controller('HomeController', ['$scope', 'title', 'DataFetcherService', function($scope, title, DataFetcherService) {
+angular.module('osumo').controller('HomeController', ['$scope', '$location', 'VERSION', 'title', 'DataService', function($scope, $location, VERSION, title, DataService) {
   title('Home');
-  $scope.todo = 'No Value';
-  DataFetcherService.dbPromise.then(function(db) {
-    db.transaction(['todo']).objectStore('todo').get('someid').then(function(value) {
-      $scope.todo = value;
-      $scope.$$phase || $scope.$apply;
-      return db;
-    });
-  });
+
+  DataService.metaDbPromise.then(
+    function(db) {
+      var trans = db.transaction('meta');
+      db.transaction('meta').objectStore('meta').get(VERSION).then(
+        function(meta) {
+          if (!meta.installed) {
+            $location.path('/install');
+            $scope.toast({message: 'Test Toast Message!', type: 'secondary'});
+          } else {
+            $location.path('/main');
+          }
+          return meta;
+        },
+        function(err) {
+
+        }
+      );
+    },
+    function(err) {
+
+    }
+  );
+
 }]);
 
 })();

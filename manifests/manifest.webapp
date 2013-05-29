@@ -4,11 +4,10 @@
   "launch_path": "/",
   "icons": {
     "128": "/static/icon/128.png"
-  }.
+  },
   "developer": {
     "name": "Mozilla",
     "url": "http://mozilla.org"
   },
-  "default_locale": "en"
-  "appcache_path": "/static/cache.manifest"
+  "default_locale": "en",
 }

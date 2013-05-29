@@ -1,0 +1,29 @@
+<div class="row">
+  <div class="small-12 columns">
+    <alert ng-hide="installed" showclose="false" type="secondary">
+      Looks like you don't have oSUMO installed! Don't worry, this is why you are
+      on this page. :)
+    </alert>
+
+    <button id="install-app" class="expand" ng-hide="installed" ng-click="installApp()">Install App</button>
+
+    <hr />
+
+    <div class="center">Select Product</div>
+    <select id="installer-select-product" ng-model="product">
+      <option value="firefox-os">Firefox OS</option>
+      <option value="mobile">Firefox for Android</option>
+      <option value="firefox">Firefox</option>
+    </select>
+    <div class="center">Select Language</div>
+    <select id="installer-select-language" ng-model="language">
+      <option value="en-US">English (US)</option>
+    </select>
+    <button id="install-bundle" class="expand" ng-click="installBundle()">Download Content</button>
+
+    <hr />
+
+    <div class="center">Installed Content</div>
+
+  </div>
+</div>

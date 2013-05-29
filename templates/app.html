@@ -6,8 +6,13 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width" />
     <title>Offline Mozilla Support</title>
+    <link rel="stylesheet" href="/static/css/normalize.css" />
     <link rel="stylesheet" href="/static/css/foundation.min.css" />
+    <link rel="stylesheet" href="/static/css/app.css" />
     <script src="/static/js/vendors/custom.modernizr.js"></script>
+    <script>
+      window.BASE_URL = '{{ BASE_URL }}';
+    </script>
 </head>
 <body>
 
@@ -24,14 +29,21 @@
                 </li>
             </ul>
             <section class="top-bar-section">
-                <ul class="left">
-                    <li><a href="/download">Get Database</a></li>
+                <ul class="right">
+                    <li><a href="/install">Install</a></li>
                     <li><a href="/settings">Settings</a></li>
                     <li><a href="http://support.mozilla.org">Online Support Site</a></li>
                 </ul>
             </section>
         </nav>
     </div>
+
+    <div class="row" ng-controller="ToastsController">
+      <div class="large-12 columns">
+        <alert message="toast.message" toasts="toasts" ng-repeat="(id, toast) in toasts" msgid="id" type="toast.type" showclose="toast.autoclose"></alert>
+      </div>
+    </div>
+
 
     <div ng-view></div>
 
