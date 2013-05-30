@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <title>oSUMO Unit Tests</title>
+    <link rel="stylesheet" type="text/css" href="/static/js/tests/vendors/jasmine.css" />
+    <script type="text/javascript" src="/static/js/tests/vendors/jasmine.js"></script>
+    <script type="text/javascript" src="/static/js/tests/vendors/jasmine-html.js"></script>
+    <script src="/static/js/vendors/angular.min.js"></script>
+    <script type="text/javascript" src="/static/js/tests/vendors/angular-mocks.js"></script>
+
+    {% for script in scripts %}
+    <script type="text/javascript" src="{{ script }}"></script>
+    {% endfor %}
+
+  </head>
+
+  <body>
+
+    <script>
+      var jasmineEnv = jasmine.getEnv();
+      jasmineEnv.updateInterval = 1000;
+
+      var htmlReporter = new jasmine.HtmlReporter();
+      jasmineEnv.addReporter(htmlReporter);
+
+      jasmineEnv.specFilter = function(spec) {
+        return htmlReporter.specFilter(spec);
+      };
+
+      var currentWindowOnload = window.onload;
+
+      window.onload = function() {
+        if (currentWindowOnload) {
+          currentWindowOnload();
+        }
+        execJasmine();
+      };
+
+      function execJasmine() {
+        jasmineEnv.execute();
+      }
+    </script>
+  </body>
+</html>

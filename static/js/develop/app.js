@@ -33,7 +33,6 @@ app.constant('VERSION', 1);
 
 app.run(['$rootScope', function($rootScope) {
   $rootScope.toast = function(toast, id) {
-    toast.autoclose = toast.autoclose === undefined ? true : false;
     $rootScope.$broadcast('toast', toast, id);
   };
 }])

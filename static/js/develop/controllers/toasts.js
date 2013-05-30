@@ -20,11 +20,11 @@
 
     $scope.$on('toast', function(event, toast, id) {
       id = id || randId();
+      toast.showclose = toast.showclose || true;
       $scope.toasts[id] = toast;
     });
 
     $scope.untoast = function(id) {
-      console.log("Untoasting " + id);
       $scope.$apply(function() {
         delete $scope.toasts[id];
       });

@@ -5,11 +5,11 @@ from flask import Flask, render_template, make_response
 from settings import DEBUG, BASE_URL
 
 app_folder = os.path.dirname(os.path.abspath(__file__))
+prefix_length = len(app_folder)
 
 if DEBUG:
   def get_all_script_paths():
     scripts = []
-    prefix_length = len(app_folder)
     for root, subdirs, files in os.walk(os.path.join(app_folder, 'static/js/develop')):
       for fname in files:
         if fname.endswith('.js'):
@@ -33,6 +33,28 @@ FILES = {
 }
 
 app = Flask(__name__)
+
+# AngularJS E2E Testing. Why is this so complicated..
+if DEBUG:
+  @app.route('/_tests/unittests')
+  def unittests():
+    scripts = app.jinja_env.globals['scripts'][:]
+    # TODO: needs to refactor with get_all_script_paths
+    for root, subdir, files in os.walk(os.path.join(app_folder, 'static/js/tests/unittests')):
+      for fname in files:
+        if fname.endswith('.js'):
+          scripts.append(root[prefix_length:] + '/' + fname)
+
+    return render_template('unittests.html', scripts=scripts)
+
+  @app.route('/_tests/e2e')
+  def e2etests():
+    scripts = []
+    for root, subdir, files in os.walk(os.path.join(app_folder, 'static/js/tests/e2e')):
+      for fname in files:
+        if fname.endswith('.js'):
+          scripts.append(root[prefix_length: + '/' + fname])
+    return render_template('e2etests.html', scripts=scripts)
 
 @app.before_request
 def before_request():
