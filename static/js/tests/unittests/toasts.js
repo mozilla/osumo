@@ -28,7 +28,6 @@ describe('sending toasts to their controller', function() {
 
     expect(Object.keys(scope.toasts).length).toBe(1);
 
-    console.log(scope.toasts);
     for (var key in scope.toasts) {
       expect(scope.toasts[key].message).toBe('A toast');
       expect(scope.toasts[key].showclose).toBe(true);
