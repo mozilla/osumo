@@ -11,15 +11,16 @@
 
     <hr ng-hide="installed" />
 
-    <div class="center">Select Product</div>
+    <p>oSUMO needs to download content in order to run offline. Please select
+    the products you are interested in and press 'Download Content'.</p>
+
+    <div class="center">Product</div>
     <select id="installer-select-product" ng-model="product">
-      <option value="firefox-os">Firefox OS</option>
-      <option value="mobile">Firefox for Android</option>
-      <option value="firefox">Firefox</option>
+      <option ng-repeat="product in products" value="{{ product.id }}">{{ product.name }}</option>
     </select>
-    <div class="center">Select Language</div>
+    <div class="center">Language</div>
     <select id="installer-select-language" ng-model="language">
-      <option value="en-US">English (US)</option>
+      <option ng-repeat="language in languages" value="{{ language.id }}">{{ language.name }}</option>
     </select>
     <button id="install-bundle" class="expand" ng-click="installBundle()">Download Content</button>
 

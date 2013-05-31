@@ -5,6 +5,16 @@
 angular.module('osumo').controller('InstallController', ['$scope', 'VERSION', 'title', 'DataService', 'AppService', function($scope, VERSION, title, DataService, AppService) {
   title('Installer');
 
+  $scope.products = [
+    {id: 'firefox-os', name: 'Firefox OS'},
+    {id: 'firefox', name: 'Firefox'},
+    {id: 'mobile', name: 'Firefox for Android'}
+  ];
+
+  $scope.languages = [
+    {id: 'en-US', name: 'English (US)'}
+  ]
+
   $scope.product = null;
   $scope.language = null;
   $scope.installed = false;
@@ -13,8 +23,10 @@ angular.module('osumo').controller('InstallController', ['$scope', 'VERSION', 't
   DataService.metaDbPromise.then(function(db) {
     db.transaction('meta').objectStore('meta').get(VERSION).then(
       function(meta) {
-        $scope.installed = meta.installed;
-        $scope.dbsDownloaded = meta.dbsDownloaded;
+        if (meta) {
+          $scope.installed = meta.installed;
+          $scope.dbsDownloaded = meta.dbsDownloaded;
+        }
         return meta;
       },
       function(err) {

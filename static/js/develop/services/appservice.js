@@ -66,7 +66,6 @@
 
         promise.then(undefined, function(reason) {
           if (reason === 'not installed') {
-            console.log("Actual installation?");
             var install = window.navigator.mozApps.install(BASE_URL + 'manifest.webapp');
             install.onsuccess = function() {
               _initializeDatabase(d);

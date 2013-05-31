@@ -9,7 +9,6 @@
       // metaDB always have a version of 1.
       that.metaDbPromise = angularIndexedDb.open('osumo-settings', 1, function(db) {
         var store = db.createObjectStore('meta', {keyPath: 'version'});
-        store.put({version: VERSION, installed: false, dbsDownloaded: []});
       });
       return that.metaDbPromise;
     };

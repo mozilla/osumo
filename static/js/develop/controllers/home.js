@@ -10,7 +10,7 @@ angular.module('osumo').controller('HomeController', ['$scope', '$location', 'VE
       var trans = db.transaction('meta');
       db.transaction('meta').objectStore('meta').get(VERSION).then(
         function(meta) {
-          if (!meta.installed) {
+          if (!meta || !meta.installed) {
             $location.path('/install');
           } else {
             $location.path('/main');
