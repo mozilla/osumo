@@ -12,7 +12,6 @@ angular.module('osumo').controller('HomeController', ['$scope', '$location', 'VE
         function(meta) {
           if (!meta.installed) {
             $location.path('/install');
-            $scope.toast({message: 'Test Toast Message!', type: 'secondary'});
           } else {
             $location.path('/main');
           }
@@ -24,7 +23,6 @@ angular.module('osumo').controller('HomeController', ['$scope', '$location', 'VE
       );
     },
     function(err) {
-
     }
   );
 

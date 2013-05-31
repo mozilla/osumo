@@ -2,14 +2,13 @@
 
 (function(){
 
-angular.module('osumo').controller('InstallController', ['$scope', 'VERSION', 'title', 'DataService', function($scope, VERSION, title, DataService) {
+angular.module('osumo').controller('InstallController', ['$scope', 'VERSION', 'title', 'DataService', 'AppService', function($scope, VERSION, title, DataService, AppService) {
   title('Installer');
-
-  var APP_URL = BASE_URL + 'manifest.webapp';
 
   $scope.product = null;
   $scope.language = null;
   $scope.installed = false;
+  $scope.dbsDownloaded = [];
 
   DataService.metaDbPromise.then(function(db) {
     db.transaction('meta').objectStore('meta').get(VERSION).then(
@@ -18,11 +17,16 @@ angular.module('osumo').controller('InstallController', ['$scope', 'VERSION', 't
         $scope.dbsDownloaded = meta.dbsDownloaded;
         return meta;
       },
-      function() {
-
+      function(err) {
+        console.log('Getting meta db failed: ' + err);
       }
     );
     return db;
+  });
+
+  AppService.autoInstall().then(function() {
+    $scope.installed = true;
+    $scope.dbsDownloaded = [];
   });
 
   $scope.installApp = function() {
@@ -30,28 +34,16 @@ angular.module('osumo').controller('InstallController', ['$scope', 'VERSION', 't
       return;
     }
 
-    var request = navigator.mozApps.checkInstalled(APP_URL);
-    request.onsuccess = function() {
-      if (request.result) {
-        // already installed!
-      } else {
-        var installRequest = navigator.mozApps.install(APP_URL);
-        installRequest.onsuccess = function() {
-          console.log('Installed');
-          $scope.$apply(function() {
-            $scope.installed = true;
-          });
-        };
-
-        installRequest.onerror = function(err) {
-          console.log(err);
-        };
+    AppService.install().then(
+      function() {
+        $scope.installed = true;
+        $scope.toast({message: 'Installation successful!', type: 'success'});
+      },
+      function(err) {
+        $scope.toast({message: 'Installation failed: ' + err, type: 'alert'});
       }
-    };
+    );
 
-    request.onerror = function() {
-
-    };
   };
 
   $scope.installBundle = function() {

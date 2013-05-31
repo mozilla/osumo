@@ -1,13 +1,11 @@
 {
   "name": "Offline Mozilla Support",
-  "description": "support.mozilla.org, offline'd",
+  "description": "offline support.mozilla.org",
+  "version": "0.1",
   "launch_path": "/",
-  "icons": {
-    "128": "/static/icon/128.png"
-  },
   "developer": {
     "name": "Mozilla",
     "url": "http://mozilla.org"
   },
-  "default_locale": "en",
+  "default_locale": "en"
 }

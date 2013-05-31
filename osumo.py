@@ -29,7 +29,6 @@ def read_file(path):
 # Epic cache time~
 FILES = {
   'manifest.webapp': read_file(os.path.join(app_folder, 'manifests', 'manifest.webapp')),
-  'cache.manifest': read_file(os.path.join(app_folder, 'manifests', 'cache.manifest'))
 }
 
 app = Flask(__name__)
@@ -69,7 +68,7 @@ def manifest_file():
 
 @app.route('/cache.manifest')
 def cache_manifest():
-  response = make_response(FILES['cache.manifest'])
+  response = make_response("")
   response.mimetype = 'text/cache-manifest'
   return response
 

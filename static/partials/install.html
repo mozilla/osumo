@@ -1,13 +1,15 @@
 <div class="row">
   <div class="small-12 columns">
-    <alert ng-hide="installed" showclose="false" type="secondary">
+    <div ng-hide="installed">
+    <alert showclose="false" type="secondary">
       Looks like you don't have oSUMO installed! Don't worry, this is why you are
       on this page. :)
     </alert>
+    </div>
 
     <button id="install-app" class="expand" ng-hide="installed" ng-click="installApp()">Install App</button>
 
-    <hr />
+    <hr ng-hide="installed" />
 
     <div class="center">Select Product</div>
     <select id="installer-select-product" ng-model="product">
