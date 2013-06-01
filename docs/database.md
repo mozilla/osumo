@@ -68,7 +68,9 @@ and convinient manner. Here are the databases we need to create and populate.
 
 (This uses the format of Category DB)
 
-**Database name**: locale id
+**Database name**: "locales"
+
+**Key**: locale id
 
  - `name` is the name of the locale
  - `children` holds ids of all the downloaded product contents of this locale.
@@ -80,7 +82,9 @@ and convinient manner. Here are the databases we need to create and populate.
 
 (This uses the format of Category DB)
 
-**Database name**: locale id + delimiter + product id + n(delimiter + topic id)
+**Database name**: 'topics'
+
+**Key**: locale id + delimiter + product id + n(delimiter + topic id)
 
 (Note the n means there are n of those, as there could be subtopics)
 
