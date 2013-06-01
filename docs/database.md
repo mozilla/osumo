@@ -71,17 +71,9 @@ and convinient manner. Here are the databases we need to create and populate.
 **Database name**: locale id
 
  - `name` is the name of the locale
- - `children` holds the db names of all the products dbs.
- - `docs` is undefined.
-
-#### Product DB ####
-
-(This uses the format of Category DB)
-
-**Database name**: locale id + delimiter + product id
-
- - `name` is the name of the product in the appropriate locale
- - `children` holds the db names of all topic dbs
+ - `children` holds ids of all the downloaded product contents of this locale.
+   - As an example, if I downloaded both firefox os and firefox for android, it
+     would be a list of `["mobile", "firefox-os"]`
  - `docs` is undefined.
 
 #### Topics DB ####
