@@ -8,6 +8,10 @@
     <script src="/static/js/vendors/angular.min.js"></script>
     <script type="text/javascript" src="/static/js/tests/vendors/angular-mocks.js"></script>
 
+    <script>
+      window.SUMO_URL = "{{ SUMO_URL }}";
+    </script>
+
     {% for script in scripts %}
     <script type="text/javascript" src="{{ script }}"></script>
     {% endfor %}

@@ -286,8 +286,8 @@
 
         var request = window.indexedDB.deleteDatabase(name);
 
-      request.onsuccess = genericSuccess(deferred);
-      request.onerror = request.onblocked = genericError(deferred);
+        request.onsuccess = genericSuccess(deferred);
+        request.onerror = request.onblocked = genericError(deferred);
 
         return deferred.promise;
       },
