@@ -2,7 +2,7 @@ import os
 
 from flask import Flask, render_template, make_response
 
-from settings import DEBUG, BASE_URL
+from settings import DEBUG, BASE_URL, SUMO_URL
 
 app_folder = os.path.dirname(os.path.abspath(__file__))
 prefix_length = len(app_folder)
@@ -58,6 +58,7 @@ if DEBUG:
 @app.before_request
 def before_request():
   app.jinja_env.globals['BASE_URL'] = BASE_URL
+  app.jinja_env.globals['SUMO_URL'] = SUMO_URL
   app.jinja_env.globals['scripts'] = get_all_script_paths()
 
 @app.route('/manifest.webapp')

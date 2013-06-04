@@ -5,7 +5,7 @@
 angular.module('osumo').controller('HomeController', ['$scope', '$location', 'VERSION', 'title', 'DataService', function($scope, $location, VERSION, title, DataService) {
   title('Home');
 
-  DataService.metaDbPromise.then(
+  DataService.settingsDb.then(
     function(db) {
       var trans = db.transaction('meta');
       db.transaction('meta').objectStore('meta').get(VERSION).then(

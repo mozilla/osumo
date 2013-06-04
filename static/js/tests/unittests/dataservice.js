@@ -16,10 +16,11 @@ describe('backend data services', function() {
     var done = false;
 
     runs(function() {
-      dataService.metaDbPromise.then(function(db) {
+      dataService.settingsDb.then(function(db) {
         db.close();
         indexedDb.deleteDatabase('osumo-settings').then(function(r) {
-          dataService.setup().then(function(db) {
+          dataService.setup();
+          dataService.settingsDb.then(function(db) {
             done = true;
             return db;
           });
@@ -34,18 +35,14 @@ describe('backend data services', function() {
   beforeEach(setupDb);
 
   it('should open meta database', function() {
-    expect(dataService.metaDbPromise).not.toEqual(false);
+    expect(dataService.settingsDb).not.toEqual(false);
 
     var done = false;
 
     runs(function() {
-      dataService.metaDbPromise.then(function(db) {
-        db.transaction('meta').objectStore('meta').get(version).then(function(value) {
-          expect(value.version).toBe(version);
-          expect(value.installed).toBe(false);
-          expect(value.dbsDownloaded).toEqual([]);
-          done = true;
-        });
+      dataService.settingsDb.then(function(db) {
+        expect(db).toBeTruthy();
+        done = true;
         return db;
       });
       rootScope.$apply();

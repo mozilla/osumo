@@ -7,7 +7,7 @@
 
     var genericSuccess = function(deferred) {
       return function(e) {
-        $rootScope.$apply(function() {
+        $rootScope.$safeApply(function() {
           deferred.resolve(e.target.result);
         });
       };
@@ -15,58 +15,11 @@
 
     var genericError = function(deferred) {
       return function(e) {
-        $rootScope.$apply(function() {
+        $rootScope.$safeApply(function() {
           deferred.reject(e.target.error);
         });
       };
     };
-
-    var Cursor = function(idbCursor) {
-      this._cursor = idbCursor;
-      this.direction = idbCursor.direction;
-      this.source = idbCursor.source;
-    };
-
-    Cursor.prototype.key = function() {
-      return this._cursor.key;
-    };
-
-    Cursor.prototype.primaryKey = function() {
-      return this._cursor.primaryKey;
-    };
-
-    Cursor.prototype.value = function() {
-      return this._cursor.value;
-    };
-
-    Cursor.prototype.advance = function(count) {
-      this._cursor.advance(count);
-    };
-
-    Cursor.prototype.continue = function(key) {
-      this._cursor.continue(key);
-    };
-
-    Cursor.prototype.delete = function() {
-      var deferred = $q.defer();
-
-      var request = this._cursor.delete();
-      request.onsuccess = genericSuccess(deferred);
-      request.onerror = genericError(deferred);
-
-      return deferred.promise;
-    };
-
-    Cursor.prototype.update = function(value) {
-      var deferred = $q.defer();
-
-      var request = this._cursor.update(value);
-      request.onsuccess = genericSuccess(deferred);
-      request.onerror = genericError(deferred);
-
-      return deferred.promise;
-    };
-
 
     var Index = function(idbIndex) {
       this._index = idbIndex;
@@ -196,17 +149,32 @@
 
     ObjectStore.prototype.openCursor = function(range, direction) {
       direction = direction || "next";
-      var deferred = $q.defer();
+
+      // A fake promise that we can resolve multiple times because the way
+      // that we do cursors in IndexedDB is horribly broken.
+      var cursorPromise = {
+        then: function(successHandler, errorHandler) {
+          if (successHandler) {
+            this._successHandler = successHandler;
+          }
+
+          if (errorHandler) {
+            this._errorHandler = errorHandler;
+          }
+        },
+        _successHandler: function() {},
+        _errorHandler: function() {}
+      };
 
       var request = this._objectStore.openCursor(range, direction);
       request.onsuccess = function(e) {
-        $rootScope.$apply(function() {
-          deferred.resolve(new Cursor(request.result));
-        });
+        cursorPromise._successHandler(request.result);
       };
-      request.onerror = genericError(deferred);
+      request.onerror = function(e) {
+        cursorPromise._errorHandler(request.error);
+      }
 
-      return deferred.promise;
+      return cursorPromise;
     };
 
     ObjectStore.prototype.createIndex = function(name, keyPath, optionalParameters) {
@@ -298,7 +266,7 @@
         var request = window.indexedDB.open(name, version);
 
         request.onsuccess = function(e) {
-          $rootScope.$apply(function() {
+          $rootScope.$safeApply(function() {
             var database = new Database(request.result);
             deferred.resolve(database);
           });

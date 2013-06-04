@@ -30,10 +30,27 @@ app.factory('title', ['$window', function($window){
 }]);
 
 app.constant('VERSION', 1);
+app.constant('DBVERSION', 1);
 
 app.run(['$rootScope', function($rootScope) {
   $rootScope.toast = function(toast, id) {
     $rootScope.$broadcast('toast', toast, id);
+  };
+
+  $rootScope.untoast = function(id) {
+    $rootScope.$broadcast('untoast', id);
+  };
+
+  // From https://coderwall.com/p/ngisma
+  $rootScope.$safeApply = function(fn) {
+    var phase = this.$root.$$phase;
+    if (phase == '$apply' || phase == '$digest') {
+      if (fn) {
+        fn();
+      }
+    } else {
+      this.$apply(fn);
+    };
   };
 }])
 

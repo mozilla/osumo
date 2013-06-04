@@ -24,10 +24,19 @@
       $scope.toasts[id] = toast;
     });
 
+    $scope.$on('untoast', function(event, id) {
+      if (id) {
+        $scope.untoast(id);
+      } else {
+        for (id in $scope.toasts) {
+          $scope.untoast(id);
+        }
+      }
+    });
+
     $scope.untoast = function(id) {
-      $scope.$apply(function() {
-        delete $scope.toasts[id];
-      });
+      delete $scope.toasts[id];
+      $scope.$$phase || $scope.$apply();
     };
 
   }]);

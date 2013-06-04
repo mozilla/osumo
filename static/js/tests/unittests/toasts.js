@@ -33,4 +33,11 @@ describe('sending toasts to their controller', function() {
       expect(scope.toasts[key].showclose).toBe(true);
     }
   });
+
+  it('should listen to untoast broadcast', function() {
+    scope.$broadcast('toast', {message: 'A toast'}, 'toast');
+    expect(Object.keys(scope.toasts).length).toBe(1);
+    scope.$broadcast('untoast', 'toast');
+    expect(Object.keys(scope.toasts).length).toBe(0);
+  });
 });

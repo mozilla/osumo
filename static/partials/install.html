@@ -19,14 +19,32 @@
       <option ng-repeat="product in products" value="{{ product.id }}">{{ product.name }}</option>
     </select>
     <div class="center">Language</div>
-    <select id="installer-select-language" ng-model="language">
+    <select id="installer-select-language" ng-model="locale">
       <option ng-repeat="language in languages" value="{{ language.id }}">{{ language.name }}</option>
     </select>
     <button id="install-bundle" class="expand" ng-click="installBundle()">Download Content</button>
 
     <hr />
 
-    <div class="center">Installed Content</div>
+    <h6 class="center">Installed Content</h6>
+
+    <table width="100%">
+      <thead>
+        <tr>
+          <th>Product</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr ng-repeat="bundle in bundles">
+          <td>{{ bundle.name }}</td>
+          <td>
+            <a href="/bundle/{{ bundle.locale }}/{{ bundle.product }}" class="small expand button">Browse</a>
+            <a href="" class="small expand alert button" ng-click="deleteBundle(bundle)">Delete</a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
 
   </div>
 </div>
