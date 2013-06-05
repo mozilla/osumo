@@ -18,7 +18,6 @@
           }).then(
             function() {
               $rootScope.$safeApply(function() {
-                console.log('install resolves');
                 d.resolve();
               });
             },

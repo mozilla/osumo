@@ -31,35 +31,63 @@
     };
 
     Index.prototype.openCursor = function(range, direction) {
-      direction = direction || 'next';
+      direction = direction || "next";
 
-      var deferred = $q.defer();
+      // A fake promise that we can resolve multiple times because the way
+      // that we do cursors in IndexedDB is horribly broken.
+      var cursorPromise = {
+        then: function(successHandler, errorHandler) {
+          if (successHandler) {
+            this._successHandler = successHandler;
+          }
+
+          if (errorHandler) {
+            this._errorHandler = errorHandler;
+          }
+        },
+        _successHandler: function() {},
+        _errorHandler: function() {}
+      };
 
       var request = this._index.openCursor(range, direction);
       request.onsuccess = function(e) {
-        $rootScope.$apply(function() {
-          deferred.resolve(new Cursor(request.result));
-        });
+        cursorPromise._successHandler(request.result);
       };
-      request.onerror = genericError(deferred);
+      request.onerror = function(e) {
+        cursorPromise._errorHandler(request.error);
+      }
 
-      return deferred.promise;
+      return cursorPromise;
     };
 
     Index.prototype.openKeyCursor = function(range, direction) {
-      direction = direction || 'next';
+      direction = direction || "next";
 
-      var deferred = $q.defer();
+      // A fake promise that we can resolve multiple times because the way
+      // that we do cursors in IndexedDB is horribly broken.
+      var cursorPromise = {
+        then: function(successHandler, errorHandler) {
+          if (successHandler) {
+            this._successHandler = successHandler;
+          }
+
+          if (errorHandler) {
+            this._errorHandler = errorHandler;
+          }
+        },
+        _successHandler: function() {},
+        _errorHandler: function() {}
+      };
 
       var request = this._index.openKeyCursor(range, direction);
       request.onsuccess = function(e) {
-        $rootScope.$apply(function() {
-          deferred.resolve(new Cursor(request.result));
-        });
+        cursorPromise._successHandler(request.result);
       };
-      request.onerror = genericError(deferred);
+      request.onerror = function(e) {
+        cursorPromise._errorHandler(request.error);
+      }
 
-      return deferred.promise;
+      return cursorPromise;
     };
 
     Index.prototype.get = function(key) {

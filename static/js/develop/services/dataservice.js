@@ -17,9 +17,12 @@
       });
 
       this.mainDb = angularIndexedDb.open('osumo', DBVERSION, function(db) {
+        var stores = {};
         for (var i in STORES) {
-          db.createObjectStore(STORES[i], {keyPath: 'keys'});
+          stores[STORES[i]] = db.createObjectStore(STORES[i], {keyPath: 'key'});
         }
+
+        stores.topics.createIndex('by_product', 'product');
       });
     };
 
@@ -68,7 +71,8 @@
       this.mainDb.then(function(db) {
         var store = db.transaction(objectStoreName, 'readwrite').objectStore(objectStoreName);
 
-        for (var i in data) {
+        var l = data.length;
+        for (var i=0; i<l; i++) {
           store.put(data[i]);
         }
       });
@@ -107,6 +111,210 @@
           });
         }
       );
+
+      return deferred.promise;
+    };
+
+    /**
+     * Gets a list of available languages.
+     *
+     * @returns {promise} A promise that has a list with an object with the attr
+     *                    id as the locale id and name as the name.
+     */
+    this.getAvailableLanguages = function() {
+      var deferred = $q.defer();
+      this.mainDb.then(function(db) {
+        var store = db.transaction('locales', 'readwrite').objectStore('locales');
+        var cursor = store.openCursor(IDBKeyRange.lowerBound(0));
+
+        var locales = [];
+        cursor.then(function(result) {
+          if (!result) {
+            $rootScope.$safeApply(function() {
+              deferred.resolve(locales);
+            });
+            return;
+          }
+
+          locales.push({id: result.value.key, name: result.value.name});
+          result.continue();
+        });
+      });
+      return deferred.promise;
+    };
+
+    /**
+     * Gets a list of available products given a locale
+     *
+     * @param {String} locale  The locale id
+     * @returns {promise} A promise that has a list with an object with the attr
+     *                    slug as the product slug and name as the product name.
+     */
+    this.getAvailableProducts = function(locale) {
+      var deferred = $q.defer();
+
+      this.mainDb.then(function(db) {
+        var store = db.transaction('locales').objectStore('locales');
+        store.get(locale).then(
+          function(result) {
+            $rootScope.$safeApply(function() {
+              deferred.resolve(result.products);
+            });
+          },
+          function(err) {
+            deferred.reject(err);
+          }
+        );
+      });
+
+      return deferred.promise;
+    };
+
+    /**
+     * Get a list of available topics given a locale and a product.
+     *
+     * @param {String} locale  The locale id
+     * @param {String} product  The product slug
+     * @returns {promise} A promise with a list of topics that has key as the
+     *                    topic id and the name as the topic name.
+     */
+    this.getAvailableTopics = function(locale, product) {
+      var deferred = $q.defer();
+
+      this.mainDb.then(function(db) {
+        var store = db.transaction('topics').objectStore('topics');
+        var index = store.index('by_product');
+        var topics = [];
+        index.openCursor(IDBKeyRange.lowerBound(0)).then(
+          function(result) {
+            if (!result) {
+              $rootScope.$safeApply(function() {
+                deferred.resolve(topics);
+              });
+              return;
+            }
+            topics.push({key: result.value.key, name: result.value.name})
+            result.continue();
+          }
+        );
+      });
+
+      return deferred.promise;
+    };
+
+    /**
+     * Get a topic based on a key. This does not expand the topic (populate
+     * subtopic and docs)
+     *
+     * @param {integer} topic  The topic key.
+     * @returns {promise} A promise with the topic document when resolved.
+     *                    Rejects if none is present.
+     */
+    this.getTopic = function(topic) {
+      topic = parseInt(topic);
+      var deferred = $q.defer();
+
+      this.mainDb.then(function(db) {
+        var store = db.transaction('topics').objectStore('topics');
+        store.get(topic).then(
+          function(result) {
+            if (result === undefined) { // No record found
+              deferred.reject();
+            }
+            deferred.resolve(result);
+          },
+          function(err) {
+            deferred.reject(err);
+          }
+        );
+      });
+
+      return deferred.promise;
+    };
+
+
+    /**
+     * Gets a topic but also expand it
+     */
+    this.getTopicExpanded = function(topic) {
+      var deferred = $q.defer();
+
+      var self = this;
+      this.mainDb.then(function(db) {
+        self.getTopic(topic).then(
+          function(result) {
+            var topicsStore = db.transaction('topics').objectStore('topics');
+            // TODO: investigate to see if it is possible to use .transaction(['topics', 'docs'])
+            var docsStore = db.transaction('docs').objectStore('docs');
+
+            var subtopicsLength = result.children.length;
+            var docsLength = result.docs.length;
+
+            var expandedChildren = [];
+            var expandedDocs = [];
+
+            var deferreds = [];
+
+            var d;
+
+            for (var i=0; i<subtopicsLength; i++) {
+              d = topicsStore.get(result.children[i]);
+              deferreds.push(d);
+
+              d.then(function(value) {
+                if (value !== undefined) {
+                  expandedChildren.push({key: value.key, name: value.name});
+                }
+              });
+            }
+
+            for (var i=0; i<docsLength; i++) {
+              d = docsStore.get(result.docs[i])
+              deferreds.push(d);
+              d.then(function(doc) {
+                if (doc !== undefined) {
+                  expandedDocs.push({key: doc.key, name: doc.title, slug: doc.slug});
+                }
+              });
+            }
+
+            $q.all(deferreds).then(function() {
+              result.children = expandedChildren;
+              result.docs = expandedDocs;
+              deferred.resolve(result);
+            });
+          },
+          function(err) {
+
+          }
+        );
+      });
+
+      return deferred.promise;
+    };
+
+    /**
+     * Gets a document/article from indexeddb
+     *
+     * @param {integer} docid  The document id.
+     * @returns {promise} A promise with the document
+     */
+    this.getDoc = function(docid) {
+      docid = parseInt(docid);
+      var deferred = $q.defer();
+
+      this.mainDb.then(function(db) {
+        var store = db.transaction('docs').objectStore('docs');
+        store.get(docid).then(
+          function(doc) {
+            deferred.resolve(doc);
+          },
+          function(err) {
+            deferred.reject(err);
+          }
+        );
+
+      });
 
       return deferred.promise;
     };

@@ -17,9 +17,34 @@ app.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
     controller: 'InstallController'
   });
 
-  $routeProvider.when('/main', {
-    templateUrl: '/static/partials/main.html',
-    controller: 'MainController'
+  $routeProvider.when('/bundle', {
+    templateUrl: '/static/partials/select_language.html',
+    controller: 'SelectLanguageController'
+  });
+
+  $routeProvider.when('/bundle/:locale', {
+    templateUrl: '/static/partials/select_product.html',
+    controller: 'SelectProductController'
+  });
+
+  $routeProvider.when('/bundle/:locale/:product', {
+    templateUrl: '/static/partials/select_topic.html',
+    controller: 'SelectTopicController'
+  });
+
+  $routeProvider.when('/bundle/:locale/:product/:topic', {
+    templateUrl: '/static/partials/select_doc.html',
+    controller: 'SelectDocController'
+  });
+
+  $routeProvider.when('/bundle/:locale/:product/:topic/:doc', {
+    templateUrl: '/static/partials/doc.html',
+    controller: 'DocViewer'
+  });
+
+  $routeProvider.when('/settings', {
+    templateUrl: '/static/partials/settings.html',
+    controller: 'SettingsViewController'
   });
 }]);
 

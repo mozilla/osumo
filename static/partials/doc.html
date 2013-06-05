@@ -1,0 +1,8 @@
+<div class="row">
+  <div class="small-12 columns">
+    <h6>{{ doc.title }}</h6>
+    <span class="pull-right">Last updated: {{ doc.updated }}</span>
+    <hr />
+    <div ng-bind-html-unsafe="doc.html"></div>
+  </div>
+</div>
