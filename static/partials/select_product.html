@@ -1,7 +1,7 @@
 <div class="row">
   <div class="small-12 columns">
     <h6 class="center" ng-show="products.length > 0">Select Product</h6>
-    <a href="/bundle/{{ locale }}/{{ product.slug }}" ng-repeat="product in products" class="success small expand button">{{ product.name }}</a>
+    <a href="/{{ locale }}/products/{{ product.slug }}" ng-repeat="product in products" class="success small expand button">{{ product.name }}</a>
 
     <p ng-show="products.length == 0">You don't have any content downloaded! To download, <a href="/install">click here</a></p>
   </div>

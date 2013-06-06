@@ -1,7 +1,7 @@
 <div class="row">
   <div class="small-12 columns">
     <h6 class="center" ng-show="locales.length > 0">Select Language</h6>
-    <a href="/bundle/{{ locale.id }}" ng-repeat="locale in locales" class="success small expand button">{{ locale.name }}</a>
+    <a href="/{{ locale.id }}/products" ng-repeat="locale in locales" class="success small expand button">{{ locale.name }}</a>
 
     <p ng-show="locales.length == 0">You don't have any content downloaded! To download, <a href="/install">click here</a></p>
   </div>

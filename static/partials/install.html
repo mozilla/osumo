@@ -39,7 +39,7 @@
         <tr ng-repeat="bundle in bundles">
           <td>{{ bundle.name }}</td>
           <td>
-            <a href="/bundle/{{ bundle.locale }}/{{ bundle.product }}" class="small expand button">Browse</a>
+            <a href="/{{ bundle.locale }}/products/{{ bundle.product }}" class="small expand button">Browse</a>
             <a href="" class="small expand alert button" ng-click="deleteBundle(bundle)">Delete</a>
           </td>
         </tr>

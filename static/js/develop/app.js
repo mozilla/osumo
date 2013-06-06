@@ -17,27 +17,27 @@ app.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
     controller: 'InstallController'
   });
 
-  $routeProvider.when('/bundle', {
+  $routeProvider.when('/kb', {
     templateUrl: '/static/partials/select_language.html',
     controller: 'SelectLanguageController'
   });
 
-  $routeProvider.when('/bundle/:locale', {
+  $routeProvider.when('/:locale/products', {
     templateUrl: '/static/partials/select_product.html',
     controller: 'SelectProductController'
   });
 
-  $routeProvider.when('/bundle/:locale/:product', {
+  $routeProvider.when('/:locale/products/:product', {
     templateUrl: '/static/partials/select_topic.html',
     controller: 'SelectTopicController'
   });
 
-  $routeProvider.when('/bundle/:locale/:product/:topic', {
+  $routeProvider.when('/:locale/products/:product/:topic', {
     templateUrl: '/static/partials/select_doc.html',
     controller: 'SelectDocController'
   });
 
-  $routeProvider.when('/bundle/:locale/:product/:topic/:doc', {
+  $routeProvider.when('/:locale/kb/:doc', {
     templateUrl: '/static/partials/doc.html',
     controller: 'DocViewer'
   });
@@ -57,7 +57,7 @@ app.factory('title', ['$window', function($window){
 app.constant('VERSION', 1);
 app.constant('DBVERSION', 1);
 
-app.run(['$rootScope', function($rootScope) {
+app.run(['$rootScope', '$location', '$anchorScroll', function($rootScope, $location, $anchorScroll) {
   $rootScope.toast = function(toast, id) {
     $rootScope.$broadcast('toast', toast, id);
   };
@@ -77,6 +77,7 @@ app.run(['$rootScope', function($rootScope) {
       this.$apply(fn);
     };
   };
-}])
+
+}]);
 
 })();

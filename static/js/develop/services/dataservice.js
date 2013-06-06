@@ -211,9 +211,7 @@
      *                    Rejects if none is present.
      */
     this.getTopic = function(topic) {
-      topic = parseInt(topic);
       var deferred = $q.defer();
-
       this.mainDb.then(function(db) {
         var store = db.transaction('topics').objectStore('topics');
         store.get(topic).then(
@@ -300,7 +298,6 @@
      * @returns {promise} A promise with the document
      */
     this.getDoc = function(docid) {
-      docid = parseInt(docid);
       var deferred = $q.defer();
 
       this.mainDb.then(function(db) {

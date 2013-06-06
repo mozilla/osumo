@@ -1,6 +1,6 @@
 <div class="row">
   <div class="small-12 columns">
     <h6 class="center" ng-show="topics.length > 0">Topics</h6>
-    <a href="/bundle/{{ locale }}/{{ product }}/{{ topic.key }}" class="secondary expand small button" ng-repeat="topic in topics">{{ topic.name }}</a>
+    <a href="/{{ locale }}/products/{{ product }}/{{ topic.key }}" class="secondary expand small button" ng-repeat="topic in topics">{{ topic.name }}</a>
   </div>
 </div>
