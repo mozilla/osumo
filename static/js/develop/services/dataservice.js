@@ -6,6 +6,14 @@
 
   angular.module('osumo').service('DataService', ['$rootScope', '$q', '$http', 'DBVERSION', 'angularIndexedDb', function($rootScope, $q, $http, DBVERSION, angularIndexedDb) {
 
+    var topicKey = function(productSlug, topicSlug) {
+      return productSlug + '~' + topicSlug;
+    };
+
+    var docKey = function(locale, docSlug) {
+      return locale + '~' + docSlug;
+    };
+
     /**
      * Setups DataService. This mainly goes and open databases if required and
      * install some basic attributes. This function is at the top as it is
@@ -70,10 +78,30 @@
     this.addData = function(objectStoreName, data) {
       this.mainDb.then(function(db) {
         var store = db.transaction(objectStoreName, 'readwrite').objectStore(objectStoreName);
-
         var l = data.length;
-        for (var i=0; i<l; i++) {
-          store.put(data[i]);
+
+        if (objectStoreName === 'locales') {
+          for (var i=0; i<l; i++) {
+            // Currently there is no way to tell if something went wrong.
+            (function(i){
+              store.get(data[i].key).then(
+                function(result) {
+                  var dataToStore;
+                  if (result === undefined) { // does not exist
+                    dataToStore = data[i];
+                  } else { // exists, merge products
+                    dataToStore = result;
+                    result.products = result.products.concat(data[i].products);
+                  }
+                  store.put(dataToStore);
+                }
+              );
+            })(i);
+          }
+        } else {
+          for (var i=0; i<l; i++) {
+            store.put(data[i]);
+          }
         }
       });
     };
@@ -173,7 +201,7 @@
     /**
      * Get a list of available topics given a locale and a product.
      *
-     * @param {String} locale  The locale id
+     * @param {String} locale  The locale to get the topics.
      * @param {String} product  The product slug
      * @returns {promise} A promise with a list of topics that has key as the
      *                    topic id and the name as the topic name.
@@ -185,16 +213,19 @@
         var store = db.transaction('topics').objectStore('topics');
         var index = store.index('by_product');
         var topics = [];
-        index.openCursor(IDBKeyRange.lowerBound(0)).then(
-          function(result) {
-            if (!result) {
+        index.openCursor(IDBKeyRange.only(product)).then(
+          function(topic) {
+            if (!topic) {
               $rootScope.$safeApply(function() {
                 deferred.resolve(topics);
               });
               return;
             }
-            topics.push({key: result.value.key, name: result.value.name})
-            result.continue();
+
+            if (topic.value.children.length > 0 || topic.value.docs.length > 0) {
+              topics.push({key: topic.value.key, name: topic.value.name, slug: topic.value.slug, product: product});
+            }
+            topic.continue();
           }
         );
       });
@@ -206,15 +237,16 @@
      * Get a topic based on a key. This does not expand the topic (populate
      * subtopic and docs)
      *
-     * @param {integer} topic  The topic key.
+     * @param {String} product  The product slug
+     * @param {String} topic  The topic slug.
      * @returns {promise} A promise with the topic document when resolved.
      *                    Rejects if none is present.
      */
-    this.getTopic = function(topic) {
+    this.getTopic = function(product, topic) {
       var deferred = $q.defer();
       this.mainDb.then(function(db) {
         var store = db.transaction('topics').objectStore('topics');
-        store.get(topic).then(
+        store.get(topicKey(product, topic)).then(
           function(result) {
             if (result === undefined) { // No record found
               deferred.reject();
@@ -234,12 +266,12 @@
     /**
      * Gets a topic but also expand it
      */
-    this.getTopicExpanded = function(topic) {
+    this.getTopicExpanded = function(locale, product, topic) {
       var deferred = $q.defer();
 
       var self = this;
       this.mainDb.then(function(db) {
-        self.getTopic(topic).then(
+        self.getTopic(product, topic).then(
           function(result) {
             var topicsStore = db.transaction('topics').objectStore('topics');
             // TODO: investigate to see if it is possible to use .transaction(['topics', 'docs'])
@@ -256,22 +288,21 @@
             var d;
 
             for (var i=0; i<subtopicsLength; i++) {
-              d = topicsStore.get(result.children[i]);
+              d = topicsStore.get(topicKey(product, result.children[i]));
               deferreds.push(d);
 
               d.then(function(value) {
                 if (value !== undefined) {
-                  expandedChildren.push({key: value.key, name: value.name});
+                  expandedChildren.push({name: value.name, slug: value.slug});
                 }
               });
             }
-
             for (var i=0; i<docsLength; i++) {
-              d = docsStore.get(result.docs[i])
+              d = docsStore.get(docKey(locale, result.docs[i]))
               deferreds.push(d);
               d.then(function(doc) {
                 if (doc !== undefined) {
-                  expandedDocs.push({key: doc.key, name: doc.title, slug: doc.slug});
+                  expandedDocs.push({name: doc.title, slug: doc.slug});
                 }
               });
             }
@@ -294,15 +325,16 @@
     /**
      * Gets a document/article from indexeddb
      *
-     * @param {integer} docid  The document id.
+     * @param {String} locale  the locale
+     * @param {String} doc_slug  The document slug.
      * @returns {promise} A promise with the document
      */
-    this.getDoc = function(docid) {
+    this.getDoc = function(locale, doc_slug) {
       var deferred = $q.defer();
 
       this.mainDb.then(function(db) {
         var store = db.transaction('docs').objectStore('docs');
-        store.get(docid).then(
+        store.get(docKey(locale, doc_slug)).then(
           function(doc) {
             deferred.resolve(doc);
           },

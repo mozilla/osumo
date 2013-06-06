@@ -22,6 +22,6 @@
   angular.module('osumo').controller('SelectDocController', ['$scope', '$route', 'DataService', function($scope, $route, DataService) {
     $scope.locale = $route.current.params.locale;
     $scope.product = $route.current.params.product;
-    $scope.topic = DataService.getTopicExpanded($route.current.params.topic);
+    $scope.topic = DataService.getTopicExpanded($scope.locale, $scope.product, $route.current.params.topic);
   }]);
 })();

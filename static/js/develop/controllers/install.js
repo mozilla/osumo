@@ -97,6 +97,7 @@ angular.module('osumo').controller('InstallController', ['$scope', 'VERSION', 't
 
     DataService.getBundleFromSource($scope.product, $scope.locale).success(function(data, status, headers, config) {
       for (var oname in data) {
+        // We need to merge the products.
         DataService.addData(oname, data[oname]);
       }
       _updateAvailableBundles();
