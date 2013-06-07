@@ -13,7 +13,7 @@ angular.module('osumo').controller('HomeController', ['$scope', '$location', 'VE
           if (!meta || !meta.installed) {
             $location.path('/install');
           } else {
-            $location.path('/main');
+            $location.path('/kb');
           }
           return meta;
         },
