@@ -6,8 +6,8 @@
 
   angular.module('osumo').service('DataService', ['$rootScope', '$q', '$http', 'DBVERSION', 'angularIndexedDb', function($rootScope, $q, $http, DBVERSION, angularIndexedDb) {
 
-    var topicKey = function(productSlug, topicSlug) {
-      return productSlug + '~' + topicSlug;
+    var topicKey = function(locale, productSlug, topicSlug) {
+      return locale + '~' + productSlug + '~' + topicSlug;
     };
 
     var docKey = function(locale, docSlug) {
@@ -210,24 +210,25 @@
       var deferred = $q.defer();
 
       this.mainDb.then(function(db) {
-        var store = db.transaction('topics').objectStore('topics');
-        var index = store.index('by_product');
-        var topics = [];
-        index.openCursor(IDBKeyRange.only(product)).then(
-          function(topic) {
-            if (!topic) {
-              $rootScope.$safeApply(function() {
-                deferred.resolve(topics);
-              });
-              return;
+        var store = db.transaction('locales').objectStore('locales');
+        store.get(locale).then(function(localeDoc) {
+          var index = db.transaction('topics').objectStore('topics').index('by_product');
+          var topics = [];
+          index.openCursor(IDBKeyRange.only(product)).then(
+            function(topic) {
+              if (!topic) {
+                $rootScope.$safeApply(function() {
+                  deferred.resolve(topics);
+                });
+                return;
+              }
+              if (topicKey(locale, product, topic.value.slug) === topic.value.key && localeDoc.children.indexOf(topic.value.slug) >= 0 && (topic.value.children.length > 0 || topic.value.docs.length > 0)) {
+                topics.push({key: topic.value.key, name: topic.value.name, slug: topic.value.slug, product: product});
+              }
+              topic.continue();
             }
-
-            if (topic.value.children.length > 0 || topic.value.docs.length > 0) {
-              topics.push({key: topic.value.key, name: topic.value.name, slug: topic.value.slug, product: product});
-            }
-            topic.continue();
-          }
-        );
+          );
+        });
       });
 
       return deferred.promise;
@@ -242,11 +243,11 @@
      * @returns {promise} A promise with the topic document when resolved.
      *                    Rejects if none is present.
      */
-    this.getTopic = function(product, topic) {
+    this.getTopic = function(locale, product, topic) {
       var deferred = $q.defer();
       this.mainDb.then(function(db) {
         var store = db.transaction('topics').objectStore('topics');
-        store.get(topicKey(product, topic)).then(
+        store.get(topicKey(locale, product, topic)).then(
           function(result) {
             if (result === undefined) { // No record found
               deferred.reject();
@@ -271,7 +272,7 @@
 
       var self = this;
       this.mainDb.then(function(db) {
-        self.getTopic(product, topic).then(
+        self.getTopic(locale, product, topic).then(
           function(result) {
             var topicsStore = db.transaction('topics').objectStore('topics');
             // TODO: investigate to see if it is possible to use .transaction(['topics', 'docs'])
@@ -288,7 +289,7 @@
             var d;
 
             for (var i=0; i<subtopicsLength; i++) {
-              d = topicsStore.get(topicKey(product, result.children[i]));
+              d = topicsStore.get(topicKey(locale, product, result.children[i]));
               deferreds.push(d);
 
               d.then(function(value) {
