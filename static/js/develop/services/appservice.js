@@ -62,10 +62,11 @@
      *                    auto install went through.
      */
     this.autoInstall = function() {
+      var request;
       var d = $q.defer();
 
       if (this.installCompatible(d)) {
-        var request = window.navigator.mozApps.getSelf();
+        request = window.navigator.mozApps.getSelf();
         request.onsuccess = function(e) {
           if (request.result) {
             DataService.metaDbPromise.then(function(db) {
@@ -96,14 +97,16 @@
      *                    is complete or rejected if there is an error.
      */
     this.install = function() {
+      var promise;
       var d = $q.defer();
 
       if (this.installCompatible(d)) {
-        var promise = this.autoInstall();
+        promise = this.autoInstall();
 
         promise.then(undefined, function(reason) {
+          var install;
           if (reason === 'not installed') {
-            var install = window.navigator.mozApps.install(BASE_URL + 'manifest.webapp');
+            install = window.navigator.mozApps.install(BASE_URL + 'manifest.webapp');
             install.onsuccess = function() {
               _initializeDatabase(d);
             };

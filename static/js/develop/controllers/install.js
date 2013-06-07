@@ -96,6 +96,11 @@ angular.module('osumo').controller('InstallController', ['$scope', 'VERSION', 't
     }
 
     DataService.getBundleFromSource($scope.product, $scope.locale).success(function(data, status, headers, config) {
+      if (!data.docs || data.docs.length === 0) {
+        $scope.untoast('install-bundle');
+        $scope.toast({message: 'Sorry, the language you selected has no documents. You can help transate at ..', type: 'alert'});
+        return;
+      }
       for (var oname in data) {
         // We need to merge the products.
         DataService.addData(oname, data[oname]);
