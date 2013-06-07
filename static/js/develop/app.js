@@ -47,9 +47,14 @@ app.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
     controller: 'SettingsViewController'
   });
 
-  $routeProvider.otherwise({
-    templateUrl: '/static/partials/404.html'
-  })
+  var notFoundPage = {
+    templateUrl: '/static/partials/404.html',
+    controller: 'NotFoundController'
+  };
+
+  $routeProvider.when('/:locale/404', notFoundPage);
+  $routeProvider.otherwise(notFoundPage);
+
 }]);
 
 app.factory('title', ['$window', function($window){

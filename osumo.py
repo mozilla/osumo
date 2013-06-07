@@ -1,3 +1,4 @@
+from datetime import datetime
 import os
 
 from flask import Flask, render_template, make_response
@@ -16,10 +17,29 @@ if DEBUG:
           scripts.append(root[prefix_length:] + '/' + fname)
 
     return scripts
+
+  def version():
+    return datetime.now().ctime()
+
+  def partials():
+    p = []
+    for root, subdir, files in os.walk(os.path.join(app_folder, 'static/partials')):
+      for fname in files:
+        if fname.endswith('.html'):
+          p.append(root[prefix_length:] + '/' + fname)
+
+    return p
+
 else:
   def get_all_script_paths():
     # minified js.. should be one.
     return ['/static/js/app.js']
+
+  def version():
+    return 1
+
+  def partials():
+    return []
 
 
 def read_file(path):
@@ -67,10 +87,11 @@ def manifest_file():
   response.mimetype = 'application/x-web-app-manifest+json'
   return response
 
-@app.route('/cache.manifest')
-def cache_manifest():
-  response = make_response("")
+@app.route('/manifest.appcache')
+def appcache():
+  response = make_response(render_template('manifest.appcache', version=version(), partials=partials()))
   response.mimetype = 'text/cache-manifest'
+  response.cache_control.no_cache = True
   return response
 
 # Catch all URL for HTML push state

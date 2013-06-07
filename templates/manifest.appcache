@@ -1,0 +1,26 @@
+CACHE MANIFEST
+# version {{ version }}
+
+CACHE:
+/static/js/vendors/angular.min.js
+/static/js/vendors/custom.modernizr.js
+/static/js/vendors/foundation.min.js
+/static/js/vendors/zepto.js
+{% for script in scripts %}{{ script }}
+{% endfor %}# CSS files
+/static/css/app.css
+/static/css/foundation.min.css
+/static/css/normalize.css
+# Partials
+{% for partial in partials %}{{ partial }}
+{% endfor %}# We need this because appcache does not understand redirects in pushstate
+/
+
+# The fallback here means that if any url matching with the prefix / failed to
+# load (all urls). It render using the html cached at /. This means that angular
+# will still detect the correct page and do all the loading. REJOICE! :D
+FALLBACK:
+/ /
+
+NETWORK:
+*
