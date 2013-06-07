@@ -46,6 +46,10 @@ app.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
     templateUrl: '/static/partials/settings.html',
     controller: 'SettingsViewController'
   });
+
+  $routeProvider.otherwise({
+    templateUrl: '/static/partials/404.html'
+  })
 }]);
 
 app.factory('title', ['$window', function($window){

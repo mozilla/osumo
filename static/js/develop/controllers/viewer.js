@@ -9,6 +9,7 @@
       title(doc.title);
       if (doc.redirect) {
         $location.path(doc.redirect);
+        $location.replace();
       }
     });
   }]);
