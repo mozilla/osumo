@@ -17,6 +17,24 @@
         $location.replace();
       }
     });
+    $scope.images = {};
+
+    $scope.allImagesLoaded = function() {
+      console.log($scope.images);
+      for (var url in $scope.images) {
+        if ($scope.images[url]) {
+          return false;
+        }
+      }
+      return true;
+    };
+
+    $scope.loadAllImages = function() {
+      for (var url in $scope.images) {
+        $scope.images[url].triggerHandler('click');
+      }
+    };
+
   }]);
 
   angular.module('osumo').directive('viewer', ['$compile', function($compile) {

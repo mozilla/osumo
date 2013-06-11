@@ -15,6 +15,9 @@
             // not in database
             element.attr('src', '/static/img/placeholder.png');
             element.addClass('placeholder-img');
+            // Since we are child of the viewer, it is its parent that we are
+            // concerned about (the docviewer controller)
+            scope.images[originalSrc] = element;
 
             element.bind('click', function(e) {
               $rootScope.$safeApply(function() {
@@ -22,6 +25,10 @@
                   element.attr('src', imageData);
                   element.removeClass('placeholder-img');
                   element.unbind('click');
+
+                  $rootScope.$safeApply(function() {
+                    delete scope.images[originalSrc];
+                  });
                 });
               });
             });
