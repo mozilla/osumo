@@ -30,6 +30,8 @@
           stores[STORES[i]] = db.createObjectStore(STORES[i], {keyPath: 'key'});
         }
 
+        db.createObjectStore('images');
+
         stores.topics.createIndex('by_product', 'product');
       });
     };
@@ -346,6 +348,54 @@
 
       });
 
+      return deferred.promise;
+    };
+
+    /**
+     * Checks if an image exists in the db
+     *
+     * @param {string} url to the image
+     */
+    this.hasImage = function(url) {
+      var deferred = $q.defer();
+
+      this.mainDb.then(function(db) {
+        var store = db.transaction('images').objectStore('images');
+        store.get(url).then(function(imageData) {
+          if (imageData === undefined) {
+            deferred.reject();
+          } else {
+            deferred.resolve(imageData);
+          }
+        })
+      });
+
+      return deferred.promise;
+    };
+
+    this.getImage = function(url) {
+      var deferred = $q.defer();
+
+      this.mainDb.then(function(db) {
+        var store = db.transaction('images').objectStore('images');
+        store.get(url).then(function(imageData) {
+          if (imageData === undefined) {
+            $http({
+              url: '/images',
+              method: 'GET',
+              params: {url: url}
+            }).success(function(data) {
+              var store = db.transaction('images', 'readwrite').objectStore('images');
+              store.put(data, url);
+              deferred.resolve(data);
+            }).error(function(data, status, headers, config) {
+              deferred.reject(data);
+            });
+          } else {
+            deferred.resolve(imageData);
+          }
+        });
+      });
       return deferred.promise;
     };
 

@@ -11,6 +11,7 @@ CACHE:
 /static/css/app.css
 /static/css/foundation.min.css
 /static/css/normalize.css
+/static/img/placeholder.png
 # Partials
 {% for partial in partials %}{{ partial }}
 {% endfor %}# We need this because appcache does not understand redirects in pushstate

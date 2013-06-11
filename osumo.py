@@ -1,7 +1,9 @@
 from datetime import datetime
 import os
+import urllib
 
-from flask import Flask, render_template, make_response
+from flask import Flask, render_template, make_response, abort, request
+import requests
 
 from settings import DEBUG, BASE_URL, SUMO_URL
 
@@ -93,6 +95,21 @@ def appcache():
   response.mimetype = 'text/cache-manifest'
   response.cache_control.no_cache = True
   return response
+
+@app.route("/images")
+def images():
+  if 'url' not in request.args:
+    return abort(400)
+
+  target = "https://support.cdn.mozilla.net/" + request.args['url']
+  response = requests.get(target)
+  if response.status_code == 200:
+    response = make_response("data:image/png;base64," + urllib.quote(response.content.encode('base64')))
+    response.mimetype = 'text/plain'
+    return response
+  else:
+    return abort(response.status_code)
+
 
 # Catch all URL for HTML push state
 @app.route('/', defaults={'path': ''})
