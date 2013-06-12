@@ -3,7 +3,6 @@
 (function() {
   angular.module('osumo').directive('a', ['$anchorScroll', function($anchorScroll) {
     return {
-      priority: 10,
       restrict: 'E',
       compile: function(element, attrs) {
         element.bind('click', function(event) {

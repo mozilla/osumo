@@ -3,6 +3,8 @@
 (function(){
   angular.module('osumo').service('AppService', ['$q', '$rootScope', 'VERSION', 'DataService', function($q, $rootScope, VERSION, DataService) {
 
+    var APPURL = BASE_URL + 'manifest.webapp';
+
     /**
      * Private method to initialize the database after after installation.
      *
@@ -14,7 +16,6 @@
         DataService.settingsDb.then(function(db) {
           db.transaction('meta', 'readwrite').objectStore('meta').put({
             version: VERSION,
-            installed: true
           }).then(
             function() {
               $rootScope.$safeApply(function() {
@@ -30,6 +31,25 @@
           );
         });
       });
+    };
+
+    this.checkInstalled = function() {
+      var deferred = $q.defer();
+      if (this.installCompatible(deferred)) {
+        var request = window.navigator.mozApps.checkInstalled(APPURL);
+        request.onsuccess = function() {
+          if (request.result) {
+            deferred.resolve(true);
+          } else {
+            deferred.resolve(false);
+          }
+        };
+
+        request.onerror = function() {
+          deferred.reject(this.error);
+        };
+      }
+      return deferred.promise;
     };
 
     /**
@@ -69,7 +89,7 @@
         request = window.navigator.mozApps.getSelf();
         request.onsuccess = function(e) {
           if (request.result) {
-            DataService.metaDbPromise.then(function(db) {
+            DataService.settingsDb.then(function(db) {
               $rootScope.$safeApply(function() {
                 db.transaction('meta').objectStore('meta').get(VERSION).then(function(value) {
                   if (value === undefined || !value.installed) {
@@ -106,7 +126,7 @@
         promise.then(undefined, function(reason) {
           var install;
           if (reason === 'not installed') {
-            install = window.navigator.mozApps.install(BASE_URL + 'manifest.webapp');
+            install = window.navigator.mozApps.install(APPURL);
             install.onsuccess = function() {
               _initializeDatabase(d);
             };

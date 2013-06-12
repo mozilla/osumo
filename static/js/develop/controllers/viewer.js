@@ -33,9 +33,7 @@
         $scope.images[url].triggerHandler('click');
       }
     };
-
-    console.log("controller loaded");
-
+    console.log("document viewer controller loaded");
   }]);
 
   angular.module('osumo').directive('viewer', ['$compile', '$anchorScroll', function($compile, $anchorScroll) {

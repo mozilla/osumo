@@ -3,10 +3,15 @@
   "description": "offline support.mozilla.org",
   "version": "0.1",
   "launch_path": "/",
+  "icons": {
+    "60": "/static/img/icon.png",
+    "128": "/static/img/icon-128.png"
+  },
   "developer": {
     "name": "Mozilla",
     "url": "http://mozilla.org"
   },
   "default_locale": "en",
-  "appcache_path": "/manifest.appcache"
+  "appcache_path": "/manifest.appcache",
+  "fullscreen": true
 }

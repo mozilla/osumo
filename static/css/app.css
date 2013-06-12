@@ -6,6 +6,8 @@ footer { text-align: center; padding: 0.8em; color: #BBB; font-size: 0.85em; }
 .placeholder-img { cursor: pointer; opacity: 0.6; }
 .placeholder-img:hover { cursor: pointer; opacity: 1; }
 
+#toc { display: none; } /* We don't need the toc */
+
 /* Wiki Document content */
 #doc-content {
     color: rgb(40, 40, 40);

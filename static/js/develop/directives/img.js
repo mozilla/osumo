@@ -4,6 +4,7 @@
   angular.module('osumo').directive('img', ['$rootScope', 'DataService', function($rootScope, DataService) {
     return {
       restrict: 'E',
+      priority: 10,
       link: function(scope, element, attrs) {
         var originalSrc = attrs.originalSrc.replace('//support.cdn.mozilla.net/', '');
         DataService.hasImage(originalSrc).then(

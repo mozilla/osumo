@@ -31,24 +31,17 @@ angular.module('osumo').controller('InstallController', ['$scope', 'VERSION', 't
   $scope.locale = null;
   $scope.installed = false;
   $scope.bundles = [];
-  $scope.dbsDownloaded = [];
 
   // Check if we are installed or not
-  DataService.settingsDb.then(function(db) {
-    db.transaction('meta').objectStore('meta').get(VERSION).then(
-      function(meta) {
-        if (meta) {
-          $scope.installed = meta.installed;
-          $scope.dbsDownloaded = meta.dbsDownloaded;
-        }
-        return meta;
-      },
-      function(err) {
-        console.log('Getting meta db failed: ' + err);
-      }
-    );
-    return db;
-  });
+  AppService.checkInstalled().then(
+    function(installed) {
+      $scope.installed = installed;
+    },
+    function(error) {
+      console.log('Error checking installed', error);
+      $scope.installed = true; // We use this to hide the install button on error.
+    }
+  );
 
   // Attempt auto install
   AppService.autoInstall().then(function() {

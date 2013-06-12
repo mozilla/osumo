@@ -13,6 +13,8 @@ CACHE:
 /static/css/normalize.css
 /static/img/wiki/bkg.warning.png
 /static/img/placeholder.png
+/static/img/icon.png
+/static/img/icon-128.png
 # Partials
 {% for partial in partials %}{{ partial }}
 {% endfor %}# We need this because appcache does not understand redirects in pushstate
