@@ -20,7 +20,6 @@
     $scope.images = {};
 
     $scope.allImagesLoaded = function() {
-      console.log($scope.images);
       for (var url in $scope.images) {
         if ($scope.images[url]) {
           return false;
@@ -35,9 +34,11 @@
       }
     };
 
+    console.log("controller loaded");
+
   }]);
 
-  angular.module('osumo').directive('viewer', ['$compile', function($compile) {
+  angular.module('osumo').directive('viewer', ['$compile', '$anchorScroll', function($compile, $anchorScroll) {
 
     return function(scope, element, attrs) {
       scope.$watch(
@@ -47,6 +48,9 @@
         function(value) {
           element.html(value);
           $compile(element.contents())(scope);
+          setTimeout(function() {
+            $anchorScroll();
+          }, 0);
         }
       );
     };
