@@ -1,4 +1,4 @@
-from datetime import datetime
+import time
 import os
 import urllib
 
@@ -21,7 +21,8 @@ if DEBUG:
     return scripts
 
   def version():
-    return datetime.now().ctime()
+    return int(time.time() / 10)
+
 
   def partials():
     p = []

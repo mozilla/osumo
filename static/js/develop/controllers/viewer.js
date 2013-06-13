@@ -11,11 +11,8 @@
         $location.replace();
         return;
       };
+
       title(doc.title);
-      if (doc.redirect) {
-        $location.path(doc.redirect);
-        $location.replace();
-      }
     });
     $scope.images = {};
 
@@ -41,7 +38,11 @@
     return function(scope, element, attrs) {
       scope.$watch(
         function(scope) {
-          return scope.$eval(attrs.html);
+          var doc = scope.$eval(attrs.doc);
+          if (doc.archived)
+            return "<p>The content you're looking for is archived and not included here.</p>"
+         
+          return doc.html;
         },
         function(value) {
           element.html(value);
