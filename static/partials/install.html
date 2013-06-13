@@ -1,46 +1,38 @@
 <div class="row">
   <div class="small-12 columns">
-    <div ng-hide="installed">
-    <alert showclose="false" type="'secondary'">
-      Looks like you don't have oSUMO installed! Don't worry, this is why you are
-      on this page. :)
-    </alert>
-    </div>
-
-    <button id="install-app" class="expand" ng-hide="installed" ng-click="installApp()">Install App</button>
+    <button id="install-app" class="expand" ng-hide="installed" ng-click="installApp()" i18n>Install App</button>
 
     <hr ng-hide="installed" />
 
     <p>oSUMO needs to download content in order to run offline. Please select
     the products you are interested in and press 'Download Content'.</p>
 
-    <div class="center">Product</div>
-    <select id="installer-select-product" ng-model="product">
-      <option ng-repeat="product in products" value="{{ product.id }}">{{ product.name }}</option>
+    <div class="center" i18n>Product</div>
+    <select id="installer-select-product" ng-model="product" ng-options="product.id as product.name for product in products">
     </select>
-    <div class="center">Language</div>
-    <select id="installer-select-language" ng-model="locale">
-      <option ng-repeat="language in languages" value="{{ language.id }}">{{ language.name }}</option>
+    <div class="center" i18n>Language</div>
+    <select id="installer-select-language" ng-model="locale" ng-options="language.id as language.name for language in languages">
     </select>
-    <button id="install-bundle" class="expand" ng-click="installBundle()">Download Content</button>
+
+    <button id="install-bundle" class="expand" ng-click="installBundle()" i18n>Download Content</button>
 
     <hr />
 
-    <h6 class="center">Installed Content</h6>
+    <h6 class="center" i18n>Installed Content</h6>
 
     <table width="100%">
       <thead>
         <tr>
-          <th>Product</th>
-          <th>Actions</th>
+          <th i18n>Product</th>
+          <th i18n>Actions</th>
         </tr>
       </thead>
       <tbody>
         <tr ng-repeat="bundle in bundles">
           <td>{{ bundle.name }}</td>
           <td>
-            <a href="/{{ bundle.locale }}/products/{{ bundle.product }}" class="small expand button">Browse</a>
-            <a href="" class="small expand alert button" ng-click="deleteBundle(bundle)">Delete</a>
+            <a href="/{{ bundle.locale }}/products/{{ bundle.product }}" class="small expand button" i18n>Browse</a>
+            <a href="" class="small expand alert button" ng-click="deleteBundle(bundle)" i18n>Delete</a>
           </td>
         </tr>
       </tbody>

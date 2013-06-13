@@ -1,5 +1,11 @@
 <div class="row">
   <div class="small-12 columns">
-    <h6 class="center">Settings</h6>
+    <h6 class="center" i18n>Settings</h6>
+
+    <div class="center" i18n>Default Language</div>
+
+    <select id="installer-select-language" ng-model="locale" ng-options="language.id as language.name for language in languages">
+    </select>
+    <button ng-click="save()" class="small" i18n>Save</button>
   </div>
 </div>

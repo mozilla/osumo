@@ -1,14 +1,37 @@
 import time
 import os
 import urllib
+import json
 
 from flask import Flask, render_template, make_response, abort, request
 import requests
 
 from settings import DEBUG, BASE_URL, SUMO_URL
 
+
+class CustomFlask(Flask):
+  jinja_options = Flask.jinja_options.copy()
+  jinja_options.update({
+    'variable_start_string': '[[',
+    'variable_end_string': ']]'
+  })
+
+
 app_folder = os.path.dirname(os.path.abspath(__file__))
 prefix_length = len(app_folder)
+
+languages = requests.get(SUMO_URL + "en-US/kb/offline/get-languages").json()["languages"]
+LANGUAGES = []
+for language in languages:
+  LANGUAGES.append({"id": language[0], "name": language[1]})
+LANGUAGES = json.dumps(LANGUAGES)
+del languages
+del language
+
+def read_file(path):
+  with open(path) as f:
+    return f.read()
+
 
 if DEBUG:
   def get_all_script_paths():
@@ -33,6 +56,16 @@ if DEBUG:
 
     return p
 
+  def get_app_manifest():
+    return read_file(os.path.join(app_folder, 'manifests', 'manifest.webapp'))
+
+  def get_translation(locale):
+    try:
+      print os.path.join(app_folder, 'translations') + locale + '.json'
+      return read_file(os.path.join(app_folder, 'translations', locale + '.json'))
+    except (OSError, IOError):
+      return None
+
 else:
   def get_all_script_paths():
     # minified js.. should be one.
@@ -44,17 +77,28 @@ else:
   def partials():
     return []
 
+  # Epic cache time~
+  FILES = {
+    'manifest.webapp': read_file(os.path.join(app_folder, 'manifests', 'manifest.webapp')),
+  }
 
-def read_file(path):
-  with open(path) as f:
-    return f.read()
+  def _discover_translations():
+    for root, subdir, files in os.walk(os.path.join(app_folder, 'translations')):
+      for fname in files:
+        if fname.endswith('.json'):
+          FILES[fname] = json.dumps(json.loads(read_file(os.path.join(root, fname))))
 
-# Epic cache time~
-FILES = {
-  'manifest.webapp': read_file(os.path.join(app_folder, 'manifests', 'manifest.webapp')),
-}
+  _discover_translations()
+  del _discover_translations
 
-app = Flask(__name__)
+  def get_app_manifest():
+    return FILES['manifest.webapp']
+
+  def get_translation(locale):
+    return FILES.get(locale + '.json')
+
+
+app = CustomFlask(__name__)
 
 # AngularJS E2E Testing. Why is this so complicated..
 if DEBUG:
@@ -83,10 +127,11 @@ def before_request():
   app.jinja_env.globals['BASE_URL'] = BASE_URL
   app.jinja_env.globals['SUMO_URL'] = SUMO_URL
   app.jinja_env.globals['scripts'] = get_all_script_paths()
+  app.jinja_env.globals['LANGUAGES'] = LANGUAGES
 
 @app.route('/manifest.webapp')
 def manifest_file():
-  response = make_response(FILES['manifest.webapp'])
+  response = make_response(get_app_manifest())
   response.mimetype = 'application/x-web-app-manifest+json'
   return response
 
@@ -110,6 +155,15 @@ def images():
     return response
   else:
     return abort(response.status_code)
+
+@app.route("/i18n/<locale>")
+def i18nfiles(locale):
+  translation = get_translation(locale)
+  if translation is None:
+    return abort(404)
+  response = make_response(translation)
+  response.mimetype = 'application/json'
+  return response
 
 
 # Catch all URL for HTML push state

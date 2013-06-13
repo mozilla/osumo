@@ -2,8 +2,8 @@
 
 (function(){
 
-angular.module('osumo').controller('InstallController', ['$scope', 'VERSION', 'title', 'DataService', 'AppService', function($scope, VERSION, title, DataService, AppService) {
-  title('Installer');
+angular.module('osumo').controller('InstallController', ['$scope', 'VERSION', 'title', 'DataService', 'AppService', 'LocaleService', function($scope, VERSION, title, DataService, AppService, LocaleService) {
+  title(LocaleService.getTranslation('Installer'));
 
   // Setup code
   $scope.products = [
@@ -16,15 +16,7 @@ angular.module('osumo').controller('InstallController', ['$scope', 'VERSION', 't
     {id: 'en-US', name: 'English (US)'}
   ];
 
-  // Get a list of languages from the server.
-  DataService.getLanguages().success(function(data, status, headers, config) {
-    $scope.languages = [];
-    var l = data.languages.length;
-    var languages = data.languages;
-    for (var i=0; i<l; i++) {
-      $scope.languages.push({id: languages[i][0], name: languages[i][1]});
-    }
-  });
+  $scope.languages = window.LANGUAGES;
 
   // Some variables
   $scope.product = null;
@@ -79,6 +71,9 @@ angular.module('osumo').controller('InstallController', ['$scope', 'VERSION', 't
 
   $scope.installBundle = function() {
     $scope.toast({message: 'Downloading content...'}, 'install-bundle');
+
+    // TODO: move this below the check. Here so we can test easily.
+    LocaleService.updateLocale($scope.locale);
 
     for (var i in $scope.bundles) {
       if ($scope.bundles[i].product === $scope.product && $scope.bundles[i].locale === $scope.locale) {

@@ -39,9 +39,12 @@
       scope.$watch(
         function(scope) {
           var doc = scope.$eval(attrs.doc);
+          if (!doc)
+            return ""
+
           if (doc.archived)
             return "<p>The content you're looking for is archived and not included here.</p>"
-         
+
           return doc.html;
         },
         function(value) {

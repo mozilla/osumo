@@ -57,9 +57,9 @@ app.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
 
 }]);
 
-app.factory('title', ['$window', function($window){
+app.factory('title', ['$window', 'LocaleService', function($window, LocaleService){
   return function(title) {
-      $window.document.title = title + ' - Offline Mozilla Support';
+    $window.document.title = title + ' - ' + LocaleService.getTranslation('Offline Mozilla Support');
   };
 }]);
 

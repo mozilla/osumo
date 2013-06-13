@@ -1,12 +1,12 @@
 CACHE MANIFEST
-# version {{ version }}
+# version [[ version ]]
 
 CACHE:
 /static/js/vendors/angular.min.js
 /static/js/vendors/custom.modernizr.js
 /static/js/vendors/foundation.min.js
 /static/js/vendors/zepto.js
-{% for script in scripts %}{{ script }}
+{% for script in scripts %}[[ script ]]
 {% endfor %}# CSS files
 /static/css/app.css
 /static/css/foundation.min.css
@@ -16,7 +16,7 @@ CACHE:
 /static/img/icon.png
 /static/img/icon-128.png
 # Partials
-{% for partial in partials %}{{ partial }}
+{% for partial in partials %}[[ partial ]]
 {% endfor %}# We need this because appcache does not understand redirects in pushstate
 /
 

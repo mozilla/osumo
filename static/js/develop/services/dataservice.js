@@ -22,6 +22,7 @@
     this.setup = function() {
       this.settingsDb = angularIndexedDb.open('osumo-settings', 1, function(db) {
         db.createObjectStore('meta', {keyPath: 'version'});
+        db.createObjectStore('locales', {keyPath: 'locale'});
       });
 
       this.mainDb = angularIndexedDb.open('osumo', DBVERSION, function(db) {
@@ -37,18 +38,6 @@
     };
 
     this.setup();
-
-    /**
-     * Gets all the languages available from kitsune.
-     *
-     * @returns {$http}  An angular $http request.
-     */
-    this.getLanguages = function() {
-      return $http({
-        url: window.SUMO_URL + 'en-US/kb/offline/get-languages',
-        method: 'GET'
-      });
-    };
 
     /**
      * Gets an offline bundle from kitsune.

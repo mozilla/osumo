@@ -1,7 +1,7 @@
 'use strict';
 
 (function(){
-  angular.module('osumo').service('AppService', ['$q', '$rootScope', 'VERSION', 'DataService', function($q, $rootScope, VERSION, DataService) {
+  angular.module('osumo').service('AppService', ['$q', '$rootScope', 'VERSION', 'DataService', 'LocaleService', function($q, $rootScope, VERSION, DataService, LocaleService) {
 
     var APPURL = BASE_URL + 'manifest.webapp';
 
@@ -12,12 +12,17 @@
      *                      is completed.
      */
     var _initializeDatabase = function(d) {
+      if (navigator.language)
+        LocaleService.updateLocale(navigator.language)
+
       $rootScope.$safeApply(function() {
         DataService.settingsDb.then(function(db) {
           db.transaction('meta', 'readwrite').objectStore('meta').put({
             version: VERSION,
+            locale: navigator.language || 'en-US' // TODO: change this to something more sane..
           }).then(
             function() {
+              LocaleService.setup(db);
               $rootScope.$safeApply(function() {
                 d.resolve();
               });

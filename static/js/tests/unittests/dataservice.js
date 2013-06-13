@@ -22,7 +22,6 @@ describe('backend data services', function() {
       dataService.settingsDb.then(function(db) {
         db.transaction('meta', 'readwrite').objectStore('meta').openCursor(IDBKeyRange.lowerBound(0)).then(
           function(result) {
-            console.log("test1");
             if (!result) {
               done = true;
               return;
