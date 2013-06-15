@@ -22,7 +22,7 @@ angular.module('osumo').controller('InstallController', ['$scope', 'VERSION', 't
   $scope.product = null;
   $scope.locale = null;
   $scope.installed = false;
-  $scope.bundles = [];
+  $scope.bundles = DataService.getAvailableBundles();
 
   // Check if we are installed or not
   AppService.checkInstalled().then(
@@ -40,16 +40,6 @@ angular.module('osumo').controller('InstallController', ['$scope', 'VERSION', 't
     $scope.installed = true;
     $scope.dbsDownloaded = [];
   });
-
-
-  // Get the installed bundles
-  var _updateAvailableBundles = function() {
-    DataService.getAvailableBundles().then(function(bundles) {
-      $scope.bundles = bundles;
-    });
-  };
-
-  _updateAvailableBundles();
 
   // Setup is now completed. Onto the scope function declarations.
 
@@ -93,7 +83,7 @@ angular.module('osumo').controller('InstallController', ['$scope', 'VERSION', 't
         // We need to merge the products.
         DataService.addData(oname, data[oname]);
       }
-      _updateAvailableBundles();
+      $scope.bundles = DataService.getAvailableBundles();
       $scope.untoast('install-bundle');
     }).error(function(data, status, headers, config) {
     });

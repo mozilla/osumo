@@ -37,7 +37,7 @@
         } else {
           self.defaultLocale = result.locale;
           self.currentLocale = result.locale;
-          self.getOrAddLocale(result.locale);
+          self.updateLocale(result.locale);
         }
       });
     };

@@ -2,10 +2,31 @@
 
 (function(){
 
-  var STORES = ['locales', 'docs', 'topics'];
+  /**
+   * Copyright (c) 2013, Michael Bostock
+   * All rights reserved.
+   *
+   * The bisect code comes from d3.js
+   */
+  var bisect = (function(f) {
+    return function(a, x, lo, hi) {
+      if (arguments.length < 3) lo = 0;
+      if (arguments.length < 4) hi = a.length;
+      while (lo < hi) {
+        var mid = lo + hi >>> 1;
+        if (x < f.call(a, a[mid], mid)) hi = mid;
+        else lo = mid + 1;
+      }
+      return lo;
+    };
+  })(function(d) { return d });
+
+  var STORES = ['locales', 'docs', 'topics', 'indexes'];
+
 
   angular.module('osumo').service('DataService', ['$rootScope', '$q', '$http', 'DBVERSION', 'angularIndexedDb', function($rootScope, $q, $http, DBVERSION, angularIndexedDb) {
 
+    var self = this;
     var topicKey = function(locale, productSlug, topicSlug) {
       return locale + '~' + productSlug + '~' + topicSlug;
     };
@@ -34,6 +55,7 @@
         db.createObjectStore('images');
 
         stores.topics.createIndex('by_product', 'product');
+        stores.docs.createIndex('by_id', 'id');
       });
     };
 
@@ -124,7 +146,7 @@
             var product;
             for (var i in result.value.products) {
               product = result.value.products[i];
-              bundles.push({locale: result.value.key, product: product.slug, name: product.name + ' (' + result.value.name + ')'});
+              bundles.push({id: result.value.key + "~" + product.slug, locale: result.value.key, product: product.slug, name: product.name + ' (' + result.value.name + ')'});
             }
             result.continue();
           });
@@ -361,6 +383,73 @@
     };
 
     /**
+     * Gets a document via its id. For search
+     */
+    this.getDocById = function(id) {
+      var deferred = $q.defer();
+
+      this.mainDb.then(function(db) {
+        var store = db.transaction('docs').objectStore('docs');
+        var index = store.index('by_id');
+        index.get(id).then(function(doc) {
+          deferred.resolve(doc);
+        });
+      });
+
+      return deferred.promise;
+    };
+
+
+    /**
+     * Gets an index.
+     */
+    this.search = function(queryTerms, bundlekey) {
+      var deferred = $q.defer();
+
+      var start = new Date().getTime();
+
+      this.mainDb.then(function(db) {
+        var store = db.transaction('indexes').objectStore('indexes');
+        store.get(bundlekey).then(function(result) {
+          var si = result.index;
+          var potentialDocs = {};
+          var docs, s;
+          for (var i=0, l=queryTerms.length; i<l; i++) {
+            docs = si[queryTerms[i]] || [];
+            for (var j=0, ll=docs.length; j<ll; j++)
+              potentialDocs[docs[j][0]] = (potentialDocs[docs[j][0]] || 0) + docs[j][1];
+          }
+
+          var strength = []
+          var results = [];
+          var insPoint;
+          for (var docId in potentialDocs) {
+            insPoint = bisect(strength, potentialDocs[docId]);
+            results.splice(insPoint, 0, self.getDocById(parseInt(docId)));
+            strength.splice(insPoint, 0, potentialDocs[docId]);
+          }
+
+
+          results = results.reverse();
+
+          if (results.length === 0) {
+            deferred.resolve([]);
+          } else {
+            $q.all(results).then(function(result) {
+              deferred.resolve(result);
+            });
+          }
+
+        });
+      });
+
+      deferred.promise.then(function() {
+        console.log("search took: " + (new Date().getTime() - start) + "ms");
+      });
+      return deferred.promise;
+    };
+
+    /**
      * Checks if an image exists in the db
      *
      * @param {string} url to the image
@@ -385,6 +474,7 @@
     this.getImage = function(url) {
       var deferred = $q.defer();
 
+
       this.mainDb.then(function(db) {
         var store = db.transaction('images').objectStore('images');
         store.get(url).then(function(imageData) {
@@ -405,6 +495,7 @@
           }
         });
       });
+
       return deferred.promise;
     };
 

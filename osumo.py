@@ -44,7 +44,7 @@ if DEBUG:
     return scripts
 
   def version():
-    return int(time.time() / 10)
+    return 1
 
 
   def partials():
@@ -61,7 +61,6 @@ if DEBUG:
 
   def get_translation(locale):
     try:
-      print os.path.join(app_folder, 'translations') + locale + '.json'
       return read_file(os.path.join(app_folder, 'translations', locale + '.json'))
     except (OSError, IOError):
       return None
