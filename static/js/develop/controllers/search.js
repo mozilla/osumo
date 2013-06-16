@@ -21,7 +21,6 @@
         $scope.toast({message: "You need to search for in a category!", type: "alert"});
       } else {
         query = $scope.query.trim().toLowerCase();
-        console.log(query.split(sep));
         $scope.results = DataService.search(query.split(sep), $scope.bundle);
         $scope.locale = $scope.bundle.split("~")[0];
       }

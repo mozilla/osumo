@@ -407,10 +407,14 @@
       var deferred = $q.defer();
 
       var start = new Date().getTime();
+      var absoluteStart = start;
 
       this.mainDb.then(function(db) {
         var store = db.transaction('indexes').objectStore('indexes');
         store.get(bundlekey).then(function(result) {
+
+          console.log("Got search index: " + (new Date().getTime() - start) + "ms");
+          start = new Date().getTime();
           var si = result.index;
           var potentialDocs = {};
           var docs, s;
@@ -432,10 +436,14 @@
 
           results = results.reverse();
 
+          console.log("Processed search: " + (new Date().getTime() - start) + "ms");
+          start = new Date().getTime();
+
           if (results.length === 0) {
             deferred.resolve([]);
           } else {
             $q.all(results).then(function(result) {
+              console.log("Got all documents: " + (new Date().getTime() - start) + "ms");
               deferred.resolve(result);
             });
           }
@@ -444,7 +452,7 @@
       });
 
       deferred.promise.then(function() {
-        console.log("search took: " + (new Date().getTime() - start) + "ms");
+        console.log("search took: " + (new Date().getTime() - absoluteStart) + "ms");
       });
       return deferred.promise;
     };
