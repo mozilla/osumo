@@ -57,9 +57,4 @@ describe('backend data services', function() {
     waitsFor(function() { return done; });
   });
 
-  it('should request for languages', function() {
-    httpBackend.expectGET(window.SUMO_URL + 'en-US/kb/offline/get-languages').respond({});
-    dataService.getLanguages();
-    httpBackend.flush();
-  });
 });

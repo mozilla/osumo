@@ -20,7 +20,7 @@ class CustomFlask(Flask):
 app_folder = os.path.dirname(os.path.abspath(__file__))
 prefix_length = len(app_folder)
 
-languages = requests.get(SUMO_URL + "en-US/kb/offline/get-languages").json()["languages"]
+languages = requests.get(SUMO_URL + "offline/get-languages").json()["languages"]
 LANGUAGES = []
 for language in languages:
   LANGUAGES.append({"id": language[0], "name": language[1]})

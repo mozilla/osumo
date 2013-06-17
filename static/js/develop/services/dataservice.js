@@ -73,7 +73,7 @@
       // Note that the url starts with en-US. It really does not matter which
       // one it starts. The GET parameters will always override it.
       return $http({
-        url: window.SUMO_URL + 'en-US/kb/offline/get-bundles',
+        url: window.SUMO_URL + 'offline/get-bundles',
         method: 'GET',
         params: {products: product, locales: locale}
       });
