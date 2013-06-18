@@ -6,7 +6,6 @@
       restrict: 'E',
       priority: 10,
       link: function(scope, element, attrs) {
-        element = $(element[0]); // Convert to a zepto element
         var originalSrc = attrs.originalSrc.replace('//support.cdn.mozilla.net/', '');
         DataService.hasImage(originalSrc).then(
           function(imageData) {
@@ -17,25 +16,25 @@
             // not in database
 
             // We guess to see if it is an inline image or a block image.
-            // We observe that the block image is either separated by <br> or
-            // it does not have any surrounding text.
-            var prev = element.prev();
-            var next = element.next();
+            // We observe that the block image do not have surrounding texts
+            var prev = element[0].previousSibling;
+            var next = element[0].nextSibling;
 
-            // TODO: we might detect a false positive block when we have a text
-            // node before the next() or after the prev().
-
-            // We also sometimes observe that the image is at the start or the
-            // end of something, which means that the prev[0] or next[0] will
-            // be undefined. However, if both are undefined, we need to check
-            // if there are other text..
             var prevCheckedout, nextCheckedout;
-            if (prev[0] === undefined && next[0] === undefined) {
-              prevCheckedout = false;
-              nextCheckedout = false;
+            if (prev === null && next === null) {
+              prevCheckedout = true;
+              nextCheckedout = true;
             } else {
-              prevCheckedout = prev[0] === undefined ? true : prev[0].nodeName.toLowerCase() === 'br';
-              nextCheckedout = next[0] === undefined ? true : next[0].nodeName.toLowerCase() === 'br';
+              while (prev !== null && prev.nodeName === "#text" && prev.textContent.trim().length === 0) {
+                prev = prev.previousSibling;
+              }
+
+              while (next !== null && next.nodeName === "#text" && next.textContent.trim().length === 0) {
+                next = next.nextSibling;
+              }
+
+              prevCheckedout = prev === null ? true : prev.nodeName.toLowerCase() !== '#text';
+              nextCheckedout = next === null ? true : next.nodeName.toLowerCase() !== '#text';
             }
 
             if ((prevCheckedout && nextCheckedout) || element.parent().text().trim().length === 0) {
