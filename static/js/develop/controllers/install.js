@@ -86,6 +86,12 @@ angular.module('osumo').controller('InstallController', ['$scope', 'VERSION', 't
       $scope.bundles = DataService.getAvailableBundles();
       $scope.untoast('install-bundle');
     }).error(function(data, status, headers, config) {
+      $scope.untoast('install-bundle');
+      if (status === 0) {
+        $scope.toast({message: 'It looks like you don\'t have a network connection.', type: 'alert'});
+      } else {
+        $scope.toast({message: 'Download failed. Status: ' + status, type: 'alert'});
+      }
     });
   };
 

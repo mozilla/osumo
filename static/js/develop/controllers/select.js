@@ -27,13 +27,13 @@
     $scope.product = $route.current.params.product;
     switch($scope.product) {
       case 'firefox':
-        title('Firefox');
+        title(LocaleService._('Firefox'));
       break;
       case 'firefox-os':
-        title('Firefox OS');
+        title(LocaleService._('Firefox OS'));
       break;
       case 'mobile':
-        title('Firefox on Android');
+        title(LocaleService._('Firefox on Android'));
       break;
     }
     $scope.topics = DataService.getAvailableTopics($scope.locale, $scope.product);

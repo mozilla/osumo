@@ -12,7 +12,8 @@ CACHE:
 /static/css/foundation.min.css
 /static/css/normalize.css
 /static/img/wiki/bkg.warning.png
-/static/img/placeholder.png
+/static/img/placeholder-large.png
+/static/img/placeholder-small.png
 /static/img/icon.png
 /static/img/icon-128.png
 # Partials

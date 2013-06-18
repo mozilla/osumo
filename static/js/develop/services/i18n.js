@@ -131,6 +131,8 @@
       return this.currentLocale.data[s] || s;
     };
 
+    this._ = this.getTranslation;
+
   }]);
 
   // Correct way of using this should be {{ "Some thing" | i18n }}

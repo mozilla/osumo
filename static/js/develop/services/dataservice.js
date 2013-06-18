@@ -75,7 +75,8 @@
       return $http({
         url: window.SUMO_URL + 'offline/get-bundles',
         method: 'GET',
-        params: {products: product, locales: locale}
+        params: {products: product, locales: locale},
+        timeout: 20000
       });
     };
 
