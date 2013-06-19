@@ -46,7 +46,6 @@ if DEBUG:
   def version():
     return int(time.time() / 10)
 
-
   def partials():
     p = []
     for root, subdir, files in os.walk(os.path.join(app_folder, 'static/partials')):

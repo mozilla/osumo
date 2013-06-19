@@ -149,5 +149,25 @@
       return d.promise;
     };
 
+    var needupgrade = $q.defer();
+    var appCache = window.applicationCache;
+    if (appCache) {
+      appCache.addEventListener('updateready', function(e) {
+        if (appCache.status === appCache.UPDATEREADY) {
+          $rootScope.$safeApply(function() {
+            needupgrade.resolve(true);
+          });
+        }
+      });
+    }
+
+    /**
+     * Checks if app cache wants to update. Returns a promise. This promise will
+     * only resolve if there needs to be an upgrade.
+     */
+    this.checkAppcacheUpgrade = function() {
+      return needupgrade.promise;
+    };
+
   }]);
 })();

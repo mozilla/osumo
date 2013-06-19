@@ -25,7 +25,7 @@ CACHE:
 # load (all urls). It render using the html cached at /. This means that angular
 # will still detect the correct page and do all the loading. REJOICE! :D
 FALLBACK:
-/ /
+/ /install
 
 NETWORK:
 *

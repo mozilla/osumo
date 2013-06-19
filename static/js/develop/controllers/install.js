@@ -24,6 +24,7 @@ angular.module('osumo').controller('InstallController', ['$scope', 'VERSION', 't
   $scope.installed = false;
   $scope.bundles = DataService.getAvailableBundles();
 
+
   // Check if we are installed or not
   AppService.checkInstalled().then(
     function(installed) {

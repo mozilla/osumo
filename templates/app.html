@@ -54,6 +54,13 @@
 
     <div class="row" ng-controller="ToastsController">
       <div class="large-12 columns">
+        <div ng-show="appNeedsUpgrade">
+          <alert type="'secondary'" showclose="false">
+            <a href="" ng-click="upgradeApp()" class="right">Upgrade</a>
+            <i18n>Your app is out of date and needs an upgrade.</i18n>
+          </alert>
+        </div>
+
         <alert message="toast.message" toasts="toasts" ng-repeat="(id, toast) in toasts" msgid="id" type="toast.type" showclose="toast.showclose"></alert>
       </div>
     </div>

@@ -73,7 +73,7 @@ app.factory('title', ['$window', 'LocaleService', function($window, LocaleServic
 app.constant('VERSION', 1);
 app.constant('DBVERSION', 1);
 
-app.run(['$rootScope', '$location', '$anchorScroll', function($rootScope, $location, $anchorScroll) {
+app.run(['$rootScope', '$location', '$anchorScroll', 'AppService', function($rootScope, $location, $anchorScroll, AppService) {
   $rootScope.toast = function(toast, id) {
     $rootScope.$broadcast('toast', toast, id);
   };
@@ -92,6 +92,12 @@ app.run(['$rootScope', '$location', '$anchorScroll', function($rootScope, $locat
     } else {
       this.$apply(fn);
     };
+  };
+
+  $rootScope.appNeedsUpgrade = AppService.checkAppcacheUpgrade();
+
+  $rootScope.upgradeApp = function() {
+    location.reload();
   };
 
 }]);
