@@ -39,6 +39,8 @@
   angular.module('osumo').directive('viewer', ['$compile', '$anchorScroll', function($compile, $anchorScroll) {
 
     return function(scope, element, attrs) {
+      var currentScope;
+
       scope.$watch(
         function(scope) {
           var doc = scope.$eval(attrs.doc);
@@ -51,11 +53,24 @@
           return doc.html;
         },
         function(value) {
-          element.html(value);
-          $compile(element.contents())(scope);
-          setTimeout(function() {
-            $anchorScroll();
-          }, 0);
+          if (value) {
+            // We need to capture the currentScope so we can properly remove it
+            // Otherwise we won't be able to destroy the i18n directives (which)
+            // all binds to a locale-change event so they can switch locales.
+            currentScope = scope.$new();
+            element.html(value);
+            $compile(element.contents())(currentScope);
+            setTimeout(function() {
+              $anchorScroll();
+            }, 0);
+          } else if (currentScope) {
+            // This point the value is none, so we can destroy.
+            // Regular ng-view already does that for us. Here we just need to
+            // do it manually.
+            element.contents().remove()
+            currentScope.$destroy();
+            currentScope = null;
+          }
         }
       );
     };

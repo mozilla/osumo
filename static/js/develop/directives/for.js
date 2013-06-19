@@ -239,13 +239,13 @@
     // Angular.element does not have hide/show
     var hideImage = function(element) {
       // element.html(element.html() + " <strong>Hidden</strong> ");
-      console.log("hiding " + element.attr("data-for"));
+      // console.log("hiding " + element.attr("data-for"));
       element.css('display', 'none');
     };
 
     var showImage = function(element) {
       // element.html(element.html() + " <strong>Shown</strong> ");
-      console.log("show " + element.attr("data-for"));
+      // console.log("show " + element.attr("data-for"));
       element.removeAttr('style');
     };
 

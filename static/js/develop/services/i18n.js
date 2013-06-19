@@ -135,22 +135,19 @@
 
   }]);
 
-  // Correct way of using this should be {{ "Some thing" | i18n }}
-  angular.module('osumo').directive('i18n', ['$rootScope', '$q', 'LocaleService', function($rootScope, $q, LocaleService) {
+  angular.module('osumo').directive('i18n', ['$rootScope', 'LocaleService', function($rootScope, LocaleService) {
     var cleanup;
     return {
       restrict: 'EAC',
-      compile: function(element, attrs) {
+      link: function(scope, element, attrs) {
         var originalText = element.text();
         element.text(LocaleService.getTranslation(originalText, attrs.locale));
         cleanup = $rootScope.$on('locale-changed', function(locale) {
           // attrs will always override?
-          element.text(LocaleService.getTranslation(originalText, attrs.locale || locale));
+          element.text(LocaleService.getTranslation(originalText, attrs.locale));
         });
-      },
-      link: function(scope) {
+
         scope.$on('$destroy', function() {
-          console.log("destroy");
           cleanup();
         });
       }
