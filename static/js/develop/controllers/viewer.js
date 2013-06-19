@@ -17,11 +17,7 @@
     $scope.images = {};
 
     $scope.numOfUnloadedImages = function() {
-      var l = 0;
-      for (var url in $scope.images) {
-        l++;
-      }
-      return l;
+      return Object.keys($scope.images).length;
     };
 
     $scope.allImagesLoaded = function() {

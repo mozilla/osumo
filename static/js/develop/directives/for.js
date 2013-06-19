@@ -139,7 +139,7 @@
       for (var j=0; j<symbol.length; j++) {
         browser += symbol[j];
         if (isBrowser(browser)) {
-          version = parseFloat(browser.substring(j+1));
+          version = parseFloat(symbol.substring(j+1));
           if (version - 35 < EPSILON) version = 3.5
           break;
         }
@@ -198,7 +198,7 @@
       var osConditionMet = false;
       var browserConditionMet = false;
 
-      if (platformsAllowed.oses.length === 0 || (OS in platformsAllowed.oses) || (platformsAllowed.oses['win'] && OS.substring(0, 3) === 'win')) {
+      if (Object.keys(platformsAllowed.oses).length === 0 || (OS in platformsAllowed.oses) || (platformsAllowed.oses['win'] && OS.substring(0, 3) === 'win')) {
         osConditionMet = true;
       }
 
@@ -214,7 +214,7 @@
         }
         // * Show the default mobile browser if no OS was specified or
         //   the default mobile OS was also specified.
-        if ((platformsAllowed.oses.length === 0 || platformsAllowed.oses.android || platformsAllowed.fxos) && meetBrowserCondition(defaultMobileBrowser.browser, defaultMobileBrowser.version, platformsAllowed.browsers)) {
+        if ((Object.keys(platformsAllowed.oses).length === 0 || platformsAllowed.oses.android || platformsAllowed.fxos) && meetBrowserCondition(defaultMobileBrowser.browser, defaultMobileBrowser.version, platformsAllowed.browsers)) {
           return true;
         }
       }
@@ -228,7 +228,7 @@
         }
         // * Show the default desktop browser if no OS was specified or
         //   the default desktop OS was also specified.
-        if ((platformsAllowed.oses.length === 0 || platformsAllowed.oses[defaultDesktop] || platformsAllowed.oses.win) && meetBrowserCondition(defaultDesktopBrowser.browser, defaultDesktopBrowser.version, platformsAllowed.browsers)) {
+        if ((Object.keys(platformsAllowed.oses).length === 0 || platformsAllowed.oses[defaultDesktop] || platformsAllowed.oses.win) && meetBrowserCondition(defaultDesktopBrowser.browser, defaultDesktopBrowser.version, platformsAllowed.browsers)) {
           return true;
         }
       }
@@ -270,7 +270,6 @@
 
         var hide = isInverted ? showImage : hideImage;
         var show = isInverted ? hideImage : showImage;
-
         if (shouldShow(platforms, browser, version, OS)) {
           show(element);
         } else {
