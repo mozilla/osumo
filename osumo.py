@@ -44,7 +44,7 @@ if DEBUG:
     return scripts
 
   def version():
-    return 1
+    return int(time.time() / 10)
 
 
   def partials():

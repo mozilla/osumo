@@ -65,34 +65,39 @@ angular.module('osumo').controller('InstallController', ['$scope', 'VERSION', 't
     // TODO: move this below the check. Here so we can test easily.
     LocaleService.updateLocale($scope.locale);
 
-    for (var i in $scope.bundles) {
-      if ($scope.bundles[i].product === $scope.product && $scope.bundles[i].locale === $scope.locale) {
-        $scope.untoast('install-bundle');
-        $scope.toast({message: 'Already downloaded', type: 'alert'});
-        return;
+    $scope.bundles.then(function(bundles) {
+      for (var i in bundles) {
+        if (bundles[i].product === $scope.product && bundles[i].locale === $scope.locale) {
+          $scope.untoast('install-bundle');
+          $scope.toast({message: 'Already downloaded', type: 'alert'});
+          return;
+        }
       }
-    }
 
-    DataService.getBundleFromSource($scope.product, $scope.locale).success(function(data, status, headers, config) {
-      if (!data.docs || data.docs.length === 0 || !data.topics || data.topics.length === 0) {
+      DataService.getBundleFromSource($scope.product, $scope.locale).success(function(data, status, headers, config) {
+        if (!data.docs || data.docs.length === 0 || !data.topics || data.topics.length === 0) {
+          $scope.untoast('install-bundle');
+          $scope.toast({message: 'Sorry, the language you selected has no documents. You can help transate at ..', type: 'alert'});
+          return;
+        }
+        for (var oname in data) {
+          // We need to merge the products.
+          DataService.addData(oname, data[oname]);
+        }
+        $scope.bundles = DataService.getAvailableBundles();
+        $scope.bundles.then(function() {
+          $scope.untoast('install-bundle');
+        });
+      }).error(function(data, status, headers, config) {
         $scope.untoast('install-bundle');
-        $scope.toast({message: 'Sorry, the language you selected has no documents. You can help transate at ..', type: 'alert'});
-        return;
-      }
-      for (var oname in data) {
-        // We need to merge the products.
-        DataService.addData(oname, data[oname]);
-      }
-      $scope.bundles = DataService.getAvailableBundles();
-      $scope.untoast('install-bundle');
-    }).error(function(data, status, headers, config) {
-      $scope.untoast('install-bundle');
-      if (status === 0) {
-        $scope.toast({message: 'It looks like you don\'t have a network connection.', type: 'alert'});
-      } else {
-        $scope.toast({message: 'Download failed. Status: ' + status, type: 'alert'});
-      }
+        if (status === 0) {
+          $scope.toast({message: 'It looks like you don\'t have a network connection.', type: 'alert'});
+        } else {
+          $scope.toast({message: 'Download failed. Status: ' + status, type: 'alert'});
+        }
+      });
     });
+
   };
 
 }]);
