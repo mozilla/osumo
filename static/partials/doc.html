@@ -3,11 +3,11 @@
     <div ng-show="!allImagesLoaded()">
       <alert showclose="false" type="'secondary'">
         <a href="" class="right" ng-click="loadAllImages()" i18n>Get all images</a>
-        <i18n>Warning: It looks like you don't have all the images loaded.</i18n>
+        <i18n>This page contains {{ numOfUnloadedImages() }} unloaded images.</i18n>
       </alert>
     </div>
     <h6>{{ doc.title }}</h6>
-    <span class="pull-right"><i18n>Last updated</i18n>: {{ doc.updated }}</span>
+    <span class="pull-right"><i18n>Last updated</i18n>: {{ doc.updated | relativeTime }}</span>
     <hr />
     <div viewer doc="doc" id="doc-content"></div>
   </div>

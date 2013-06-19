@@ -251,6 +251,7 @@
 
     return {
       restrict: 'C',
+      priority: 100,
       controller: ['$scope', function($scope) {
 
       }],
@@ -259,7 +260,6 @@
         if (!forData)
           return;
 
-        element.html(element.html() + " <strong>" + forData + "</strong> ");
         // Catch the "not" operator if it is there. Strip it off of the forData
         // as well
         var isInverted = forData.substring(0, 4) === 'not ';

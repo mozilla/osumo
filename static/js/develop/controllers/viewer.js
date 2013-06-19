@@ -16,6 +16,14 @@
     });
     $scope.images = {};
 
+    $scope.numOfUnloadedImages = function() {
+      var l = 0;
+      for (var url in $scope.images) {
+        l++;
+      }
+      return l;
+    };
+
     $scope.allImagesLoaded = function() {
       for (var url in $scope.images) {
         if ($scope.images[url]) {

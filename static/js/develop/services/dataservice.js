@@ -335,7 +335,7 @@
               d = docsStore.get(docKey(locale, result.docs[i]))
               deferreds.push(d);
               d.then(function(doc) {
-                if (doc !== undefined) {
+                if (doc !== undefined && !doc.archived) {
                   expandedDocs.push({name: doc.title, slug: doc.slug});
                 }
               });
