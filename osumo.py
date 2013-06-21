@@ -12,21 +12,14 @@ from settings import DEBUG, BASE_URL, SUMO_URL
 class CustomFlask(Flask):
   jinja_options = Flask.jinja_options.copy()
   jinja_options.update({
-    'variable_start_string': '[[',
-    'variable_end_string': ']]'
+    'variable_start_string': '{[',
+    'variable_end_string': ']}'
   })
 
 
 app_folder = os.path.dirname(os.path.abspath(__file__))
 prefix_length = len(app_folder)
 
-languages = requests.get(SUMO_URL + "offline/get-languages").json()["languages"]
-LANGUAGES = []
-for language in languages:
-  LANGUAGES.append({"id": language[0], "name": language[1]})
-LANGUAGES = json.dumps(LANGUAGES)
-del languages
-del language
 
 def read_file(path):
   with open(path) as f:
@@ -125,7 +118,6 @@ def before_request():
   app.jinja_env.globals['BASE_URL'] = BASE_URL
   app.jinja_env.globals['SUMO_URL'] = SUMO_URL
   app.jinja_env.globals['scripts'] = get_all_script_paths()
-  app.jinja_env.globals['LANGUAGES'] = LANGUAGES
 
 @app.route('/manifest.webapp')
 def manifest_file():
