@@ -115,11 +115,8 @@ footer { text-align: center; padding: 0.8em; color: #BBB; font-size: 0.85em; }
 #doc-content .key,
 #doc-content .button {
     background: #f0f0f0;
-    background: -moz-linear-gradient(top, #f0f0f0, #fcfcfc);
-    background: -webkit-gradient(linear, center top, center bottom, from(#f0f0f0), to(#fcfcfc));
+    background: linear-gradient(top, #f0f0f0, #fcfcfc);
     border-radius: 3px;
-    -moz-border-radius: 3px;
-    -webkit-border-radius: 3px;
     color: #303030;
     border: 1px solid #e0e0e0;
     border-bottom-width: 2px;
@@ -150,7 +147,7 @@ footer { text-align: center; padding: 0.8em; color: #BBB; font-size: 0.85em; }
 
 #home-content .warning,
 #doc-content .warning {
-   background: #fef0a7 url(../img/wiki/bkg.warning.png) repeat-y left top;
+   background: #fef0a7 url(/static/img/wiki/bkg.warning.png) repeat-y left top;
    color: #282828;
    padding: .5em 1em .5em 2em;
 }
