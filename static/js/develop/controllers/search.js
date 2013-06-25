@@ -1,11 +1,11 @@
 'use strict';
 
 (function() {
-  angular.module('osumo').controller('SearchController', ['$scope', 'title', 'DataService', 'LocaleService', function($scope, title, DataService, LocaleService) {
+  angular.module('osumo').controller('SearchController', ['$scope', 'title', 'DataService', 'L10NService', function($scope, title, DataService, L10NService) {
 
     var sep = /\s+/g;
 
-    title(LocaleService.getTranslation('Search'));
+    title(L10NService._('Search'));
 
     $scope.query = null;
     $scope.results = null;

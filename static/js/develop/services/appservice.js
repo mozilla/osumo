@@ -1,7 +1,7 @@
 'use strict';
 
 (function(){
-  angular.module('osumo').service('AppService', ['$q', '$rootScope', 'VERSION', 'DataService', 'LocaleService', function($q, $rootScope, VERSION, DataService, LocaleService) {
+  angular.module('osumo').service('AppService', ['$q', '$rootScope', 'VERSION', 'DataService', 'L10NService', function($q, $rootScope, VERSION, DataService, L10NService) {
 
     var APPURL = BASE_URL + 'manifest.webapp';
 
@@ -13,7 +13,7 @@
      */
     var _initializeDatabase = function(d) {
       if (navigator.language)
-        LocaleService.updateLocale(navigator.language)
+        L10NService.setLocale(navigator.language);
 
       $rootScope.$safeApply(function() {
         DataService.settingsDb.then(function(db) {
@@ -22,7 +22,6 @@
             locale: navigator.language || 'en-US' // TODO: change this to something more sane..
           }).then(
             function() {
-              LocaleService.setup(db);
               $rootScope.$safeApply(function() {
                 d.resolve();
               });
@@ -149,6 +148,29 @@
       return d.promise;
     };
 
+    this.setDefaultLocale = function(locale) {
+      var deferred = $q.defer();
+
+      L10NService.setLocale(locale);
+      DataService.settingsDb.then(function(db) {
+        var metaStore = db.transaction('meta', 'readwrite').objectStore('meta');
+        metaStore.put({version: VERSION, locale: locale}).then(function() {
+          deferred.resolve();
+        });
+      });
+
+      return deferred.promise;
+    };
+
+    // Check for default locale in indexeddb.
+    DataService.settingsDb.then(function(db) {
+      var metaStore = db.transaction('meta').objectStore('meta');
+      metaStore.get(VERSION).then(function(value) {
+        L10NService.setLocale(value.locale);
+      });
+    });
+
+    // Check appcache stuff for upgrade.
     var needupgrade = $q.defer();
     var appCache = window.applicationCache;
     if (appCache) {

@@ -4,7 +4,7 @@
   var module = angular.module('osumo');
 
   // From
-  module.filter("relativeTime", function(){
+  module.filter("relativeTime", ['L10NService', function(L10NService){
     // Python side uses seconds as timestamp. So we take seconds.
     // From https://gist.github.com/shuhaowu/3994233 with modifications.
     return function(timestamp, relative_to) {
@@ -23,25 +23,25 @@
       relative_is_future = delta > 0 ? true : false;
       delta = Math.abs(delta);
       if (delta < 60) {
-        t = "less than a minute";
+        t = L10NService._("less than a minute");
       } else if (delta < 120) {
-        t = "about a minute";
+        t = L10NService._("about a minute");
       } else if (delta < 2700) {
-        t = (parseInt(delta / 60)).toString() + " minutes";
+        t = (parseInt(delta / 60)).toString() + L10NService._(" minutes");
       } else if (delta < 5400) {
-        t = "about an hour";
+        t = L10NService._("about an hour");
       } else if (delta < 86400) {
-        t = "about " + (parseInt(delta / 3600)).toString() + " hours";
+        t = L10NService._("about ") + (parseInt(delta / 3600)).toString() + L10NService._(" hours");
       } else if (delta < 172800) {
-        t = "one day";
+        t = L10NService._("one day");
       } else {
-        t = (parseInt(delta / 86400)).toString() + " days";
+        t = (parseInt(delta / 86400)).toString() + L10NService._(" days");
       }
       if (relative_is_future) {
-        return "in " + t;
+        return L10NService._("in ") + t;
       } else {
-        return t + " ago";
+        return t + L10NService._(" ago");
       }
     };
-  });
+  }]);
 })();

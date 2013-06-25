@@ -2,8 +2,8 @@
 
 (function(){
 
-angular.module('osumo').controller('InstallController', ['$scope', 'VERSION', 'title', 'DataService', 'AppService', 'LocaleService', function($scope, VERSION, title, DataService, AppService, LocaleService) {
-  title(LocaleService.getTranslation('Installer'));
+angular.module('osumo').controller('InstallController', ['$scope', 'VERSION', 'title', 'DataService', 'AppService', 'L10NService', function($scope, VERSION, title, DataService, AppService, L10NService) {
+  title(L10NService._('Installer'));
 
   // Setup code
   $scope.products = [
@@ -64,7 +64,6 @@ angular.module('osumo').controller('InstallController', ['$scope', 'VERSION', 't
     $scope.toast({message: 'Downloading content...'}, 'install-bundle');
 
     // TODO: move this below the check. Here so we can test easily.
-    LocaleService.updateLocale($scope.locale);
 
     $scope.bundles.then(function(bundles) {
       for (var i in bundles) {

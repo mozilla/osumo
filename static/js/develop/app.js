@@ -2,7 +2,7 @@
 
 (function() {
 
-var app = angular.module('osumo', ['angularIndexedDb']);
+var app = angular.module('osumo', ['angularIndexedDb', 'angular_l10n']);
 
 app.config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider) {
   $locationProvider.html5Mode(true);
@@ -64,9 +64,9 @@ app.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
 
 }]);
 
-app.factory('title', ['$window', 'LocaleService', function($window, LocaleService){
+app.factory('title', ['$window', 'L10NService', function($window, L10NService){
   return function(title) {
-    $window.document.title = title + ' - ' + LocaleService.getTranslation('Offline Mozilla Support');
+    $window.document.title = title + ' - ' + L10NService._('Offline Mozilla Support');
   };
 }]);
 

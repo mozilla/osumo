@@ -28,9 +28,12 @@ def read_file(path):
 
 if DEBUG:
   def get_all_script_paths():
-    scripts = []
+    # We need to ensure that app.js loads first.
+    scripts = ["/static/js/develop/app.js"]
     for root, subdirs, files in os.walk(os.path.join(app_folder, 'static/js/develop')):
       for fname in files:
+        if fname == "app.js":
+          continue
         if fname.endswith('.js'):
           scripts.append(root[prefix_length:] + '/' + fname)
 
@@ -145,16 +148,6 @@ def images():
     return response
   else:
     return abort(response.status_code)
-
-@app.route("/i18n/<locale>")
-def i18nfiles(locale):
-  translation = get_translation(locale)
-  if translation is None:
-    return abort(404)
-  response = make_response(translation)
-  response.mimetype = 'application/json'
-  return response
-
 
 # Catch all URL for HTML push state
 @app.route('/', defaults={'path': ''})

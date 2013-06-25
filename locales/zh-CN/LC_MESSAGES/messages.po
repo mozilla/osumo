@@ -1,0 +1,185 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: 1\n"
+"Report-Msgid-Bugs-To: Shuhao Wu <shuhao@shuhaowu.com> \n"
+"POT-Creation-Date: 2013-06-25T14:37:11.148133\n"
+"PO-Revision-Date: 2013-06-25T14:45:00\n"
+"Last-Translator: Shuhao Wu <shuhao@shuhaowu.com>\n"
+"Language-Team: Team <team@email.com>\n"
+"Language: zh-CN\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: angular-l10n\n"
+
+#: static/js/develop/controllers/settings.js:12
+msgid "Saved."
+msgstr "已保存"
+
+#: static/partials/search.html:15
+msgid "No results found."
+msgstr "没有结果。"
+
+#: static/js/develop/filters.js:43
+msgid " ago"
+msgstr "前"
+
+#: templates/app.html:35
+msgid "Browse"
+msgstr "浏览"
+
+#: templates/app.html:29
+msgid "Menu"
+msgstr "菜单"
+
+#: static/js/develop/filters.js:38
+msgid " days"
+msgstr "天"
+
+#: static/partials/doc.html:5
+msgid "Get all images"
+msgstr "下载所有图片"
+
+#: static/js/develop/filters.js:28
+msgid "about a minute"
+msgstr "一分种左右"
+
+#: static/js/develop/controllers/select.js:36
+msgid "Firefox on Android"
+msgstr ""
+
+#: static/js/develop/filters.js:30
+msgid " minutes"
+msgstr "分"
+
+#: templates/app.html:41
+msgid "Online Support Site"
+msgstr "在线技术支持"
+
+#: templates/app.html:52
+msgid "Your app is out of date and needs an upgrade."
+msgstr "您的软件需要更新。"
+
+#: static/js/develop/controllers/select.js:8
+msgid "Select Language"
+msgstr "选择语言"
+
+#: static/partials/settings.html:9
+msgid "Save"
+msgstr "保存"
+
+#: static/partials/install.html:10
+msgid "Product"
+msgstr "产品"
+
+#: static/js/develop/controllers/select.js:33
+msgid "Firefox OS"
+msgstr ""
+
+#: static/partials/doc.html:10
+msgid "Last updated"
+msgstr "上次更新"
+
+#: static/js/develop/filters.js:34
+msgid " hours"
+msgstr "小时"
+
+#: static/partials/install.html:21
+msgid "Installed Content"
+msgstr "已安装内容"
+
+#: static/partials/install.html:3
+msgid "Install App"
+msgstr "安装"
+
+#: static/js/develop/filters.js:36
+msgid "one day"
+msgstr "一天"
+
+#: static/partials/install.html:8
+msgid "Download Content"
+msgstr "下载内容"
+
+#: static/js/develop/app.js:69
+msgid "Offline Mozilla Support"
+msgstr "离线Mozilla技术支持"
+
+#: static/partials/install.html:35
+msgid "Delete"
+msgstr "删除"
+
+#: static/partials/select_doc.html:6
+msgid "Articles"
+msgstr "文章"
+
+#: templates/app.html:38
+msgid "Search"
+msgstr "搜索"
+
+#: static/partials/install.html:13
+msgid "Language"
+msgstr "语言"
+
+#: templates/app.html:25
+msgid "Offline Support"
+msgstr "离线支持"
+
+#: static/partials/settings.html:5
+msgid "Default Language"
+msgstr "默认语言"
+
+#: templates/app.html:39
+msgid "Install"
+msgstr "安装"
+
+#: static/partials/doc.html:6
+msgid "This page contains {{ numOfUnloadedImages() }} unloaded images."
+msgstr "这篇文章里有{{ numOfUnloadedImages() }}张未下载的图片。"
+
+#: static/js/develop/filters.js:41
+msgid "in "
+msgstr ""
+
+#: static/partials/select_doc.html:3
+msgid "Subtopics"
+msgstr "副主题"
+
+#: static/partials/select_product.html:3
+msgid "Select Product"
+msgstr "选择产品"
+
+#: static/js/develop/controllers/select.js:30
+msgid "Firefox"
+msgstr ""
+
+#: static/js/develop/filters.js:26
+msgid "less than a minute"
+msgstr "一分钟以内"
+
+#: static/partials/select_topic.html:3
+msgid "Topics"
+msgstr "主题"
+
+#: static/partials/install.html:27
+msgid "Actions"
+msgstr ""
+
+#: static/js/develop/filters.js:34
+msgid "about "
+msgstr "大概"
+
+#: static/js/develop/filters.js:32
+msgid "about an hour"
+msgstr "大概一小时"
+
+#: static/js/develop/controllers/install.js:6
+msgid "Installer"
+msgstr "安装"
+
+#: templates/app.html:62
+msgid "Loading..."
+msgstr "载入中"
+
+#: templates/app.html:40
+msgid "Settings"
+msgstr "设置"

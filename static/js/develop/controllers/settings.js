@@ -1,15 +1,15 @@
 'use strict';
 
 (function() {
-  angular.module('osumo').controller('SettingsViewController', ['$scope', 'title', 'LocaleService', function($scope, title, LocaleService) {
-    $scope.locale = LocaleService.currentLocale.locale;
+  angular.module('osumo').controller('SettingsViewController', ['$scope', 'title', 'AppService', 'L10NService', function($scope, title, AppService, L10NService) {
+    $scope.locale = L10NService.currentLocale;
     $scope.languages = window.LANGUAGES;
 
-    title(LocaleService.getTranslation('Settings'));
+    title(L10NService._('Settings'));
 
     $scope.save = function() {
-      LocaleService.setDefaultLocale($scope.locale).then(function() {
-        $scope.toast({message: LocaleService.getTranslation("Saved.")});
+      AppService.setDefaultLocale($scope.locale).then(function() {
+        $scope.toast({message: L10NService._("Saved.")});
       });
     };
   }]);

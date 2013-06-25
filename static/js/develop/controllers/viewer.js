@@ -1,9 +1,10 @@
 'use strict';
 
 (function() {
-  angular.module('osumo').controller('DocViewer', ['$scope', '$route', '$location', 'title', 'DataService', function($scope, $route, $location, title, DataService) {
+  angular.module('osumo').controller('DocViewer', ['$scope', '$route', '$location', 'title', 'DataService', 'L10NService', function($scope, $route, $location, title, DataService, L10NService) {
 
     $scope.locale = $route.current.params.locale;
+    L10NService.setLocale($scope.locale);
     $scope.doc = DataService.getDoc($scope.locale, $route.current.params.doc);
     $scope.doc.then(function(doc) {
       if (doc === undefined) {

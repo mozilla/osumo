@@ -16,7 +16,7 @@ Requirements
 
 This app targets Firefox, Firefox OS, and Firefox for Android. Other platforms
 such as Chrome may work but is not guarenteed. Your browser must support
-IndexedDB and App cache
+IndexedDB and appcache.
 
 Hacking and Contributing
 ========================
