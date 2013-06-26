@@ -80,8 +80,30 @@
       restrict: "EAC",
       link: function(scope, element, attrs) {
         var original = element.text();
+        var attrsOriginals = {};
+        // Get the translation for attributes
+        var attrsToTranslate = element.attr('translate-attr');
+
+        if (!attrsToTranslate) {
+          attrsToTranslate = [];
+        } else {
+          attrsToTranslate = attrsToTranslate.split(",");
+        }
+
+        var attr, value;
+        for (var i=0; i<attrsToTranslate.length; i++) {
+          attr = attrsToTranslate[i].trim();
+          value = element.attr(attr);
+          if (value) {
+            attrsOriginals[attr] = value;
+          }
+        }
+
         var doTranslation = function() {
           element.text(L10NService.translate(original));
+          for (var attr in attrsOriginals) {
+            element.attr(attr, L10NService.translate(attrsOriginals[attr]));
+          }
           // This way expanded variables in templates works as usual.
           // TODO: investigate potential memory leak.
           // ^ This means don't have a directive that allocates memory like

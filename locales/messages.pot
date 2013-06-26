@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1\n"
 "Report-Msgid-Bugs-To: First Last <email@email.com> \n"
-"POT-Creation-Date: 2013-06-25T14:37:11.148133\n"
+"POT-Creation-Date: 2013-06-26T15:14:57.652755\n"
 "PO-Revision-Date: YEAR-MM-DD HH:MM\n"
 "Last-Translator: First Last <email@email.com>\n"
 "Language-Team: Team <team@email.com>\n"
@@ -11,8 +11,8 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: angular-l10n\n"
 
-#: static/js/develop/controllers/settings.js:12
-msgid "Saved."
+#: templates/app.html:53
+msgid "Upgrade"
 msgstr ""
 
 #: static/partials/search.html:15
@@ -23,11 +23,11 @@ msgstr ""
 msgid " ago"
 msgstr ""
 
-#: templates/app.html:35
+#: templates/app.html:39
 msgid "Browse"
 msgstr ""
 
-#: templates/app.html:29
+#: templates/app.html:33
 msgid "Menu"
 msgstr ""
 
@@ -35,7 +35,7 @@ msgstr ""
 msgid " days"
 msgstr ""
 
-#: static/partials/doc.html:5
+#: static/partials/doc.html:6
 msgid "Get all images"
 msgstr ""
 
@@ -43,7 +43,7 @@ msgstr ""
 msgid "about a minute"
 msgstr ""
 
-#: static/js/develop/controllers/select.js:36
+#: static/js/develop/controllers/select.js:37
 msgid "Firefox on Android"
 msgstr ""
 
@@ -51,15 +51,15 @@ msgstr ""
 msgid " minutes"
 msgstr ""
 
-#: templates/app.html:41
+#: templates/app.html:45
 msgid "Online Support Site"
 msgstr ""
 
-#: templates/app.html:52
+#: templates/app.html:56
 msgid "Your app is out of date and needs an upgrade."
 msgstr ""
 
-#: static/js/develop/controllers/select.js:8
+#: static/js/develop/controllers/select.js:9
 msgid "Select Language"
 msgstr ""
 
@@ -67,15 +67,23 @@ msgstr ""
 msgid "Save"
 msgstr ""
 
-#: static/partials/install.html:10
+#: static/js/develop/services/dataservice.js:78
+msgid "A fatal error occurred. Please try again later."
+msgstr ""
+
+#: static/partials/install.html:16
 msgid "Product"
 msgstr ""
 
-#: static/js/develop/controllers/select.js:33
+#: static/partials/doc.html:20
+msgid "click here."
+msgstr ""
+
+#: static/js/develop/controllers/select.js:34
 msgid "Firefox OS"
 msgstr ""
 
-#: static/partials/doc.html:10
+#: static/partials/doc.html:11
 msgid "Last updated"
 msgstr ""
 
@@ -83,11 +91,11 @@ msgstr ""
 msgid " hours"
 msgstr ""
 
-#: static/partials/install.html:21
+#: static/partials/install.html:27
 msgid "Installed Content"
 msgstr ""
 
-#: static/partials/install.html:3
+#: static/partials/install.html:9
 msgid "Install App"
 msgstr ""
 
@@ -95,43 +103,51 @@ msgstr ""
 msgid "one day"
 msgstr ""
 
-#: static/partials/install.html:8
+#: static/partials/install.html:14
 msgid "Download Content"
+msgstr ""
+
+#: static/partials/doc.html:20
+msgid "The content you're looking for has been archived. To view it on support.mozilla.org, "
 msgstr ""
 
 #: static/js/develop/app.js:69
 msgid "Offline Mozilla Support"
 msgstr ""
 
-#: static/partials/install.html:35
-msgid "Delete"
+#: static/partials/select_doc.html:3
+msgid "Subtopics"
+msgstr ""
+
+#: static/js/develop/services/appservice.js:79
+msgid "Your browser is not compatible and this app may not work as intended. Try using Firefox instead!"
 msgstr ""
 
 #: static/partials/select_doc.html:6
 msgid "Articles"
 msgstr ""
 
-#: templates/app.html:38
+#: templates/app.html:42
 msgid "Search"
 msgstr ""
 
-#: static/partials/install.html:13
+#: static/partials/install.html:19
 msgid "Language"
 msgstr ""
 
-#: templates/app.html:25
+#: templates/app.html:29
 msgid "Offline Support"
 msgstr ""
 
-#: static/partials/settings.html:5
-msgid "Default Language"
+#: static/js/develop/services/dataservice.js:72
+msgid "It seems like you are using private browsing mode. This app does not support that mode and will not function correctly."
 msgstr ""
 
-#: templates/app.html:39
+#: templates/app.html:43
 msgid "Install"
 msgstr ""
 
-#: static/partials/doc.html:6
+#: static/partials/doc.html:7
 msgid "This page contains {{ numOfUnloadedImages() }} unloaded images."
 msgstr ""
 
@@ -139,15 +155,19 @@ msgstr ""
 msgid "in "
 msgstr ""
 
-#: static/partials/select_doc.html:3
-msgid "Subtopics"
+#: static/partials/install.html:41
+msgid "Delete"
+msgstr ""
+
+#: static/js/develop/filters.js:34
+msgid "about "
 msgstr ""
 
 #: static/partials/select_product.html:3
 msgid "Select Product"
 msgstr ""
 
-#: static/js/develop/controllers/select.js:30
+#: static/js/develop/controllers/select.js:31
 msgid "Firefox"
 msgstr ""
 
@@ -159,27 +179,31 @@ msgstr ""
 msgid "Topics"
 msgstr ""
 
-#: static/partials/install.html:27
+#: static/partials/install.html:33
 msgid "Actions"
 msgstr ""
 
-#: static/js/develop/filters.js:34
-msgid "about "
+#: static/js/develop/controllers/settings.js:13
+msgid "Saved."
+msgstr ""
+
+#: static/partials/settings.html:5
+msgid "Default Language"
 msgstr ""
 
 #: static/js/develop/filters.js:32
 msgid "about an hour"
 msgstr ""
 
-#: static/js/develop/controllers/install.js:6
+#: static/js/develop/controllers/install.js:7
 msgid "Installer"
 msgstr ""
 
-#: templates/app.html:62
+#: templates/app.html:68
 msgid "Loading..."
 msgstr ""
 
-#: templates/app.html:40
+#: templates/app.html:44
 msgid "Settings"
 msgstr ""
 

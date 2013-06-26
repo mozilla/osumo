@@ -84,7 +84,20 @@ def extract_from_html(f, fn):
   tree = etree.parse(StringIO(html), parser)
   strings = set()
   for e in tree.xpath("//l10n") + tree.xpath("//*[@l10n]") + tree.xpath("//*[@class='l10n']"):
-    strings.add(LocaleString(e.text, fn, get_line_num(html, html.find(e.text))))
+    if e.text:
+      linenum = html.find(e.text)
+      strings.add(LocaleString(e.text, fn, get_line_num(html, linenum)))
+    else:
+      linenum = "???"
+
+    attr_to_translate = e.get("translate-attr", "")
+    if attr_to_translate:
+      for a in attr_to_translate.split(","):
+        a = a.strip()
+        t = e.get(a, "")
+        if t:
+          strings.add(LocaleString(t, fn, linenum))
+
   return strings
 
 HEADER = """msgid ""

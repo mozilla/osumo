@@ -160,7 +160,7 @@
     this.setDefaultLocale = function(locale) {
       var deferred = $q.defer();
 
-      L10NService.setLocale(locale);
+      L10NService.setDefaultLocale(locale);
       DataService.settingsDb.then(function(db) {
         var metaStore = db.transaction('meta', 'readwrite').objectStore('meta');
         metaStore.put({version: VERSION, locale: locale}).then(function() {
