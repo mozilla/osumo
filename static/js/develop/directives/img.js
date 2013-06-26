@@ -25,6 +25,10 @@
             function() {
               // not in database
 
+              var cleanup = function() {
+                element.unbind('click');
+              };
+
               // We guess to see if it is an inline image or a block image.
               // We observe that the block image do not have surrounding texts
               var prev = element[0].previousSibling;
@@ -73,6 +77,8 @@
                   });
                 });
               });
+
+              scope.$on('$destroy', cleanup);
             }
           );
         }, 0);
