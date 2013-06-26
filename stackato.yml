@@ -9,3 +9,4 @@ processes:
 mem: 64M
 instances: 1
 services: {}
+ignores: [".git", "devsettings.py"]

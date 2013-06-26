@@ -11,6 +11,8 @@
     /**
      * Sets a locale and fires the locale change event. This essentially
      * changes the locale.
+     * Call this at a sane time or calle $apply on your own. This might be
+     * dengerous, however.
      */
     this.setLocale = function(locale) {
       if (!(locale in window.localeStrings)) {
@@ -19,7 +21,6 @@
       this.currentLocale = locale;
       this.prevLocale = locale;
       $rootScope.$broadcast("locale-changed", locale);
-      $rootScope.$$phase || $rootScope.$apply();
     };
 
     this.setLocaleTemp = function(locale) {

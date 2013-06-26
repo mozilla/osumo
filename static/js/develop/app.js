@@ -73,7 +73,7 @@ app.factory('title', ['$window', 'L10NService', function($window, L10NService){
 app.constant('VERSION', 1);
 app.constant('DBVERSION', 1);
 
-app.run(['$rootScope', '$location', '$anchorScroll', 'AppService', function($rootScope, $location, $anchorScroll, AppService) {
+app.run(['$rootScope', '$location', 'AppService', function($rootScope, $location, AppService) {
   $rootScope.toast = function(toast, id) {
     $rootScope.$broadcast('toast', toast, id);
   };
