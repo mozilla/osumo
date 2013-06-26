@@ -23,8 +23,7 @@
 
   var STORES = ['locales', 'docs', 'topics', 'indexes'];
 
-
-  angular.module('osumo').service('DataService', ['$rootScope', '$q', '$http', 'DBVERSION', 'angularIndexedDb', function($rootScope, $q, $http, DBVERSION, angularIndexedDb) {
+  angular.module('osumo').service('DataService', ['$rootScope', '$q', '$http', 'DBVERSION', 'angularIndexedDb', 'L10NService', function($rootScope, $q, $http, DBVERSION, angularIndexedDb, L10NService) {
 
     var self = this;
     var topicKey = function(locale, productSlug, topicSlug) {
@@ -34,6 +33,8 @@
     var docKey = function(locale, docSlug) {
       return locale + '~' + docSlug;
     };
+
+    this.catastrophicFailure = null;
 
     /**
      * Setups DataService. This mainly goes and open databases if required and
@@ -57,6 +58,27 @@
         stores.topics.createIndex('by_product', 'product');
         stores.docs.createIndex('by_id', 'id');
       });
+
+      var handleIndexedDbErr = function(err) {
+        self.catastrophicFailure = err;
+        if (err.name === "InvalidStateError") {
+          // We are probably in private browsing mode.
+          $rootScope.toast({
+              showclose: 'false',
+              type: "alert",
+              message: L10NService._('It seems like you are using private browsing mode. This app does not support that mode and will not function correctly.')
+          }, "private-browsing-fail");
+        } else {
+          $rootScope.toast({
+            showclose: 'false',
+            type: "alert",
+            message: L10NService._('A fatal error occurred. Please try again later.')
+          });
+        }
+      };
+
+      this.settingsDb.then(undefined, handleIndexedDbErr);
+      this.mainDb.then(undefined, handleIndexedDbErr);
     };
 
     this.setup();
