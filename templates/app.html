@@ -57,7 +57,9 @@
           </alert>
         </div>
 
-        <alert message="toast.message" toasts="toasts" ng-repeat="(id, toast) in toasts" msgid="id" type="toast.type" showclose="toast.showclose"></alert>
+        <div ng-repeat="(id, toast) in toasts">
+          <alert message="toast.message" toasts="toasts" msgid="id" type="toast.type" showclose="toast.showclose"></alert>
+        </div>
       </div>
     </div>
 

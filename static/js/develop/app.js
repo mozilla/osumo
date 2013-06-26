@@ -74,6 +74,7 @@ app.constant('VERSION', 1);
 app.constant('DBVERSION', 1);
 
 app.run(['$rootScope', '$location', 'AppService', function($rootScope, $location, AppService) {
+  // Toasting stuff is fun! Though we need butter here at the Mozilla MV office
   $rootScope.toast = function(toast, id) {
     $rootScope.$broadcast('toast', toast, id);
   };
@@ -93,11 +94,37 @@ app.run(['$rootScope', '$location', 'AppService', function($rootScope, $location
       this.$apply(fn);
     };
   };
+
+  // Upgrading stuff.
   $rootScope.appNeedsUpgrade = AppService.checkAppcacheUpgrade();
 
   $rootScope.upgradeApp = function() {
     location.reload();
   };
+
+  // Now we setup listening for navigator.onLine.
+  // A few words of caution: navigator.onLine only tells you if you're
+  // connected to a network. This is to say, if navigator.onLine is true, you
+  // could still be offline as you could be connected to a wireless network
+  // without an actual connection to the series of tubes.
+
+  $rootScope.online = navigator.onLine;
+
+  // TODO: Since these could run anytime, could we encounter bugs like
+  // http://stackoverflow.com/questions/17309488/angularjs-initial-route-controller-not-loaded-subsequent-ones-are-fine
+  document.addEventListener('online', function() {
+    $rootScope.$safeApply(function() {
+      console.log("online event!");
+      $rootScope.online = true;
+    });
+  });
+
+  document.addEventListener('offline', function() {
+    $rootScope.$safeApply(function() {
+      console.log("offline event!");
+      $rootScope.online = false;
+    });
+  });
 
 }]);
 

@@ -14,8 +14,8 @@
     var BROWSERS = {m: true, fx: true};
     var OSES = {win8: true, win7: true, win: true, mac: true, android: true, fxos: true, linux: true, maemo: true, winxp: true};
 
-    this.defaultMobileBrowser = {browser: 'm', version: 21};
-    this.defaultDesktopBrowser = {browser: 'fx', version: 21};
+    this.defaultMobileBrowser = {browser: 'm', version: 22};
+    this.defaultDesktopBrowser = {browser: 'fx', version: 22};
     this.defaultDesktop = 'win7';
 
     this.isOS = function(os) {
@@ -124,7 +124,5 @@
     this.browser = findSomethingFrom(availableBrowsers);
     this.version = identifyVersionVia(navigator.userAgent) || identifyVersionVia(navigator.appVersion);
     this.OS = findSomethingFrom(availableOSes);
-
-    console.log("TEST");
   }]);
 })();

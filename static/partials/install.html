@@ -1,5 +1,11 @@
 <div class="row">
   <div class="small-12 columns">
+
+
+    <div ng-hide="online">
+      <alert type="'alert'" showclose="true"><i10n>It looks like you're offline. Try connecting to the internet before using this.</i10n></alert>
+    </div>
+
     <button id="install-app" class="expand" ng-hide="installed" ng-click="installApp()" l10n>Install App</button>
 
     <hr ng-hide="installed" />
