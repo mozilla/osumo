@@ -49,7 +49,7 @@
             return ""
 
           if (doc.archived)
-            return "<p>The content you're looking for is archived and not included here.</p>"
+            return "__archived__";
 
           return doc.html;
         },
@@ -59,11 +59,13 @@
             // Otherwise we won't be able to destroy the i18n directives (which)
             // all binds to a locale-change event so they can switch locales.
             currentScope = scope.$new();
-            element.html(value);
-            $compile(element.contents())(currentScope);
-            setTimeout(function() {
-              $anchorScroll();
-            }, 0);
+            if (value !== "__archived__") {
+              element.html(value);
+              $compile(element.contents())(currentScope);
+              setTimeout(function() {
+                $anchorScroll();
+              }, 0);
+            }
           } else if (currentScope) {
             // This point the value is none, so we can destroy.
             // Regular ng-view already does that for us. Here we just need to

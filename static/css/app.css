@@ -181,3 +181,15 @@ footer { text-align: center; padding: 0.8em; color: #BBB; font-size: 0.85em; }
 #doc-content td {
     padding: 5px 10px;
 }
+
+.warning-box {
+    background: url("/static/img/warning-stripes.png") repeat-x scroll left top rgb(255, 255, 238);
+    border: 1px solid rgb(255, 251, 231);
+    margin: 20px 0px;
+    padding: 0.6em;
+    box-shadow: 0px 0px 4px rgba(100, 0, 0, 0.2);
+}
+
+.warning-box p {
+    margin: 0.5em;
+}
