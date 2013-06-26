@@ -1,130 +1,7 @@
 'use strict';
 
 (function() {
-  angular.module('osumo').directive('for', [function() {
-    // Detect OS and browsers. Adapted from
-    // https://github.com/mozilla/kitsune/blob/master/kitsune/sumo/static/js/browserdetect.js
-    //
-    //  - Changed the original code to be more friendly to AngularJS.
-    //  - Removed dependencies we don't wanna add to our code.
-    //  - Renamed a bunch of stuff to (hopefully) make more sense.
-
-    var browser, version, OS, versionDataString;
-
-    var BROWSERS = {m: true, fx: true};
-    var OSES = {win8: true, win7: true, win: true, mac: true, android: true, fxos: true, linux: true, maemo: true, winxp: true};
-
-    var defaultMobileBrowser = {browser: 'm', version: 21};
-    var defaultDesktopBrowser = {browser: 'fx', version: 21};
-    var defaultDesktop = 'win7';
-
-    var isOS = function(os) {
-      return OSES[os] === true;
-    };
-
-    var isBrowser = function(browser) {
-      return BROWSERS[browser] === true;
-    };
-
-    var availableBrowsers = [
-      {
-        dataString: navigator.userAgent,
-        subStrings: ['Fennec'],
-        versionSearch: 'Fennec',
-        identity: 'm'
-      },
-      {
-        dataString: navigator.userAgent,
-        subStrings: ['Mobile', 'Firefox'],
-        versionSearch: 'Firefox',
-        identity: 'm'
-      },
-      {
-        dataString: navigator.userAgent,
-        subStrings: ['Firefox'],
-        versionSearch: 'Firefox',
-        identity: 'fx'
-      }
-    ];
-
-    var availableOSes = [
-      {
-        dataString: navigator.userAgent,
-        subStrings: ['Windows NT 6.2'],
-        identity: 'win8',
-      },
-      { // 6.0 is Vista and 6.1 is Win7. We intentially lump them together.
-        dataString: navigator.userAgent,
-        subStrings: [/Windows NT 6\.[01]/],
-        identity: 'win7'
-      },
-      { // If we can't figure out version. Fallback.
-        dataString: navigator.platform,
-        subStrings: ['Win'],
-        identity: 'win'
-      },
-      {
-        dataString: navigator.platform,
-        subStrings: ['Mac'],
-        identity: 'mac'
-      },
-      {
-        dataString: navigator.userAgent,
-        subStrings: ['Android'],
-        identity: 'android'
-      },
-      {
-        dataString: navigator.userAgent,
-        subStrings: ['Mobile', 'Firefox'],
-        identity: 'fxos'
-      },
-      {
-        dataString: navigator.userAgent,
-        subStrings: ['Maemo'],
-        identity: 'maemo'
-      },
-      {
-        dataString: navigator.platform,
-        subStrings: ['Linux'],
-        identity: 'linux'
-      }
-    ];
-
-    var findSomethingFrom = function(data) {
-      for (var i=0, l=data.length; i<l; i++) {
-        var matchedAll = true;
-        var sub;
-
-        // how does this even work O_O
-        versionDataString = data[i].versionSearch || data[i].identity;
-
-        // Check if all subStrings are in the dataString.
-        for (var j=0, ll=data[i].subStrings.length; j<ll; j++) {
-          sub = data[i].subStrings[j];
-          if (sub instanceof RegExp)
-            matchedAll = sub.exec(data[i].dataString)
-          else
-            matchedAll = data[i].dataString.indexOf(sub) !== -1;
-
-          if (!matchedAll) break;
-        }
-
-        if (matchedAll) return data[i].identity;
-      }
-    };
-
-    var identifyVersionVia = function(dataString) {
-      var index = dataString.indexOf(versionDataString);
-      if (index === -1) return;
-      return parseFloat(dataString.substring(index+versionDataString.length+1));  // Turns "1.1.1" into 1.1 rather than 1.11. :-(
-    };
-
-    // I believe the call order here is very importance as findSomethingFrom
-    // employs essentially what is known as global variables :(
-    browser = findSomethingFrom(availableBrowsers);
-    version = identifyVersionVia(navigator.userAgent) || identifyVersionVia(navigator.appVersion);
-    OS = findSomethingFrom(availableOSes);
-
+  angular.module('osumo').directive('for', ['PlatformService', function(PlatformService) {
 
     var EPSILON = 0.000001;
 
@@ -138,7 +15,7 @@
       browser = '';
       for (var j=0; j<symbol.length; j++) {
         browser += symbol[j];
-        if (isBrowser(browser)) {
+        if (PlatformService.isBrowser(browser)) {
           version = parseFloat(symbol.substring(j+1));
           if (version - 35 < EPSILON) version = 3.5
           break;
@@ -157,9 +34,9 @@
       var symbol, browserData;
 
       for (var i=0, l=forData.length; i<l; i++) {
-        if (isOS(forData[i])) {
+        if (PlatformService.isOS(forData[i])) {
           oses[forData[i]] = true;
-        } else if (isBrowser) {
+        } else if (PlatformService.isBrowser(forData[i])) {
           symbol = forData[i];
           if (symbol.substring(0, 1) === '=') {
             symbol = symbol.substring(1);
@@ -209,12 +86,12 @@
       if (browser === 'fx') {
         // * Show the default mobile OS if no browser was specified or
         //   the default mobile browser was also specified.
-        if ((platformsAllowed.oses.android || platformsAllowed.oses.fxos) && (platformsAllowed.browsers.length === 0 || meetBrowserCondition(defaultMobileBrowser.browser, defaultMobileBrowser.version, platformsAllowed.browsers))) {
+        if ((platformsAllowed.oses.android || platformsAllowed.oses.fxos) && (platformsAllowed.browsers.length === 0 || meetBrowserCondition(PlatformService.defaultMobileBrowser.browser, PlatformService.defaultMobileBrowser.version, platformsAllowed.browsers))) {
           return true;
         }
         // * Show the default mobile browser if no OS was specified or
         //   the default mobile OS was also specified.
-        if ((Object.keys(platformsAllowed.oses).length === 0 || platformsAllowed.oses.android || platformsAllowed.fxos) && meetBrowserCondition(defaultMobileBrowser.browser, defaultMobileBrowser.version, platformsAllowed.browsers)) {
+        if ((Object.keys(platformsAllowed.oses).length === 0 || platformsAllowed.oses.android || platformsAllowed.fxos) && meetBrowserCondition(PlatformService.defaultMobileBrowser.browser, PlatformService.defaultMobileBrowser.version, platformsAllowed.browsers)) {
           return true;
         }
       }
@@ -223,12 +100,12 @@
       if (browser === 'm') {
         // * Show the default desktop OS if no browser was specified or
         //   the default desktop browser was also specified.
-        if ((platformsAllowed.oses[defaultDesktop] || platformsAllowed.oses.win) && (platformsAllowed.browsers.length === 0 || meetBrowserCondition(defaultDesktopBrowser.browser, defaultDesktopBrowser.version, platformsAllowed.browsers))) {
+        if ((platformsAllowed.oses[defaultDesktop] || platformsAllowed.oses.win) && (platformsAllowed.browsers.length === 0 || meetBrowserCondition(PlatformService.defaultDesktopBrowser.browser, PlatformService.defaultDesktopBrowser.version, platformsAllowed.browsers))) {
           return true;
         }
         // * Show the default desktop browser if no OS was specified or
         //   the default desktop OS was also specified.
-        if ((Object.keys(platformsAllowed.oses).length === 0 || platformsAllowed.oses[defaultDesktop] || platformsAllowed.oses.win) && meetBrowserCondition(defaultDesktopBrowser.browser, defaultDesktopBrowser.version, platformsAllowed.browsers)) {
+        if ((Object.keys(platformsAllowed.oses).length === 0 || platformsAllowed.oses[defaultDesktop] || platformsAllowed.oses.win) && meetBrowserCondition(PlatformService.defaultDesktopBrowser.browser, PlatformService.defaultDesktopBrowser.version, platformsAllowed.browsers)) {
           return true;
         }
       }
@@ -270,7 +147,7 @@
 
         var hide = isInverted ? showImage : hideImage;
         var show = isInverted ? hideImage : showImage;
-        if (shouldShow(platforms, browser, version, OS)) {
+        if (shouldShow(platforms, PlatformService.browser, PlatformService.version, PlatformService.OS)) {
           show(element);
         } else {
           hide(element);

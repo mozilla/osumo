@@ -2,7 +2,7 @@
 
 (function(){
 
-angular.module('osumo').controller('InstallController', ['$scope', 'VERSION', 'title', 'DataService', 'AppService', 'L10NService', function($scope, VERSION, title, DataService, AppService, L10NService) {
+angular.module('osumo').controller('InstallController', ['$scope', 'VERSION', 'title', 'DataService', 'AppService', 'L10NService', 'PlatformService', function($scope, VERSION, title, DataService, AppService, L10NService, PlatformService) {
   title(L10NService._('Installer'));
 
   // Setup code
@@ -19,8 +19,15 @@ angular.module('osumo').controller('InstallController', ['$scope', 'VERSION', 't
   $scope.languages = window.LANGUAGES;
 
   // Some variables
-  $scope.product = null;
-  $scope.locale = null;
+  if (PlatformService.OS === 'fxos') {
+    $scope.product = 'firefox-os'
+  } else if (PlatformService.browser === 'm') {
+    $scope.product = 'mobile'
+  } else {
+    $scope.product = 'firefox'
+  }
+
+  $scope.locale = navigator.language;
   $scope.installed = false;
   $scope.bundles = DataService.getAvailableBundles();
 

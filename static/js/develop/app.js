@@ -93,7 +93,6 @@ app.run(['$rootScope', '$location', 'AppService', function($rootScope, $location
       this.$apply(fn);
     };
   };
-
   $rootScope.appNeedsUpgrade = AppService.checkAppcacheUpgrade();
 
   $rootScope.upgradeApp = function() {
