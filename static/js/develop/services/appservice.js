@@ -162,13 +162,13 @@
       return deferred.promise;
     };
 
-    L10NService.setLocale(navigator.language);
+    L10NService.setDefaultLocale(navigator.language);
     // Check for default locale in indexeddb.
     DataService.settingsDb.then(function(db) {
       var metaStore = db.transaction('meta').objectStore('meta');
       metaStore.get(VERSION).then(function(value) {
         if (value)
-          L10NService.setLocale(value.locale);
+          L10NService.setDefaultLocale(value.locale);
       });
     });
 

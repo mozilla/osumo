@@ -4,6 +4,7 @@
   angular.module('osumo').controller('SelectLanguageController', ['$scope', 'title', 'DataService', 'L10NService', function($scope, title, DataService, L10NService) {
     // Angular's template treats promises as if they are the resulting value as
     // it will automatically resolve them.
+    L10NService.reset();
     $scope.locales = DataService.getAvailableLanguages();
     title(L10NService._('Select Language'));
   }]);

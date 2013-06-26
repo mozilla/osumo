@@ -4,9 +4,9 @@
   var module = angular.module("angular_l10n", []);
 
   module.service("L10NService", ["$rootScope", function($rootScope) {
-    this.DEFAULT_LOCALE = 'en-US';
-    this.prevLocale = this.DEFAULT_LOCALE;
-    this.currentLocale = this.DEFAULT_LOCALE;
+    this.defaultLocale = 'en-US';
+    this.prevLocale = this.defaultLocale;
+    this.currentLocale = this.defaultLocale;
 
     /**
      * Sets a locale and fires the locale change event. This essentially
@@ -18,9 +18,29 @@
       if (!(locale in window.localeStrings)) {
         throw "Locale " + locale + " not in localeStrings"
       }
-      this.currentLocale = locale;
-      this.prevLocale = locale;
-      $rootScope.$broadcast("locale-changed", locale);
+
+      // If it equals the previous locale then we are in this locale or we have
+      // temporarily moved to a different locale for some string with the
+      // intention of changing back. No changes required for this.
+      // If it does not equal the previous locale, that means we are not in
+      // this locale and needs a rerender of the directives and what not. This
+      // is even true when locale === this.currentLocale as in that case it is
+      // a temporary change. That change won't last and the directives are not
+      // recompiled.
+      if (locale !== this.prevLocale) {
+        this.currentLocale = locale;
+        this.prevLocale = locale;
+        $rootScope.$broadcast("locale-changed", locale);
+      }
+    };
+
+    this.setDefaultLocale = function(locale) {
+      this.defaultLocale = locale;
+      this.setLocale(locale);
+    };
+
+    this.reset = function() {
+      this.setLocale(this.defaultLocale);
     };
 
     this.setLocaleTemp = function(locale) {

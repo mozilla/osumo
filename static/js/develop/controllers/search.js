@@ -5,6 +5,7 @@
 
     var sep = /\s+/g;
 
+    L10NService.reset();
     title(L10NService._('Search'));
 
     $scope.query = null;
