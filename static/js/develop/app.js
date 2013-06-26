@@ -73,7 +73,7 @@ app.factory('title', ['$window', 'L10NService', function($window, L10NService){
 app.constant('VERSION', 1);
 app.constant('DBVERSION', 1);
 
-app.run(['$rootScope', '$location', 'AppService', function($rootScope, $location, AppService) {
+app.run(['$rootScope', '$location', 'AppService', 'DataService', 'L10NService', function($rootScope, $location, AppService, DataService, L10NService) {
   // Toasting stuff is fun! Though we need butter here at the Mozilla MV office
   $rootScope.toast = function(toast, id) {
     $rootScope.$broadcast('toast', toast, id);
@@ -114,14 +114,12 @@ app.run(['$rootScope', '$location', 'AppService', function($rootScope, $location
   // http://stackoverflow.com/questions/17309488/angularjs-initial-route-controller-not-loaded-subsequent-ones-are-fine
   document.addEventListener('online', function() {
     $rootScope.$safeApply(function() {
-      console.log("online event!");
       $rootScope.online = true;
     });
   });
 
   document.addEventListener('offline', function() {
     $rootScope.$safeApply(function() {
-      console.log("offline event!");
       $rootScope.online = false;
     });
   });

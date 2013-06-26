@@ -18,6 +18,7 @@ CACHE:
 /static/img/placeholder-small.png
 /static/img/icon.png
 /static/img/icon-128.png
+/static/img/warning-stripes.png
 # Partials
 {% for partial in partials %}[[ partial ]]
 {% endfor %}# We need this because appcache does not understand redirects in pushstate

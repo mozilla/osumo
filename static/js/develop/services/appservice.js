@@ -1,7 +1,7 @@
 'use strict';
 
 (function(){
-  angular.module('osumo').service('AppService', ['$q', '$rootScope', 'VERSION', 'DataService', 'L10NService', function($q, $rootScope, VERSION, DataService, L10NService) {
+  angular.module('osumo').service('AppService', ['$q', '$rootScope', '$timeout', 'VERSION', 'DataService', 'L10NService', function($q, $rootScope, $timeout, VERSION, DataService, L10NService) {
 
     var APPURL = BASE_URL + 'manifest.webapp';
 
@@ -68,11 +68,20 @@
         if (deferred) {
           deferred.reject('Your browser is not compatible. Try using Firefox!');
         }
-        console.log('Incompatible browser..');
         return false;
       }
       return true;
     };
+
+    if (!this.installCompatible()) {
+      $timeout(function() {
+        $rootScope.toast({
+          message: L10NService._('Your browser is not compatible and this app may not work as intended. Try using Firefox instead!'),
+          type: 'alert',
+          showclose: 'false'
+        }, "incompatible-browser");
+      }, 0);
+    }
 
     /**
      * Attempts to auto install the app without telling the user. This is

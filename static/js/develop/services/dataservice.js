@@ -23,7 +23,7 @@
 
   var STORES = ['locales', 'docs', 'topics', 'indexes'];
 
-  angular.module('osumo').service('DataService', ['$rootScope', '$q', '$http', 'DBVERSION', 'angularIndexedDb', 'L10NService', function($rootScope, $q, $http, DBVERSION, angularIndexedDb, L10NService) {
+  angular.module('osumo').service('DataService', ['$rootScope', '$q', '$http', '$timeout', 'DBVERSION', 'angularIndexedDb', 'L10NService', function($rootScope, $q, $http, $timeout, DBVERSION, angularIndexedDb, L10NService) {
 
     var self = this;
     var topicKey = function(locale, productSlug, topicSlug) {
@@ -60,21 +60,25 @@
       });
 
       var handleIndexedDbErr = function(err) {
-        self.catastrophicFailure = err;
-        if (err.name === "InvalidStateError") {
-          // We are probably in private browsing mode.
-          $rootScope.toast({
+        // This timeout here is so that we don't have a race condition where
+        // app.run is not done yet and $rootScope.toast is not yet available.
+        $timeout(function() {
+          self.catastrophicFailure = err;
+          if (err.name === "InvalidStateError") {
+            // We are probably in private browsing mode.
+            $rootScope.toast({
+                showclose: 'false',
+                type: "alert",
+                message: L10NService._('It seems like you are using private browsing mode. This app does not support that mode and will not function correctly.')
+            }, "private-browsing-fail");
+          } else {
+            $rootScope.toast({
               showclose: 'false',
               type: "alert",
-              message: L10NService._('It seems like you are using private browsing mode. This app does not support that mode and will not function correctly.')
-          }, "private-browsing-fail");
-        } else {
-          $rootScope.toast({
-            showclose: 'false',
-            type: "alert",
-            message: L10NService._('A fatal error occurred. Please try again later.')
-          });
-        }
+              message: L10NService._('A fatal error occurred. Please try again later.')
+            });
+          }
+        }, 0);
       };
 
       this.settingsDb.then(undefined, handleIndexedDbErr);
