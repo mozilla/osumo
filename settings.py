@@ -10,8 +10,9 @@ SUMO_URL = 'https://support.mozilla.org/'
 
 APP_FOLDER = os.path.dirname(os.path.abspath(__file__))
 APP_FOLDER_LENGTH = len(APP_FOLDER)
-JS_DEVELOP_FOLDER = os.path.join(APP_FOLDER, 'static', 'js', 'develop')
-PARTIALS_FOLDER = os.path.join(APP_FOLDER, 'static', 'partials')
+STATIC_FOLDER = os.path.join(APP_FOLDER, 'static')
+JS_DEVELOP_FOLDER = os.path.join(STATIC_FOLDER, 'js', 'develop')
+PARTIALS_FOLDER = os.path.join(STATIC_FOLDER, 'partials')
 MANIFEST_FILE_LOCATION = os.path.join(APP_FOLDER, 'manifest.webapp')
 
 try:

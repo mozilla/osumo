@@ -1,28 +1,9 @@
 CACHE MANIFEST
-# version [[ version ]]
+# version {[ version ]}
 
 CACHE:
-/static/js/vendors/angular.min.js
-/static/js/vendors/custom.modernizr.js
-/static/js/vendors/foundation.min.js
-/static/js/vendors/zepto.js
-/static/js/vendors/l10n.js
-/static/js/locales.js
-{% for script in scripts %}[[ script ]]
-{% endfor %}# CSS files
-/static/css/app.css
-/static/css/foundation.min.css
-/static/css/normalize.css
-/static/img/wiki/bkg.warning.png
-/static/img/placeholder-large.png
-/static/img/placeholder-small.png
-/static/img/icon.png
-/static/img/icon-128.png
-/static/img/warning-stripes.png
-# Partials
-{% for partial in partials %}[[ partial ]]
-{% endfor %}# We need this because appcache does not understand redirects in pushstate
-/
+{% for file in files %}{[ file ]}
+{% endfor %}/
 
 # The fallback here means that if any url matching with the prefix / failed to
 # load (all urls). It render using the html cached at /. This means that angular
