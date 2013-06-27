@@ -1,24 +1,28 @@
 import time
 import os
 import urllib
-import json
 
 from flask import Flask, render_template, make_response, abort, request
 import requests
 
-from settings import DEBUG, BASE_URL, SUMO_URL
+from settings import (
+    DEBUG,
+    BASE_URL,
+    SUMO_URL,
+    APP_FOLDER_LENGTH,
+    JS_DEVELOP_FOLDER,
+    PARTIALS_FOLDER,
+    MANIFEST_FILE_LOCATION
+)
 
 
 class CustomFlask(Flask):
     jinja_options = Flask.jinja_options.copy()
+    # This way we don't collide with angular.
     jinja_options.update({
         'variable_start_string': '{[',
         'variable_end_string': ']}'
     })
-
-
-app_folder = os.path.dirname(os.path.abspath(__file__))
-prefix_length = len(app_folder)
 
 
 def read_file(path):
@@ -29,13 +33,13 @@ def read_file(path):
 if DEBUG:
     def get_all_script_paths():
         # We need to ensure that app.js loads first.
-        scripts = ["/static/js/develop/app.js"]
-        for root, subdirs, files in os.walk(os.path.join(app_folder, 'static/js/develop')):
+        scripts = ['/static/js/develop/app.js']
+        for root, subdirs, files in os.walk(JS_DEVELOP_FOLDER):
             for fname in files:
-                if fname == "app.js":
+                if fname == 'app.js':
                     continue
                 if fname.endswith('.js'):
-                    scripts.append(root[prefix_length:] + '/' + fname)
+                    scripts.append(root[APP_FOLDER_LENGTH:] + '/' + fname)
 
         return scripts
 
@@ -44,21 +48,15 @@ if DEBUG:
 
     def partials():
         p = []
-        for root, subdir, files in os.walk(os.path.join(app_folder, 'static/partials')):
+        for root, subdir, files in os.walk(PARTIALS_FOLDER):
             for fname in files:
                 if fname.endswith('.html'):
-                    p.append(root[prefix_length:] + '/' + fname)
+                    p.append(root[APP_FOLDER_LENGTH:] + '/' + fname)
 
         return p
 
     def get_app_manifest():
-        return read_file(os.path.join(app_folder, 'manifests', 'manifest.webapp'))
-
-    def get_translation(locale):
-        try:
-            return read_file(os.path.join(app_folder, 'translations', locale + '.json'))
-        except (OSError, IOError):
-            return None
+        return read_file(MANIFEST_FILE_LOCATION)
 else:
     def get_all_script_paths():
         # minified js.. should be one.
@@ -72,49 +70,14 @@ else:
 
     # Epic cache time~
     FILES = {
-        'manifest.webapp': read_file(os.path.join(app_folder, 'manifests', 'manifest.webapp')),
+        'manifest.webapp': read_file(MANIFEST_FILE_LOCATION),
     }
-
-    def _discover_translations():
-        for root, subdir, files in os.walk(os.path.join(app_folder, 'translations')):
-            for fname in files:
-                if fname.endswith('.json'):
-                    FILES[fname] = json.dumps(json.loads(read_file(os.path.join(root, fname))))
-
-    _discover_translations()
-    del _discover_translations
 
     def get_app_manifest():
         return FILES['manifest.webapp']
 
-    def get_translation(locale):
-        return FILES.get(locale + '.json')
-
 
 app = CustomFlask(__name__)
-
-
-# AngularJS E2E Testing. Why is this so complicated..
-if DEBUG:
-    @app.route('/_tests/unittests')
-    def unittests():
-        scripts = app.jinja_env.globals['scripts'][:]
-        # TODO: needs to refactor with get_all_script_paths
-        for root, subdir, files in os.walk(os.path.join(app_folder, 'static/js/tests/unittests')):
-            for fname in files:
-                if fname.endswith('.js'):
-                    scripts.append(root[prefix_length:] + '/' + fname)
-
-        return render_template('unittests.html', scripts=scripts)
-
-    @app.route('/_tests/e2e')
-    def e2etests():
-        scripts = []
-        for root, subdir, files in os.walk(os.path.join(app_folder, 'static/js/tests/e2e')):
-            for fname in files:
-                if fname.endswith('.js'):
-                    scripts.append(root[prefix_length: + '/' + fname])
-        return render_template('e2etests.html', scripts=scripts)
 
 
 @app.before_request
@@ -133,21 +96,26 @@ def manifest_file():
 
 @app.route('/manifest.appcache')
 def appcache():
-    response = make_response(render_template('manifest.appcache', version=version(), partials=partials()))
+    response = make_response(render_template('manifest.appcache',
+                                             version=version(),
+                                             partials=partials()))
+
     response.mimetype = 'text/cache-manifest'
     response.cache_control.no_cache = True
     return response
 
 
-@app.route("/images")
+@app.route('/images')
 def images():
     if 'url' not in request.args:
         return abort(400)
 
-    target = "https://support.cdn.mozilla.net/" + request.args['url']
+    target = 'https://support.cdn.mozilla.net/' + request.args['url']
     response = requests.get(target)
     if response.status_code == 200:
-        response = make_response("data:image/png;base64," + urllib.quote(response.content.encode('base64')))
+        imgdata = ('data:image/png;base64,' +
+                   urllib.quote(response.content.encode('base64')))
+        response = make_response(imgdata)
         response.mimetype = 'text/plain'
         return response
     else:
