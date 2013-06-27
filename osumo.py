@@ -10,11 +10,11 @@ from settings import DEBUG, BASE_URL, SUMO_URL
 
 
 class CustomFlask(Flask):
-  jinja_options = Flask.jinja_options.copy()
-  jinja_options.update({
-    'variable_start_string': '{[',
-    'variable_end_string': ']}'
-  })
+    jinja_options = Flask.jinja_options.copy()
+    jinja_options.update({
+        'variable_start_string': '{[',
+        'variable_end_string': ']}'
+    })
 
 
 app_folder = os.path.dirname(os.path.abspath(__file__))
@@ -22,135 +22,135 @@ prefix_length = len(app_folder)
 
 
 def read_file(path):
-  with open(path) as f:
-    return f.read()
+    with open(path) as f:
+        return f.read()
 
 
 if DEBUG:
-  def get_all_script_paths():
-    # We need to ensure that app.js loads first.
-    scripts = ["/static/js/develop/app.js"]
-    for root, subdirs, files in os.walk(os.path.join(app_folder, 'static/js/develop')):
-      for fname in files:
-        if fname == "app.js":
-          continue
-        if fname.endswith('.js'):
-          scripts.append(root[prefix_length:] + '/' + fname)
+    def get_all_script_paths():
+        # We need to ensure that app.js loads first.
+        scripts = ["/static/js/develop/app.js"]
+        for root, subdirs, files in os.walk(os.path.join(app_folder, 'static/js/develop')):
+            for fname in files:
+                if fname == "app.js":
+                    continue
+                if fname.endswith('.js'):
+                    scripts.append(root[prefix_length:] + '/' + fname)
 
-    return scripts
+        return scripts
 
-  def version():
-    return int(time.time() / 10)
+    def version():
+        return int(time.time() / 10)
 
-  def partials():
-    p = []
-    for root, subdir, files in os.walk(os.path.join(app_folder, 'static/partials')):
-      for fname in files:
-        if fname.endswith('.html'):
-          p.append(root[prefix_length:] + '/' + fname)
+    def partials():
+        p = []
+        for root, subdir, files in os.walk(os.path.join(app_folder, 'static/partials')):
+            for fname in files:
+                if fname.endswith('.html'):
+                    p.append(root[prefix_length:] + '/' + fname)
 
-    return p
+        return p
 
-  def get_app_manifest():
-    return read_file(os.path.join(app_folder, 'manifests', 'manifest.webapp'))
+    def get_app_manifest():
+        return read_file(os.path.join(app_folder, 'manifests', 'manifest.webapp'))
 
-  def get_translation(locale):
-    try:
-      return read_file(os.path.join(app_folder, 'translations', locale + '.json'))
-    except (OSError, IOError):
-      return None
+    def get_translation(locale):
+        try:
+            return read_file(os.path.join(app_folder, 'translations', locale + '.json'))
+        except (OSError, IOError):
+            return None
 
 else:
-  def get_all_script_paths():
-    # minified js.. should be one.
-    return ['/static/js/app.js']
+    def get_all_script_paths():
+        # minified js.. should be one.
+            return ['/static/js/app.js']
 
-  def version():
-    return 1
+    def version():
+        return 1
 
-  def partials():
-    return []
+    def partials():
+        return []
 
-  # Epic cache time~
-  FILES = {
-    'manifest.webapp': read_file(os.path.join(app_folder, 'manifests', 'manifest.webapp')),
-  }
+    # Epic cache time~
+    FILES = {
+        'manifest.webapp': read_file(os.path.join(app_folder, 'manifests', 'manifest.webapp')),
+    }
 
-  def _discover_translations():
-    for root, subdir, files in os.walk(os.path.join(app_folder, 'translations')):
-      for fname in files:
-        if fname.endswith('.json'):
-          FILES[fname] = json.dumps(json.loads(read_file(os.path.join(root, fname))))
+    def _discover_translations():
+        for root, subdir, files in os.walk(os.path.join(app_folder, 'translations')):
+            for fname in files:
+                if fname.endswith('.json'):
+                    FILES[fname] = json.dumps(json.loads(read_file(os.path.join(root, fname))))
 
-  _discover_translations()
-  del _discover_translations
+    _discover_translations()
+    del _discover_translations
 
-  def get_app_manifest():
-    return FILES['manifest.webapp']
+    def get_app_manifest():
+        return FILES['manifest.webapp']
 
-  def get_translation(locale):
-    return FILES.get(locale + '.json')
+    def get_translation(locale):
+        return FILES.get(locale + '.json')
 
 
 app = CustomFlask(__name__)
 
 # AngularJS E2E Testing. Why is this so complicated..
 if DEBUG:
-  @app.route('/_tests/unittests')
-  def unittests():
-    scripts = app.jinja_env.globals['scripts'][:]
-    # TODO: needs to refactor with get_all_script_paths
-    for root, subdir, files in os.walk(os.path.join(app_folder, 'static/js/tests/unittests')):
-      for fname in files:
-        if fname.endswith('.js'):
-          scripts.append(root[prefix_length:] + '/' + fname)
+    @app.route('/_tests/unittests')
+    def unittests():
+        scripts = app.jinja_env.globals['scripts'][:]
+        # TODO: needs to refactor with get_all_script_paths
+        for root, subdir, files in os.walk(os.path.join(app_folder, 'static/js/tests/unittests')):
+            for fname in files:
+                if fname.endswith('.js'):
+                    scripts.append(root[prefix_length:] + '/' + fname)
 
-    return render_template('unittests.html', scripts=scripts)
+        return render_template('unittests.html', scripts=scripts)
 
-  @app.route('/_tests/e2e')
-  def e2etests():
-    scripts = []
-    for root, subdir, files in os.walk(os.path.join(app_folder, 'static/js/tests/e2e')):
-      for fname in files:
-        if fname.endswith('.js'):
-          scripts.append(root[prefix_length: + '/' + fname])
-    return render_template('e2etests.html', scripts=scripts)
+    @app.route('/_tests/e2e')
+    def e2etests():
+        scripts = []
+        for root, subdir, files in os.walk(os.path.join(app_folder, 'static/js/tests/e2e')):
+            for fname in files:
+                if fname.endswith('.js'):
+                    scripts.append(root[prefix_length: + '/' + fname])
+        return render_template('e2etests.html', scripts=scripts)
 
 @app.before_request
 def before_request():
-  app.jinja_env.globals['BASE_URL'] = BASE_URL
-  app.jinja_env.globals['SUMO_URL'] = SUMO_URL
-  app.jinja_env.globals['scripts'] = get_all_script_paths()
+    app.jinja_env.globals['BASE_URL'] = BASE_URL
+    app.jinja_env.globals['SUMO_URL'] = SUMO_URL
+    app.jinja_env.globals['scripts'] = get_all_script_paths()
 
 @app.route('/manifest.webapp')
 def manifest_file():
-  response = make_response(get_app_manifest())
-  response.mimetype = 'application/x-web-app-manifest+json'
-  return response
+    response = make_response(get_app_manifest())
+    response.mimetype = 'application/x-web-app-manifest+json'
+    return response
 
 @app.route('/manifest.appcache')
 def appcache():
-  response = make_response(render_template('manifest.appcache', version=version(), partials=partials()))
-  response.mimetype = 'text/cache-manifest'
-  response.cache_control.no_cache = True
-  return response
+    response = make_response(render_template('manifest.appcache', version=version(), partials=partials()))
+    response.mimetype = 'text/cache-manifest'
+    response.cache_control.no_cache = True
+    return response
 
 @app.route("/images")
 def images():
-  if 'url' not in request.args:
-    return abort(400)
+    if 'url' not in request.args:
+        return abort(400)
 
-  target = "https://support.cdn.mozilla.net/" + request.args['url']
-  response = requests.get(target)
-  if response.status_code == 200:
-    response = make_response("data:image/png;base64," + urllib.quote(response.content.encode('base64')))
-    response.mimetype = 'text/plain'
-    return response
-  else:
-    return abort(response.status_code)
+    target = "https://support.cdn.mozilla.net/" + request.args['url']
+    response = requests.get(target)
+    if response.status_code == 200:
+        response = make_response("data:image/png;base64," + urllib.quote(response.content.encode('base64')))
+        response.mimetype = 'text/plain'
+        return response
+    else:
+        return abort(response.status_code)
 
 # Catch all URL for HTML push state
 @app.route('/', defaults={'path': ''})
 @app.route('/<path:path>')
 def main(path):
-  return render_template('app.html')
+    return render_template('app.html')
