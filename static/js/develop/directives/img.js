@@ -1,7 +1,7 @@
 'use strict';
 
 (function() {
-  angular.module('osumo').directive('img', ['$rootScope', '$timeout', 'DataService', function($rootScope, $timeout, DataService) {
+  angular.module('osumo').directive('img', ['$rootScope', '$timeout', 'DataService', 'L10NService', function($rootScope, $timeout, DataService, L10NService) {
     var visible = function(element) {
       return element.offsetWidth > 0 || element.offsetHeight > 0;
     };
@@ -39,11 +39,11 @@
                 prevCheckedout = true;
                 nextCheckedout = true;
               } else {
-                while (prev !== null && prev.nodeName === "#text" && prev.textContent.trim().length === 0) {
+                while (prev !== null && prev.nodeName === '#text' && prev.textContent.trim().length === 0) {
                   prev = prev.previousSibling;
                 }
 
-                while (next !== null && next.nodeName === "#text" && next.textContent.trim().length === 0) {
+                while (next !== null && next.nodeName === '#text' && next.textContent.trim().length === 0) {
                   next = next.nextSibling;
                 }
 
@@ -65,17 +65,24 @@
               scope.images[originalSrc] = element;
 
               element.bind('click', function(e) {
-                $rootScope.$safeApply(function() {
-                  DataService.getImage(originalSrc).then(function(imageData) {
-                    element.attr('src', imageData);
-                    element.removeClass('placeholder-img');
-                    element.unbind('click');
 
-                    $rootScope.$safeApply(function() {
-                      delete scope.images[originalSrc];
+                if (navigator.onLine) {
+                  $rootScope.$safeApply(function() {
+                    DataService.getImage(originalSrc).then(function(imageData) {
+                      element.attr('src', imageData);
+                      element.removeClass('placeholder-img');
+                      element.unbind('click');
+
+                      $rootScope.$safeApply(function() {
+                        delete scope.images[originalSrc];
+                      });
                     });
                   });
-                });
+                } else {
+                  $rootScope.$safeApply(function() {
+                    $rootScope.toast({message: L10NService._('A data connection is needed for downloading images.'), type: 'alert'}, 'image-download-requires-network')
+                  });
+                }
               });
 
               scope.$on('$destroy', cleanup);
