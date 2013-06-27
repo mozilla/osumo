@@ -7,6 +7,6 @@ BASE_URL = 'http://osumo.paas.allizom.org/'
 SUMO_URL = 'https://support.mozilla.org/'
 
 try:
-  from devsettings import *
+    from devsettings import *
 except ImportError:
-  pass
+    pass
