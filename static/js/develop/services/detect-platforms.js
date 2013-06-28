@@ -75,11 +75,6 @@
       },
       {
         dataString: navigator.userAgent,
-        subStrings: ['Mobile', 'Firefox'],
-        identity: 'fxos'
-      },
-      {
-        dataString: navigator.userAgent,
         subStrings: ['Maemo'],
         identity: 'maemo'
       },
@@ -87,6 +82,11 @@
         dataString: navigator.platform,
         subStrings: ['Linux'],
         identity: 'linux'
+      },
+      {
+        dataString: navigator.userAgent,
+        subStrings: ['Mobile', 'Firefox'],
+        identity: 'fxos'
       }
     ];
 
