@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1\n"
 "Report-Msgid-Bugs-To: First Last <email@email.com> \n"
-"POT-Creation-Date: 2013-06-26T15:14:57.652755\n"
+"POT-Creation-Date: 2013-06-27T17:10:47.231840\n"
 "PO-Revision-Date: 2013-06-25T14:45:00\n"
 "Last-Translator: Shuhao Wu <shuhao@shuhaowu.com>\n"
 "Language-Team: Team <team@email.com>\n"
@@ -14,7 +14,7 @@ msgstr ""
 
 #: templates/app.html:53
 msgid "Upgrade"
-msgstr ""
+msgstr "升级"
 
 #: static/partials/search.html:15
 msgid "No results found."
@@ -36,6 +36,10 @@ msgstr "菜单"
 msgid " days"
 msgstr "天"
 
+#: static/partials/settings.html:5
+msgid "Default Language"
+msgstr "默认语言"
+
 #: static/partials/doc.html:6
 msgid "Get all images"
 msgstr "下载所有图片"
@@ -46,6 +50,12 @@ msgstr "一分种左右"
 
 #: static/js/develop/controllers/select.js:37
 msgid "Firefox on Android"
+msgstr ""
+
+#: static/js/develop/directives/a.js:27
+msgid ""
+"It looks like you are offline! This link will take you to an external "
+"website which requires an internet connection."
 msgstr ""
 
 #: static/js/develop/filters.js:30
@@ -70,7 +80,7 @@ msgstr "保存"
 
 #: static/js/develop/services/dataservice.js:78
 msgid "A fatal error occurred. Please try again later."
-msgstr ""
+msgstr "发生了一个严重的问题，请稍后再试。"
 
 #: static/partials/install.html:16
 msgid "Product"
@@ -78,7 +88,7 @@ msgstr "产品"
 
 #: static/partials/doc.html:20
 msgid "click here."
-msgstr ""
+msgstr "点击这里。"
 
 #: static/js/develop/controllers/select.js:34
 msgid "Firefox OS"
@@ -112,7 +122,7 @@ msgstr "下载内容"
 msgid ""
 "The content you're looking for has been archived. To view it on support."
 "mozilla.org, "
-msgstr ""
+msgstr "这篇文章过时了。如果您想在support.mozilla.org上看这篇文章，"
 
 #: static/js/develop/app.js:69
 msgid "Offline Mozilla Support"
@@ -126,7 +136,7 @@ msgstr "副主题"
 msgid ""
 "Your browser is not compatible and this app may not work as intended. Try "
 "using Firefox instead!"
-msgstr ""
+msgstr "您的浏览器和这个程序不兼容。您可以用Firefox来运行这个程序。"
 
 #: static/partials/select_doc.html:6
 msgid "Articles"
@@ -166,10 +176,6 @@ msgstr ""
 msgid "Delete"
 msgstr "删除"
 
-#: static/js/develop/filters.js:34
-msgid "about "
-msgstr "大概"
-
 #: static/partials/select_product.html:3
 msgid "Select Product"
 msgstr "选择产品"
@@ -186,6 +192,10 @@ msgstr "一分钟以内"
 msgid "Topics"
 msgstr "主题"
 
+#: static/js/develop/directives/img.js:83
+msgid "A data connection is needed for downloading images."
+msgstr "在下载图片之前必须连网。"
+
 #: static/partials/install.html:33
 msgid "Actions"
 msgstr ""
@@ -194,9 +204,9 @@ msgstr ""
 msgid "Saved."
 msgstr "已保存"
 
-#: static/partials/settings.html:5
-msgid "Default Language"
-msgstr "默认语言"
+#: static/js/develop/filters.js:34
+msgid "about "
+msgstr "大概"
 
 #: static/js/develop/filters.js:32
 msgid "about an hour"

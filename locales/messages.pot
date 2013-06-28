@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1\n"
 "Report-Msgid-Bugs-To: First Last <email@email.com> \n"
-"POT-Creation-Date: 2013-06-26T15:14:57.652755\n"
+"POT-Creation-Date: 2013-06-27T17:10:47.231840\n"
 "PO-Revision-Date: YEAR-MM-DD HH:MM\n"
 "Last-Translator: First Last <email@email.com>\n"
 "Language-Team: Team <team@email.com>\n"
@@ -35,6 +35,10 @@ msgstr ""
 msgid " days"
 msgstr ""
 
+#: static/partials/settings.html:5
+msgid "Default Language"
+msgstr ""
+
 #: static/partials/doc.html:6
 msgid "Get all images"
 msgstr ""
@@ -45,6 +49,10 @@ msgstr ""
 
 #: static/js/develop/controllers/select.js:37
 msgid "Firefox on Android"
+msgstr ""
+
+#: static/js/develop/directives/a.js:27
+msgid "It looks like you are offline! This link will take you to an external website which requires an internet connection."
 msgstr ""
 
 #: static/js/develop/filters.js:30
@@ -159,10 +167,6 @@ msgstr ""
 msgid "Delete"
 msgstr ""
 
-#: static/js/develop/filters.js:34
-msgid "about "
-msgstr ""
-
 #: static/partials/select_product.html:3
 msgid "Select Product"
 msgstr ""
@@ -179,6 +183,10 @@ msgstr ""
 msgid "Topics"
 msgstr ""
 
+#: static/js/develop/directives/img.js:83
+msgid "A data connection is needed for downloading images."
+msgstr ""
+
 #: static/partials/install.html:33
 msgid "Actions"
 msgstr ""
@@ -187,8 +195,8 @@ msgstr ""
 msgid "Saved."
 msgstr ""
 
-#: static/partials/settings.html:5
-msgid "Default Language"
+#: static/js/develop/filters.js:34
+msgid "about "
 msgstr ""
 
 #: static/js/develop/filters.js:32
