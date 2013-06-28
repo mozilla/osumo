@@ -1,9 +1,18 @@
-<div class="row">
-  <div class="small-12 columns">
-    <h6 class="center" ng-show="topic.children.length > 0" l10n>Subtopics</h6>
-    <a href="/{{ locale }}/products/{{ product }}/{{ subtopic.slug }}" class="secondary expand small button" ng-repeat="subtopic in topic.children">{{ subtopic.name }}</a>
-    <hr ng-show="topic.docs.length > 0 && topic.children.length > 0" />
-    <h6 class="center" ng-show="topic.docs.length > 0" l10n>Articles</h6>
-    <a href="/{{ locale }}/kb/{{ doc.slug }}" class="secondary expand small button" ng-repeat="doc in topic.docs">{{ doc.name }}</a>
-  </div>
-</div>
+<section data-type="list">
+  <header ng-show="topic.children.length > 0"><span l10n>Subtopics</span></header>
+  <ul ng-show="topic.children.length > 0">
+    <li ng-repeat="subtopic in topic.children">
+      <a href="/{{ locale }}/products/{{ product }}/{{ subtopic.slug }}">
+        <p>{{ subtopic.name }}</p>
+      </a>
+    </li>
+  </ul>
+  <header ng-show="topic.docs.length > 0"><span l10n>Articles</span></header>
+  <ul ng-show="topic.docs.length > 0">
+    <li ng-repeat="doc in topic.docs">
+      <a href="/{{ locale }}/kb/{{ doc.slug }}">
+        <p>{{ doc.name }}</p>
+      </a>
+    </li>
+  </ul>
+</section>

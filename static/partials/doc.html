@@ -1,24 +1,21 @@
-<div class="row">
-  <div class="small-12 columns">
-    <div ng-hide="doc.archived">
-      <div ng-show="!allImagesLoaded()">
-        <alert showclose="false" type="'secondary'">
-          <a href="" class="right" ng-click="loadAllImages()" l10n>Get all images</a>
-          <l10n>This page contains {{ numOfUnloadedImages() }} unloaded images.</l10n>
-        </alert>
-      </div>
-      <h3>{{ doc.title }}</h3>
-      <span class="pull-right"><l10n>Last updated</l10n>: {{ doc.updated | relativeTime }}</span>
-      <hr />
-      <div viewer doc="doc" id="doc-content"></div>
-    </div>
+<div class="title-bar">
+  <h1>{{ doc.title }}</h1>
+</div>
+<div ng-hide="doc.archived">
+  <div viewer doc="doc" id="doc-content"></div>
+</div>
 
-    <div ng-show="doc.archived">
-      <h3>{{ doc.title }}</h3>
-      <hr />
-      <div class="warning-box">
-        <p><l10n>The content you're looking for has been archived. To view it on support.mozilla.org, </l10n><a target="_blank" href="https://support.mozilla.org/{{ locale }}/kb/{{ doc.slug }}" l10n>click here.</a></p>
-      </div>
-    </div>
+<div ng-show="doc.archived">
+  <h3>{{ doc.title }}</h3>
+  <hr />
+  <div class="warning-box">
+    <p><l10n>The content you're looking for has been archived. To view it on support.mozilla.org, </l10n><a target="_blank" href="https://support.mozilla.org/{{ locale }}/kb/{{ doc.slug }}" l10n>click here.</a></p>
   </div>
 </div>
+
+<section role="status" ng-class="{active: numOfUnloadedImages() > 0}">
+  <a href="" class="right" ng-click="loadAllImages()" l10n>Get all images</a>
+  <p><l10n>This page contains {{ numOfUnloadedImages() }} unloaded images.</l10n></p>
+</section>
+
+<div class="title-bar"><h1><l10n>Last updated</l10n>: {{ doc.updated | relativeTime }}</h1></div>

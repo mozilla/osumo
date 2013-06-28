@@ -2,7 +2,7 @@
 
 (function() {
   angular.module('osumo').controller('DocViewer', ['$scope', '$route', '$location', 'title', 'DataService', 'L10NService', function($scope, $route, $location, title, DataService, L10NService) {
-
+    //TODO: setSearchParam
     $scope.locale = $route.current.params.locale;
     L10NService.setLocale($scope.locale);
     $scope.doc = DataService.getDoc($scope.locale, $route.current.params.doc);

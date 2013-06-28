@@ -4,6 +4,7 @@
 
 angular.module('osumo').controller('InstallController', ['$scope', 'VERSION', 'title', 'DataService', 'AppService', 'L10NService', 'PlatformService', function($scope, VERSION, title, DataService, AppService, L10NService, PlatformService) {
   L10NService.reset();
+  setSearchParams();
   title(L10NService._('Installer'));
 
   // Setup code

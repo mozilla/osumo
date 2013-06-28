@@ -1,3 +1,61 @@
+<div id="installer">
+
+  <div id="install-button">
+    <button class="expand" ng-hide="installed" ng-click="installApp()" l10n>Install to device</button>
+    <hr ng-hide="installed" />
+  </div>
+
+  <label l10n>Select a language</label>
+  <select ng-model="locale" ng-options="language.id as language.name for language in languages">
+  </select>
+
+  <hr />
+
+  <label l10n>Select the product articles you'd like to read later</label>
+  <section data-type="list">
+    <ul>
+      <li>
+        <aside class="pack-end">
+          <button l10n ng-click="download('firefox')">Download</button>
+        </aside>
+        <p l10n>Firefox</p>
+        <p l10n>Desktop web browser by Mozilla</p>
+      </li>
+      <li>
+        <aside class="pack-end">
+          <button l10n ng-click="download('firefox-os')">Download</button>
+        </aside>
+        <p l10n>Firefox OS</p>
+        <p l10n>OS made by Mozilla</p>
+      </li>
+      <li>
+        <aside class="pack-end">
+          <button l10n ng-click="download('mobile')">Download</button>
+        </aside>
+        <p l10n>Firefox for Android</p>
+        <p l10n>Web browser for phones and tablets</p>
+      </li>
+    </ul>
+  </section>
+
+
+  <section data-type="list">
+    <header><span l10n>Downloaded content</span></header>
+    <ul>
+      <li ng-repeat="bundle in bundles">
+        <aside class="pack-end">
+          <button class="danger" l10n>Delete</button>
+        </aside>
+        <aside class="pack-end">
+          <a href="/{{ bundle.locale }}/products/{{ bundle.product }}" role="button" l10n>Browse</a>
+        </aside>
+        <p scroll>{{ bundle.name }}</p>
+      </li>
+    </ul>
+  </section>
+</div>
+
+<!--
 <div class="row">
   <div class="small-12 columns">
 
@@ -46,3 +104,4 @@
 
   </div>
 </div>
+-->

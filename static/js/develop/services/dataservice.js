@@ -211,26 +211,6 @@
     };
 
     /**
-     * Gets the language name
-     */
-    this.getLanguageName = function(locale) {
-      var deferred = $q.defer();
-
-      this.mainDb.then(function(db) {
-        var store = db.transaction('locales').objectStore('locales');
-        store.get(locale).then(function(result) {
-          if (result) {
-            deferred.resolve(result.name);
-          } else {
-            deferred.reject();
-          }
-        });
-      });
-
-      return deferred.promise;
-    };
-
-    /**
      * Gets a list of available products given a locale
      *
      * @param {String} locale  The locale id

@@ -1,0 +1,45 @@
+#installer label {
+    display: block;
+    margin: 1rem 2.2rem;
+    font-size: 1.8rem;
+}
+
+#installer #install-button {
+  margin-top: 2rem;
+}
+
+#installer #install-button > button {
+  margin: 0 2.2rem;
+  width: calc(100% - 4.4rem);
+}
+
+#installer select {
+  display: block;
+  width: calc(100% - 4.4rem);
+  margin: 0 2.2rem;
+}
+
+#installer hr {
+  margin: 1.5rem 0;
+}
+
+#installer [data-type="list"] p {
+  overflow: hidden;
+}
+
+#installer [data-type="list"] p[scroll] {
+  overflow: scroll;
+}
+
+#installer aside.pack-end {
+  margin: 0 0.8rem 0 0;
+  height: auto;
+  transform: translate(0, -50%);
+  top: 50%;
+}
+
+#installer aside.pack-end > button,
+#installer aside.pack-end > a[role="button"] {
+  margin: 0;
+  padding: 0 0.8rem;
+}

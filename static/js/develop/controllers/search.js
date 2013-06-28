@@ -1,31 +1,31 @@
 'use strict';
 
 (function() {
-  angular.module('osumo').controller('SearchController', ['$scope', 'title', 'DataService', 'L10NService', function($scope, title, DataService, L10NService) {
+  angular.module('osumo').controller('SearchController', ['$scope', '$route', 'title', 'DataService', 'L10NService', function($scope, $route, title, DataService, L10NService) {
 
     var sep = /\s+/g;
 
     L10NService.reset();
     title(L10NService._('Search'));
 
-    $scope.query = null;
-    $scope.results = null;
-    $scope.error = null;
-    $scope.bundle = null;
-    $scope.bundles = DataService.getAvailableBundles();
+    var query = $route.current.params.q.replace(/\+/g, " ").trim().toLowerCase();
+    var bundle = $route.current.params.bundle;
+    var product, locale, splitted;
 
-    $scope.search = function() {
-      var query;
-      if (!$scope.query) {
-        $scope.toast({message: "You need to search for something!", type: "alert"});
-      } else if (!$scope.bundle) {
-        $scope.toast({message: "You need to search for in a category!", type: "alert"});
-      } else {
-        query = $scope.query.trim().toLowerCase();
-        $scope.results = DataService.search(query.split(sep), $scope.bundle);
-        $scope.locale = $scope.bundle.split("~")[0];
-      }
-    };
+    if (query && bundle) {
+      splitted = bundle.split('~');
+      locale = splitted[0];
+      product = splitted[1];
+      setSearchParams(locale, product);
+      $scope.results = DataService.search(query.split(sep), bundle);
+      $scope.locale = locale;
 
+    } else if (!query) {
+      setSearchParams(locale, product);
+      $scope.toast({message: "You need to search for something!", type: "alert"});
+    } else if (!bundle) {
+      setSearchParams(locale, product);
+      $scope.toast({message: "You need to search for in a category!", type: "alert"});
+    }
   }]);
 })();

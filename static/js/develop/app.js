@@ -67,6 +67,7 @@ app.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
 app.factory('title', ['$window', 'L10NService', function($window, L10NService){
   return function(title) {
     $window.document.title = title + ' - ' + L10NService._('Offline Mozilla Support');
+    document.getElementById("app-title").innerHTML = title;
   };
 }]);
 

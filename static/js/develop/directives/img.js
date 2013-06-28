@@ -9,6 +9,8 @@
       restrict: 'E',
       priority: 10,
       link: function(scope, element, attrs) {
+        if ('notDirective' in attrs)
+          return
         // Set timeout 0 is required as we need to wait for the directive 'for'
         // to apply before this. If 'for' determines to hide the image, this
         // will not execute.
