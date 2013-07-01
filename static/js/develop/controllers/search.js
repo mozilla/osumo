@@ -8,24 +8,32 @@
     L10NService.reset();
     title(L10NService._('Search'));
 
-    var query = $route.current.params.q.replace(/\+/g, " ").trim().toLowerCase();
-    var bundle = $route.current.params.bundle;
-    var product, locale, splitted;
+    $scope.bundles = DataService.getAvailableBundles();
+    $scope.query = $route.current.params.q ? $route.current.params.q.replace(/\+/g, " ").trim().toLowerCase() : null;
+    $scope.locale = $route.current.params.locale;
+    $scope.product = $route.current.params.product;
 
-    if (query && bundle) {
-      splitted = bundle.split('~');
-      locale = splitted[0];
-      product = splitted[1];
-      setSearchParams(locale, product);
-      $scope.results = DataService.search(query.split(sep), bundle);
-      $scope.locale = locale;
+    var splitted;
+    if ($scope.locale && $scope.product) {
+      $scope.bundle = $scope.locale + '~' + $scope.product;
+    } else {
+      $scope.bundle = $route.current.params.bundle;
+      if ($scope.bundle) {
+        splitted = $scope.bundle.split('~');
+        $scope.locale = splitted[0];
+        $scope.product = splitted[1];
+      }
+    }
 
-    } else if (!query) {
-      setSearchParams(locale, product);
-      $scope.toast({message: "You need to search for something!", type: "alert"});
-    } else if (!bundle) {
-      setSearchParams(locale, product);
-      $scope.toast({message: "You need to search for in a category!", type: "alert"});
+
+    setSearchParams($scope.locale, $scope.product);
+
+    $scope.searching = $scope.bundle && $scope.query;
+    if ($scope.searching) {
+      $scope.results = DataService.search($scope.query.split(sep), $scope.bundle);
+      $scope.results.then(function() {
+        $scope.searching = false;
+      });
     }
   }]);
 })();

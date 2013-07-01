@@ -14,26 +14,44 @@
   <label l10n>Select the product articles you'd like to read later</label>
   <section data-type="list">
     <ul>
-      <li>
+      <li ng-hide="downloading.firefox">
         <aside class="pack-end">
-          <button l10n ng-click="download('firefox')">Download</button>
+          <button l10n ng-click="download('firefox')" ng-hide="downloaded['firefox']">Download</button>
+          <a role="button" l10n ng-show="downloaded['firefox']" href="/{{ locale }}/products/firefox">Browse</a>
         </aside>
         <p l10n>Firefox</p>
         <p l10n>Desktop web browser by Mozilla</p>
       </li>
-      <li>
+      <li class="downloading" ng-show="downloading.firefox">
+        <p ln10>Firefox <span>Downloading...</span></p>
+        <p>&nbsp;</p>
+        <progress class="pack-activity" value="0" max="100"></progress>
+      </li>
+      <li ng-hide="downloading['firefox-os']">
         <aside class="pack-end">
-          <button l10n ng-click="download('firefox-os')">Download</button>
+          <button l10n ng-hide="downloaded['firefox-os']" ng-click="download('firefox-os')">Download</button>
+          <a role="button" l10n ng-show="downloaded['firefox-os']" href="/{{ locale }}/products/firefox-os">Browse</a>
         </aside>
         <p l10n>Firefox OS</p>
         <p l10n>OS made by Mozilla</p>
       </li>
-      <li>
+      <li class="downloading" ng-show="downloading['firefox-os']">
+        <p ln10>Firefox OS <span>Downloading...</span></p>
+        <p>&nbsp;</p>
+        <progress class="pack-activity" value="0" max="100"></progress>
+      </li>
+      <li ng-hide="downloading.mobile">
         <aside class="pack-end">
-          <button l10n ng-click="download('mobile')">Download</button>
+          <button l10n ng-click="download('mobile')" ng-hide="downloaded['mobile']">Download</button>
+          <a role="button" l10n ng-show="downloaded['mobile']" href="/{{ locale }}/products/mobile">Browse</a>
         </aside>
         <p l10n>Firefox for Android</p>
         <p l10n>Web browser for phones and tablets</p>
+      </li>
+      <li class="downloading" ng-show="downloading.mobile">
+        <p ln10>Firefox for Android <span>Downloading...</span></p>
+        <p>&nbsp;</p>
+        <progress class="pack-activity" value="0" max="100"></progress>
       </li>
     </ul>
   </section>

@@ -1,6 +1,22 @@
-<section data-type="list" ng-show="results.length > 0">
+<form id="search-selector" class="list-style-container" action="/search">
+  <label for="q" l10n>Query</label>
+  <input name="q" type="text" ng-model="query" placeholder="Query" l10n translate-attr="placeholder" />
+
+  <label for="bundle" l10n>Choose a product to search in</label>
+  <select name="bundle" ng-model="bundle">
+    <option value="{{ b.id }}" ng-repeat="b in bundles">{{ b.name }}</option>
+  </select>
+
+  <button type="submit" l10n>Search</button>
+</form>
+
+
+<section data-type="list" class="search-results">
   <header><span l10n>Results</span></header>
-  <ul>
+  <div id="search-in-progress" class="list-style-container" ng-show="searching">
+    <progress></progress>
+  </div>
+  <ul ng-show="results.length > 0">
     <li ng-repeat="doc in results">
       <a href="/{{ locale }}/kb/{{ doc.slug }}">
         <p>{{ doc.title }}</p>
@@ -9,7 +25,7 @@
   </ul>
 </section>
 
-<section data-type="list" ng-show="results.length == 0">
+<section data-type="list" ng-show="results.length == 0" class="search-results">
   <ul>
     <li>
       <p l10n>No results found.</p>

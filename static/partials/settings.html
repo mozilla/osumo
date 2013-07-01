@@ -1,6 +1,7 @@
-<h1 class="center" l10n>Default Language</h1>
+<div id="settings" class="list-style-container">
+  <h1 l10n>Default Language</h1>
+  <select ng-model="locale" ng-options="language.id as language.name for language in languages">
+  </select>
 
-<select id="installer-select-language" ng-model="locale" ng-options="language.id as language.name for language in languages">
-</select>
-
-<button ng-click="save()" class="small" l10n>Save</button>
+  <button ng-click="save()" class="small" l10n>Save</button>
+</div>

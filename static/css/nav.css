@@ -63,7 +63,6 @@ body > nav #search-bar form {
 
 body > nav #search-bar form button[type='submit'] {
   background-color: transparent;
-  background-position: -54px -177px;
   border: 0;
   height: 18px;
   margin: 0;
@@ -75,6 +74,7 @@ body > nav #search-bar form button[type='submit'] {
   top: 6px;
   width: 18px;
   background-image: url("/static/img/icon-search.png");
+  cursor: pointer;
 }
 
 body > nav #search-bar form input[type='search'] {

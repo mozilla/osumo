@@ -4,7 +4,7 @@
   var module = angular.module("angular_l10n", []);
 
   module.service("L10NService", ["$rootScope", function($rootScope) {
-    this.defaultLocale = 'en-US';
+    this.defaultLocale = navigator.language;
     this.prevLocale = this.defaultLocale;
     this.currentLocale = this.defaultLocale;
 

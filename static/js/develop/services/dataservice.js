@@ -106,43 +106,55 @@
     };
 
     /**
-     * Adds data to IndexedDB. Note that this function does not give you
-     * any feedback over whether or not the operation is successful. We'll
-     * see if this is needed in the future.
+     * Adds data to IndexedDB.
      *
      * @param {String} objectStoreName  The name of the object store.
      * @param {Array} data  An array of objects that serves as the value for
      *                      that object store.
      */
     this.addData = function(objectStoreName, data) {
+      var ops = [];
+      var l = data.length;
+
       this.mainDb.then(function(db) {
         var store = db.transaction(objectStoreName, 'readwrite').objectStore(objectStoreName);
-        var l = data.length;
+
+        var storeOne = function(i) {
+          // Store one result for locale documents as the products array
+          // in the locales object needs to be merged.
+          var d = $q.defer();
+
+          store.get(data[i].key).then(function(result) {
+            var dataToStore;
+            if (result === undefined) { // does not exist
+              dataToStore = data[i];
+            } else { // Merge
+              dataToStore = result;
+              result.products = result.products.concat(data[i].products);
+            }
+
+            store.put(dataToStore).then(function() {
+              d.resolve();
+            });
+          });
+
+          return d.promise;
+        };
 
         if (objectStoreName === 'locales') {
+          // We have to do something special for locales because products needs
+          // to be merged.
           for (var i=0; i<l; i++) {
-            // Currently there is no way to tell if something went wrong.
-            (function(i){
-              store.get(data[i].key).then(
-                function(result) {
-                  var dataToStore;
-                  if (result === undefined) { // does not exist
-                    dataToStore = data[i];
-                  } else { // exists, merge products
-                    dataToStore = result;
-                    result.products = result.products.concat(data[i].products);
-                  }
-                  store.put(dataToStore);
-                }
-              );
-            })(i);
+            ops.push(storeOne(i));
           }
         } else {
           for (var i=0; i<l; i++) {
-            store.put(data[i]);
+            ops.push(store.put(data[i]));
           }
         }
       });
+
+      return $q.all(ops);
     };
 
     /**
@@ -420,40 +432,43 @@
         store.get(bundlekey).then(function(result) {
 
           console.log("Got search index: " + (new Date().getTime() - start) + "ms");
-          start = new Date().getTime();
-          var si = result.index;
-          var potentialDocs = {};
-          var docs, s;
-          for (var i=0, l=queryTerms.length; i<l; i++) {
-            docs = si[queryTerms[i]] || [];
-            for (var j=0, ll=docs.length; j<ll; j++)
-              potentialDocs[docs[j][0]] = (potentialDocs[docs[j][0]] || 0) + docs[j][1];
-          }
-
-          var strength = []
-          var results = [];
-          var insPoint;
-          for (var docId in potentialDocs) {
-            insPoint = bisect(strength, potentialDocs[docId]);
-            results.splice(insPoint, 0, self.getDocById(parseInt(docId)));
-            strength.splice(insPoint, 0, potentialDocs[docId]);
-          }
-
-
-          results = results.reverse();
-
-          console.log("Processed search: " + (new Date().getTime() - start) + "ms");
-          start = new Date().getTime();
-
-          if (results.length === 0) {
+          if (!result) {
             deferred.resolve([]);
           } else {
-            $q.all(results).then(function(result) {
-              console.log("Got all documents: " + (new Date().getTime() - start) + "ms");
-              deferred.resolve(result);
-            });
-          }
+            start = new Date().getTime();
+            var si = result.index;
+            var potentialDocs = {};
+            var docs, s;
+            for (var i=0, l=queryTerms.length; i<l; i++) {
+              docs = si[queryTerms[i]] || [];
+              for (var j=0, ll=docs.length; j<ll; j++)
+                potentialDocs[docs[j][0]] = (potentialDocs[docs[j][0]] || 0) + docs[j][1];
+            }
 
+            var strength = []
+            var results = [];
+            var insPoint;
+            for (var docId in potentialDocs) {
+              insPoint = bisect(strength, potentialDocs[docId]);
+              results.splice(insPoint, 0, self.getDocById(parseInt(docId)));
+              strength.splice(insPoint, 0, potentialDocs[docId]);
+            }
+
+
+            results = results.reverse();
+
+            console.log("Processed search: " + (new Date().getTime() - start) + "ms");
+            start = new Date().getTime();
+
+            if (results.length === 0) {
+              deferred.resolve([]);
+            } else {
+              $q.all(results).then(function(result) {
+                console.log("Got all documents: " + (new Date().getTime() - start) + "ms");
+                deferred.resolve(result);
+              });
+            }
+          }
         });
       });
 

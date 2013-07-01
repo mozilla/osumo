@@ -2,39 +2,79 @@
 
 (function(){
 
-angular.module('osumo').controller('InstallController', ['$scope', 'VERSION', 'title', 'DataService', 'AppService', 'L10NService', 'PlatformService', function($scope, VERSION, title, DataService, AppService, L10NService, PlatformService) {
+angular.module('osumo').controller('InstallController', ['$q', '$scope', 'VERSION', 'title', 'DataService', 'AppService', 'L10NService', 'PlatformService', function($q, $scope, VERSION, title, DataService, AppService, L10NService, PlatformService) {
   L10NService.reset();
   setSearchParams();
   title(L10NService._('Installer'));
 
   // Setup code
-  $scope.products = [
-    {id: 'firefox-os', name: 'Firefox OS'},
-    {id: 'firefox', name: 'Firefox'},
-    {id: 'mobile', name: 'Firefox for Android'}
-  ];
-
-  $scope.languages = [
-    {id: 'en-US', name: 'English (US)'}
-  ];
 
   $scope.languages = window.LANGUAGES;
 
   // Some variables
   if (PlatformService.OS === 'fxos') {
-    $scope.product = 'firefox-os'
+    $scope.product = 'firefox-os';
   } else if (PlatformService.browser === 'm') {
-    $scope.product = 'mobile'
+    $scope.product = 'mobile';
   } else {
-    $scope.product = 'firefox'
+    $scope.product = 'firefox';
   }
 
-  $scope.locale = navigator.language;
+  $scope.locale = L10NService.defaultLocale;
   $scope.installed = false;
   $scope.bundles = DataService.getAvailableBundles();
 
+  /**
+   * Checks if a product is downloaded (in conjucture with the current
+   * selected locale)
+   */
+  $scope.isProductDownloaded = function(product) {
+    var deferred = $q.defer()
+    $scope.bundles.then(function(bundles) {
 
-  // Check if we are installed or not
+      // Since we don't really have a lot of things in bundles. This should be
+      // fine.
+      for (var i=0; i<bundles.length; i++) {
+        if (bundles[i].locale === $scope.locale && bundles[i].product === product) {
+          deferred.resolve(true);
+          break;
+        }
+      }
+
+      deferred.resolve(false);
+    });
+    return deferred.promise;
+  };
+
+
+  $scope.downloading = {
+    firefox: false,
+    'firefox-os': false,
+    mobile: false
+  };
+
+  $scope.downloaded = {
+    firefox: false,
+    'firefox-os': false,
+    mobile: false
+  };
+
+  var checkedDownloadedForCurrentLocale = function() {
+    $scope.downloaded['firefox'] = false;
+    $scope.downloaded['firefox-os'] = false;
+    $scope.downloaded['mobile'] = false;
+    $scope.bundles.then(function(bundles) {
+      for (var i=0; i<bundles.length; i++) {
+        if (bundles[i].locale === $scope.locale) {
+          $scope.downloaded[bundles[i].product] = true;
+        }
+      }
+    });
+  };
+
+  $scope.$watch('locale', checkedDownloadedForCurrentLocale);
+
+  // Check if we are installed or not. Reason we need this is for failure.
   AppService.checkInstalled().then(
     function(installed) {
       $scope.installed = installed;
@@ -52,7 +92,6 @@ angular.module('osumo').controller('InstallController', ['$scope', 'VERSION', 't
   });
 
   // Setup is now completed. Onto the scope function declarations.
-
   $scope.installApp = function() {
     if ($scope.installed) {
       return;
@@ -69,44 +108,44 @@ angular.module('osumo').controller('InstallController', ['$scope', 'VERSION', 't
     );
   };
 
-  $scope.installBundle = function() {
-    $scope.toast({message: 'Downloading content...'}, 'install-bundle');
 
-    // TODO: move this below the check. Here so we can test easily.
+  $scope.download = function(product) {
+    $scope.downloading[product] = true;
 
     $scope.bundles.then(function(bundles) {
       for (var i in bundles) {
-        if (bundles[i].product === $scope.product && bundles[i].locale === $scope.locale) {
-          $scope.untoast('install-bundle');
-          $scope.toast({message: 'Already downloaded', type: 'alert'});
+        if (bundles[i].product === product && bundles[i].locale === $scope.locale) {
+          // Send out a toast message saying already downloaded.
           return;
         }
       }
 
-      DataService.getBundleFromSource($scope.product, $scope.locale).success(function(data, status, headers, config) {
+      DataService.getBundleFromSource(product, $scope.locale).success(function(data, status, headers) {
         if (!data.docs || data.docs.length === 0 || !data.topics || data.topics.length === 0) {
-          $scope.untoast('install-bundle');
-          $scope.toast({message: 'Sorry, the language you selected has no documents. You can help transate at ..', type: 'alert'});
+          $scope.toast({message: L10NService._('There are no documents for this language.'), type: 'error', showclose: true});
+          $scope.downloading[product] = false;
           return;
         }
-        for (var oname in data) {
-          // We need to merge the products.
-          DataService.addData(oname, data[oname]);
-        }
-        $scope.bundles = DataService.getAvailableBundles();
-        $scope.bundles.then(function() {
-          $scope.untoast('install-bundle');
+
+        var storeOps = [];
+        for (var objectStoreName in data) {
+          storeOps.push(DataService.addData(objectStoreName, data[objectStoreName]));
+        };
+
+        $q.all(storeOps).then(function() {
+          $scope.toast({message: L10NService._('Downloaded!'), type: 'success', autoclose: 1500});
+          $scope.downloading[product] = false;
+          $scope.downloaded[product] = true;
+          $scope.bundles = DataService.getAvailableBundles();
         });
-      }).error(function(data, status, headers, config) {
-        $scope.untoast('install-bundle');
+      }).error(function(data, status, headers) {
         if (status === 0) {
-          $scope.toast({message: 'It looks like you don\'t have a network connection.', type: 'alert'});
-        } else {
-          $scope.toast({message: 'Download failed. Status: ' + status, type: 'alert'});
+          $scope.toast({message: L10NService._('It seems like you don\'t have a network connection'), type: 'error'});
         }
+        $scooe.toast({message: L10NService._('Downloading product failed with: ' + status)});
+        $scope.downloading[product] = false;
       });
     });
-
   };
 
 }]);

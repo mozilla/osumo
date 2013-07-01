@@ -7,6 +7,10 @@ header h1 {
   font-weight: normal;
 }
 
+.hidden {
+  display: none !important;
+}
+
 /* Customization on the toolbar. */
 /* Adds a label to the toolbar so it is like a status bar */
 [role="toolbar"] span {
@@ -61,4 +65,31 @@ section[role="region"] > header:first-child > a {
 
 section[role="region"] > header:first-child h1 {
   margin-left: 5rem;
+}
+
+.list-style-container {
+  padding: 0 2.2rem;
+}
+
+.list-style-container select,
+.list-style-container input{
+  width: 100%;
+  margin-bottom: 1rem;
+}
+
+.list-style-container label {
+  display: block;
+  margin: 1rem 0;
+  width: 100%;
+  font-size: 1.8rem;
+}
+
+.list-style-container hr {
+  margin: 1.5rem 0;
+}
+
+.list-style-container h1 {
+  font-weight: 400;
+  font-size: 1.8rem;
+  text-align: center;
 }

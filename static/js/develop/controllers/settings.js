@@ -10,7 +10,7 @@
 
     $scope.save = function() {
       AppService.setDefaultLocale($scope.locale).then(function() {
-        $scope.toast({message: L10NService._("Saved.")});
+        $scope.toast({message: L10NService._("Saved."), autoclose: 1500});
       });
     };
   }]);

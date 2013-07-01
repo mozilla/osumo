@@ -14,7 +14,7 @@
             document.body.className = 'ng-scope';
           }
           if (nav.style.display === 'block') {
-            setTimeout(function() { nav.style.display = ''; }, 500);
+            setTimeout(function() { nav.style.display = ''; }, 480);
           } else {
             nav.style.display = 'block';
           }

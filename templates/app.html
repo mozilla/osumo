@@ -7,6 +7,7 @@
     <link rel="stylesheet" type="text/css" href="/static/css/nav.css">
     <link rel="stylesheet" type="text/css" href="/static/css/doc.css">
     <link rel="stylesheet" type="text/css" href="/static/css/installer.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/settings_search.css">
     <link rel="stylesheet" type="text/css" href="/static/css/app.css">
     <title>Offline Mozilla Support</title>
 
@@ -60,8 +61,8 @@
   </section>
 
 
-  <section role="status" ng-controller="ToastController">
-    <a href="" class="close" ng-show="showclose">&times;</a>
+  <section role="status" ng-controller="ToastController" ng-class="{active: active}">
+    <a href="" class="close" ng-show="showclose" ng-click="untoast()">&times;</a>
     <p ng-bind-html-unsafe="html"></p>
   </section>
 
