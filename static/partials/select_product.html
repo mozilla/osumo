@@ -2,7 +2,7 @@
   <ul>
     <li ng-repeat="product in products">
       <aside class="pack-end">
-        <img not-directive alt="logo" src="/static/img/logos/{{ product.slug }}.png" />
+        <img not-directive alt="logo" ng-src="/static/img/logos/{{ product.slug }}.png" />
       </aside>
       <a href="/{{ locale }}/products/{{ product.slug }}">
         <p>{{ product.name }}</p>

@@ -74,10 +74,30 @@ app.factory('title', ['$window', 'L10NService', function($window, L10NService){
 app.constant('VERSION', 1);
 app.constant('DBVERSION', 1);
 
+// The reason that this exists is because ng-options puts the numeric index
+// from the array as the value. In search, we want the value to be the bundle
+// key. This means that we cannot use ng-options and must use ng-repeat.
+// However, there is no way to make sure if something is selected or not.
+// This is to compensate for that. ngx-select="expression"
+// ngx is for ng extras
+app.directive('ngxSelected', function() {
+  return {
+    restrict: 'A',
+    priority: -10,
+    link: function(scope, element, attrs) {
+      if (scope.$eval(attrs.ngxSelected)) {
+        element.attr('selected', 'selected');
+      } else {
+        element.removeAttr('selected');
+      }
+    }
+  }
+});
+
 app.run(['$rootScope', '$location', 'AppService', 'DataService', 'L10NService', function($rootScope, $location, AppService, DataService, L10NService) {
   // Toasting stuff is fun! Though we need butter here at the Mozilla MV office
-  $rootScope.toast = function(toast, id) {
-    $rootScope.$broadcast('toast', toast, id);
+  $rootScope.toast = function(toast) {
+    $rootScope.$broadcast('toast', toast);
   };
 
   $rootScope.untoast = function(id) {

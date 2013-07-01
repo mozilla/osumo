@@ -11,12 +11,19 @@ div[viewer] {
   background: #565d65;
   color: #fff;
   padding: 10px 16px;
+  width: calc(100% - 32px);
 }
 
 .title-bar h1 {
   font-size: 18px;
   font-weight: normal;
   margin: 0;
+}
+
+.title-bar.bottom {
+  position: absolute;
+  left: 0;
+  bottom: 0;
 }
 
 #doc-content h1,

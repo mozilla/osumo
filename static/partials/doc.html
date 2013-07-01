@@ -13,9 +13,10 @@
   </div>
 </div>
 
-<section role="status" ng-class="{active: numOfUnloadedImages() > 0}">
-  <a href="" class="right" ng-click="loadAllImages()" l10n>Get all images</a>
+<section role="status" ng-class="{active: numOfUnloadedImages() > 0, 'has-icons': true}">
+<!--  <a href="" class="right" ng-click="loadAllImages()" l10n>Get all images</a> -->
+  <a href="" class="icon icon-download"></a>
   <p><l10n>This page contains {{ numOfUnloadedImages() }} unloaded images.</l10n></p>
 </section>
 
-<div class="title-bar"><h1><l10n>Last updated</l10n>: {{ doc.updated | relativeTime }}</h1></div>
+<div class="bottom title-bar"><h1><l10n>Last updated</l10n>: {{ doc.updated | relativeTime }}</h1></div>

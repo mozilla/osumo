@@ -6,7 +6,8 @@
   </div>
 
   <label l10n>Select a language</label>
-  <select ng-model="locale" ng-options="language.id as language.name for language in languages">
+  <select ng-model="locale" ng-change="checkedDownloadedForCurrentLocale()" ng-options="language.id as language.name for language in languages">
+
   </select>
 
   <hr />

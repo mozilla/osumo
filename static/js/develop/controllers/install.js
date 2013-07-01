@@ -59,7 +59,7 @@ angular.module('osumo').controller('InstallController', ['$q', '$scope', 'VERSIO
     mobile: false
   };
 
-  var checkedDownloadedForCurrentLocale = function() {
+  $scope.checkedDownloadedForCurrentLocale = function() {
     $scope.downloaded['firefox'] = false;
     $scope.downloaded['firefox-os'] = false;
     $scope.downloaded['mobile'] = false;
@@ -72,7 +72,7 @@ angular.module('osumo').controller('InstallController', ['$q', '$scope', 'VERSIO
     });
   };
 
-  $scope.$watch('locale', checkedDownloadedForCurrentLocale);
+  $scope.checkedDownloadedForCurrentLocale();
 
   // Check if we are installed or not. Reason we need this is for failure.
   AppService.checkInstalled().then(

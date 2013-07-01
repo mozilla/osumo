@@ -44,7 +44,7 @@
     <a href="/install" l10n menubutton>Installer</a>
 
     <header l10n>Other</header>
-    <a href="https://support.mozilla.org">Switch to online site</a>
+    <a href="https://support.mozilla.org" l10n>Switch to online site</a>
   </nav>
 
 
@@ -62,7 +62,7 @@
 
 
   <section role="status" ng-controller="ToastController" ng-class="{active: active}">
-    <a href="" class="close" ng-show="showclose" ng-click="untoast()">&times;</a>
+    <a href="" class="close icon" ng-show="showclose" ng-click="untoast()">&times;</a>
     <p ng-bind-html-unsafe="html"></p>
   </section>
 

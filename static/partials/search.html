@@ -3,8 +3,8 @@
   <input name="q" type="text" ng-model="query" placeholder="Query" l10n translate-attr="placeholder" />
 
   <label for="bundle" l10n>Choose a product to search in</label>
-  <select name="bundle" ng-model="bundle">
-    <option value="{{ b.id }}" ng-repeat="b in bundles">{{ b.name }}</option>
+  <select name="bundle">
+    <option value="{{ b.id }}" ng-repeat="b in bundles" ngx-selected="bundle == b.id">{{ b.name }}</option>
   </select>
 
   <button type="submit" l10n>Search</button>
@@ -32,3 +32,5 @@
     </li>
   </ul>
 </section>
+
+<div class="bottom title-bar" ng-show="timeTaken > -1"><h1 l10n>Found {{ results.length }} results in {{ timeTaken }} seconds.</h1></div>

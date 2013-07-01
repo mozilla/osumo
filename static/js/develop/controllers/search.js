@@ -25,14 +25,17 @@
       }
     }
 
-
     setSearchParams($scope.locale, $scope.product);
 
     $scope.searching = $scope.bundle && $scope.query;
+    $scope.timeTaken = -1;
+    var time = new Date().getTime();
     if ($scope.searching) {
+
       $scope.results = DataService.search($scope.query.split(sep), $scope.bundle);
       $scope.results.then(function() {
         $scope.searching = false;
+        $scope.timeTaken = (new Date().getTime() - time) / 1000;
       });
     }
   }]);

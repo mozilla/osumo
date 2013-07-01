@@ -740,23 +740,31 @@ section[role="status"] p strong {
   font-weight: 500;
 }
 
-section[role="status"] a.close {
-  font-size: 3rem;
-  float: right;
-  margin-right: 1rem;
-  color: #FFF;
-  text-decoration: none;
-  outline: medium none;
+section[role="status"].has-icons {
+  padding-right: 35px;
 }
 
-section[role="status"] a.right {
-  float: right;
-  margin-right: 1rem;
+section[role="status"] a.icon {
+  width: 20px;
+  height: 20px;
+  text-align: center;
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translate(0, -50%);
+  display: block;
+}
+
+section[role="status"] a.icon.close {
+  font-size: 3rem;
   color: #FFF;
-  font-size: 1.5rem;
-  margin: auto;
   text-decoration: none;
-  outline: medium none;
+  outline: none;
+  height: 40px;
+}
+
+section[role="status"] a.icon.icon-download {
+  background-image: url("/static/img/status/icons/download-replace-me.png");
 }
 
 section[role="status"] a:hover {
