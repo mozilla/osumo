@@ -1,3 +1,4 @@
 *.pyc
 devsettings.py
 *~
+docs/_build
