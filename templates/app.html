@@ -7,9 +7,10 @@
     <link rel="stylesheet" type="text/css" href="/static/css/nav.css">
     <link rel="stylesheet" type="text/css" href="/static/css/doc.css">
     <link rel="stylesheet" type="text/css" href="/static/css/installer.css">
-    <link rel="stylesheet" type="text/css" href="/static/css/settings_search.css">
     <link rel="stylesheet" type="text/css" href="/static/css/app.css">
     <title>Offline Mozilla Support</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 
     <script>
       window.setSearchParams = function(locale, product) {
@@ -44,7 +45,7 @@
     <a href="/install" l10n menubutton>Installer</a>
 
     <header l10n>Other</header>
-    <a href="https://support.mozilla.org" l10n>Switch to online site</a>
+    <a id="switch-to-online-site" href="https://support.mozilla.org" l10n>Switch to online site</a>
   </nav>
 
 
@@ -57,6 +58,7 @@
       <h1 id="app-title">Loading...</h1>
     </header>
     <div role="main" ng-view>
+      <progress class="center"></progress>
     </div>
   </section>
 

@@ -94,3 +94,13 @@ section[role="region"] > header:first-child h1 {
   text-align: center;
 }
 
+progress:not(value).center {
+  display: block;
+  margin: 2rem auto;
+}
+
+#settings h1 {
+  font-size: 1.8rem;
+  text-align: center;
+  font-weight: 400;
+}

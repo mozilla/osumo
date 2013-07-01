@@ -141,8 +141,9 @@ angular.module('osumo').controller('InstallController', ['$q', '$scope', 'VERSIO
       }).error(function(data, status, headers) {
         if (status === 0) {
           $scope.toast({message: L10NService._('It seems like you don\'t have a network connection'), type: 'error'});
+        } else {
+          $scope.toast({message: L10NService._('Downloading product failed with: ' + status)});
         }
-        $scooe.toast({message: L10NService._('Downloading product failed with: ' + status)});
         $scope.downloading[product] = false;
       });
     });

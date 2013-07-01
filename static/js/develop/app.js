@@ -8,7 +8,7 @@ app.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
   $locationProvider.html5Mode(true);
 
   $routeProvider.when('/', {
-    templateUrl: '/static/partials/loading.html',
+    template: '<progress class="center"></progress>',
     controller: 'HomeController'
   });
 
