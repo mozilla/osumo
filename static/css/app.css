@@ -77,7 +77,8 @@ section[role="region"] > header:first-child h1 {
   margin-bottom: 1rem;
 }
 
-.list-style-container label {
+.list-style-container label,
+.list-style-container p {
   display: block;
   margin: 1rem 0;
   width: 100%;
@@ -92,6 +93,13 @@ section[role="region"] > header:first-child h1 {
   font-weight: 400;
   font-size: 1.8rem;
   text-align: center;
+}
+
+h1.really-big {
+  font-size: 40px;
+  text-align: center;
+  text-shadow: 1px 1px 2px rgb(34, 34, 34);
+  font-weight: 100;
 }
 
 progress:not(value).center {

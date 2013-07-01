@@ -7,20 +7,13 @@ var app = angular.module('osumo', ['angularIndexedDb', 'angular_l10n']);
 app.config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider) {
   $locationProvider.html5Mode(true);
 
-  $routeProvider.when('/', {
-    template: '<progress class="center"></progress>',
-    controller: 'HomeController'
-  });
-
-  $routeProvider.when('/install', {
+  var installerPage = {
     templateUrl: '/static/partials/install.html',
     controller: 'InstallController'
-  });
+  }
 
-  $routeProvider.when('/kb', {
-    templateUrl: '/static/partials/select_language.html',
-    controller: 'SelectLanguageController'
-  });
+  $routeProvider.when('/', installerPage)
+  $routeProvider.when('/install', installerPage);
 
   $routeProvider.when('/:locale/products', {
     templateUrl: '/static/partials/select_product.html',
@@ -47,6 +40,11 @@ app.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
     controller: 'SettingsViewController'
   });
 
+  $routeProvider.when('/about', {
+    templateUrl: '/static/partials/about.html',
+    controller: 'AboutController'
+  });
+
   // Search needs to have a bar on the top of the page when pressed.
   // TODO: This is blocked until we migrate to firefox os like ui
   $routeProvider.when('/search', {
@@ -65,7 +63,7 @@ app.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
 }]);
 
 app.factory('title', ['$window', 'L10NService', function($window, L10NService){
-  return function(title) {
+  return function(title, doNotTranslate) {
     $window.document.title = title + ' - ' + L10NService._('Offline Mozilla Support');
     document.getElementById("app-title").innerHTML = title;
   };

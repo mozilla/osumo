@@ -2,14 +2,19 @@
   <label for="q" l10n>Query</label>
   <input name="q" type="text" ng-model="query" placeholder="Query" l10n translate-attr="placeholder" />
 
-  <label for="bundle" l10n>Choose a product to search in</label>
-  <select name="bundle">
-    <option value="{{ b.id }}" ng-repeat="b in bundles" ngx-selected="bundle == b.id">{{ b.name }}</option>
-  </select>
+  <div ng-show="bundles.length > 0">
+    <label for="bundle" l10n>Choose a product to search in</label>
+    <select name="bundle">
+      <option value="{{ b.id }}" ng-repeat="b in bundles" ngx-selected="bundle == b.id">{{ b.name }}</option>
+    </select>
+    <button type="submit" l10n>Search</button>
+  </div>
 
-  <button type="submit" l10n>Search</button>
+  <div ng-show="bundles.length == 0" class="warning-box">
+    <p><l10n>Warning: You don't have any content downloaded! You can download some </l10n><a href="/install" l10n>here</a>.</p>
+  </div>
+
 </form>
-
 
 <section data-type="list" class="search-results">
   <header><span l10n>Results</span></header>

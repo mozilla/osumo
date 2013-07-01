@@ -5,7 +5,7 @@
 angular.module('osumo').controller('InstallController', ['$q', '$scope', 'VERSION', 'title', 'DataService', 'AppService', 'L10NService', 'PlatformService', function($q, $scope, VERSION, title, DataService, AppService, L10NService, PlatformService) {
   L10NService.reset();
   setSearchParams();
-  title(L10NService._('Installer'));
+  title(L10NService._('Mozilla Support'));
 
   // Setup code
 
