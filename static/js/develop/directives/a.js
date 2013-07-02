@@ -19,7 +19,7 @@
           });
         }
 
-        if (href.indexOf('http') === 0) {
+        if (href && href.indexOf('http') === 0) {
           element.bind('click', function(event) {
             if (!navigator.onLine) {
               scope.$apply(function() {

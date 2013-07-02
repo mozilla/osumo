@@ -1,0 +1,9 @@
+<section data-type="list" ng-show="languages.length > 0">
+  <ul>
+    <li ng-repeat="language in languages">
+      <a href="" ng-click="save(language.id)">
+        <p>{{ language.name }}</p>
+      </a>
+    </li>
+  </ul>
+</section>

@@ -29,7 +29,6 @@
 
     $scope.searching = $scope.bundle && $scope.query;
     $scope.searchops = $scope.searching;
-    console.log($scope.searchops);
     $scope.timeTaken = -1;
     var time = new Date().getTime();
     if ($scope.searching) {

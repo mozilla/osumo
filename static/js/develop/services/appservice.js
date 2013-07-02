@@ -202,10 +202,5 @@
       return needupgrade.promise;
     };
 
-    $rootScope.$on('locale-changed', function(e, locale) {
-      var onlineSwitcher = document.getElementById('switch-to-online-site');
-      onlineSwitcher.href = 'https://support.mozilla.org/' + locale + '/home';
-    })
-
   }]);
 })();

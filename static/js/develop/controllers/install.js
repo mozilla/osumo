@@ -149,6 +149,8 @@ angular.module('osumo').controller('InstallController', ['$q', '$scope', 'VERSIO
     });
   };
 
+
+
 }]);
 
 })();

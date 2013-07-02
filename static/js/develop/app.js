@@ -7,13 +7,20 @@ var app = angular.module('osumo', ['angularIndexedDb', 'angular_l10n']);
 app.config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider) {
   $locationProvider.html5Mode(true);
 
-  var installerPage = {
+  $routeProvider.when('/install', {
     templateUrl: '/static/partials/install.html',
     controller: 'InstallController'
-  }
+  });
 
-  $routeProvider.when('/', installerPage)
-  $routeProvider.when('/install', installerPage);
+  $routeProvider.when('/', {
+    controller: 'HomeController',
+    template: '<progress class="center"></progress>'
+  });
+
+  $routeProvider.when('/languages', {
+    controller: 'SelectLanguageController',
+    templateUrl: '/static/partials/select_language.html'
+  });
 
   $routeProvider.when('/:locale/products', {
     templateUrl: '/static/partials/select_product.html',
@@ -33,11 +40,6 @@ app.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
   $routeProvider.when('/:locale/kb/:doc', {
     templateUrl: '/static/partials/doc.html',
     controller: 'DocViewer'
-  });
-
-  $routeProvider.when('/settings', {
-    templateUrl: '/static/partials/settings.html',
-    controller: 'SettingsViewController'
   });
 
   $routeProvider.when('/about', {

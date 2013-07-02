@@ -1,7 +1,9 @@
 'use strict';
 
 (function() {
-  angular.module('osumo').controller('ToastController', ['$scope', '$timeout', function($scope, $timeout) {
+
+  var module = angular.module('osumo');
+  module.controller('ToastController', ['$scope', '$timeout', function($scope, $timeout) {
 
     $scope.html = null;
     $scope.showclose = true;
@@ -27,4 +29,14 @@
       $scope.active = false;
     };
   }]);
+
+  module.controller('NavbarController', ['$scope', 'L10NService', 'DataService', function($scope, L10NService, DataService) {
+    $scope.locale = L10NService.currentLocale;
+
+    $scope.$on('locale-changed', function(e, locale) {
+      $scope.locale = locale;
+    });
+  }]);
+
+
 })();

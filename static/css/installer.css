@@ -28,24 +28,6 @@
   overflow: hidden;
 }
 
-#installer [data-type="list"] p[scroll] {
-  overflow: scroll;
-}
-
-#installer aside.pack-end {
-  margin: 0 0.8rem 0 0;
-  height: auto;
-  transform: translate(0, -50%);
-  top: 50%;
-}
-
-#installer aside.pack-end > button,
-#installer aside.pack-end > a[role="button"] {
-  margin: 0;
-  padding: 0 0.8rem;
-  font-weight: 400;
-}
-
 #installer [data-type="list"] li.downloading > progress {
   width: calc(100% - 4.4rem);
   margin: -0.6rem 2.2rem 0 2.2rem;

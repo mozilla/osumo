@@ -23,7 +23,7 @@
 </head>
 
 <body role="application" ng-app="osumo">
-  <nav id="sidebar">
+  <nav id="sidebar" ng-controller="NavbarController">
     <div id="search-bar">
         <form id="search" action="/search">
         <input type="hidden" name="product" id="search-product" />
@@ -36,11 +36,12 @@
 
     <header l10n>Navigation</header>
     <a href="/" l10n menubutton>Browse</a>
-    <a href="/settings" l10n menubutton>Settings</a>
+    <a href="/install" l10n menubutton>Download Articles</a>
+    <a href="/languages" l10n menubutton>Switch Language</a>
 
     <header l10n>Other</header>
     <a href="/about" menubutton l10n>About</a>
-    <a id="switch-to-online-site" href="https://support.mozilla.org" l10n>Switch to online site</a>
+    <a id="switch-to-online-site" ng-href="https://support.mozilla.org/{{ locale }}/home" l10n>Switch to online site</a>
   </nav>
 
 
@@ -58,10 +59,17 @@
   </section>
 
 
-  <section role="status" ng-controller="ToastController" ng-class="{active: active}">
-    <a href="" class="close icon" ng-show="showclose" ng-click="untoast()">&times;</a>
-    <p ng-bind-html-unsafe="html"></p>
-  </section>
+  <div ng-controller="ToastController">
+    <section role="status" ng-class="{active: appNeedsUpgrade, 'has-icons': true}">
+      <a href="" class="icon icon-upgrade" ng-click="upgradeApp()"></a>
+      <p l10n>Your app is out of date and needs an upgrade.</p>
+    </section>
+
+    <section role="status" ng-class="{active: active}">
+      <a href="" class="close icon" ng-show="showclose" ng-click="untoast()">&times;</a>
+      <p ng-bind-html-unsafe="html"></p>
+    </section>
+  </div>
 
   {% autoescape off %}
   {[ partials ]}

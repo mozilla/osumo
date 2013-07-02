@@ -31,12 +31,30 @@ header h1 {
   margin: 0 2.2rem;
 }
 
+[data-type="list"] p[scroll] {
+  overflow: scroll;
+}
+
 [data-type="list"] > header {
   margin: 1.2rem 0 0 0;
 }
 
 [data-type="list"] > header > span {
   margin: 0 1.2rem;
+}
+
+[data-type="list"] aside.pack-end {
+  margin: 0 0.8rem 0 0;
+  height: auto;
+  transform: translate(0, -50%);
+  top: 50%;
+}
+
+[data-type="list"] aside.pack-end > button,
+[data-type="list"] aside.pack-end > a[role="button"] {
+  margin: 0;
+  padding: 0 0.8rem;
+  font-weight: 400;
 }
 
 /* headers back button */

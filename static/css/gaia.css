@@ -392,13 +392,14 @@ section[role="region"] header h2 {
 
 /* ----------------------------------
  * HEADERS: dark
- * ---------------------------------- */
+ * disabled as we don't need it
+
 section[role="region"].skin-dark > header:first-child,
 .skin-dark section[role="region"] > header:first-child {
   background-image: url(../img/headers/ui/dark/header.png);
 }
 
-/* Navigation links (back, cancel, etc) */
+/* Navigation links (back, cancel, etc)
 section[role="region"].skin-dark > header:first-child > a .icon:after,
 .skin-dark section[role="region"] > header:first-child > a .icon:after,
 section[role="region"].skin-dark > header:first-child > button .icon:after,
@@ -423,7 +424,7 @@ section[role="region"].skin-dark header h2,
 
 /* ----------------------------------
  * HEADERS: organic
- * ---------------------------------- */
+ * Also disabled
 
 section[role="region"].skin-organic > header:first-child,
 .skin-organic section[role="region"] > header:first-child {
@@ -435,7 +436,7 @@ section[role="region"].skin-organic > header:first-child:after,
   margin-top: -0.1rem;
 }
 
-/* Navigation links (back, cancel, etc) */
+/* Navigation links (back, cancel, etc)
 section[role="region"].skin-organic > header:first-child > a .icon:after,
 .skin-organic section[role="region"] > header:first-child > a .icon:after,
 section[role="region"].skin-organic > header:first-child > button .icon:after,
@@ -458,6 +459,7 @@ section[role="region"].skin-organic header h2,
   background-color: #7f7f7f;
   color: #fff;
 }
+*/
 
 /* ----------------------------------
  * HEADERS: right-to-left tweaks
@@ -757,6 +759,7 @@ section[role="status"] a.icon {
   top: 50%;
   transform: translate(0, -50%);
   display: block;
+  opacity: 0.8;
 }
 
 section[role="status"] a.icon.close {
@@ -767,13 +770,16 @@ section[role="status"] a.icon.close {
   height: 40px;
 }
 
-section[role="status"] a.icon.icon-download {
-  background-image: url("/static/img/status/icons/download.png");
-  opacity: 0.8;
+section[role="status"] a.icon:hover {
+  opacity: 1;
 }
 
-section[role="status"] a.icon.icon-download:hover {
-  opacity: 1;
+section[role="status"] a.icon.icon-download {
+  background-image: url("/static/img/status/icons/download.png");
+}
+
+section[role="status"] a.icon.icon-upgrade {
+  background-image: url("/static/img/status/icons/upgrade.png");
 }
 
 section[role="status"] a:hover {
