@@ -1,4 +1,5 @@
 import os
+import subprocess
 
 DEBUG = False
 
@@ -19,6 +20,8 @@ MANIFEST_FILE_LOCATION = os.path.join(APP_FOLDER, 'manifest.webapp')
 
 PRODUCTION_JS_FILE = os.path.join(STATIC_FOLDER, 'js', 'app.min.js')
 PRODUCTION_CSS_FILE = os.path.join(STATIC_FOLDER, 'css', 'app.min.css')
+
+COMMIT_SHA = subprocess.check_output("git rev-parse HEAD", shell=True).strip()
 
 try:
     from settings_local import *

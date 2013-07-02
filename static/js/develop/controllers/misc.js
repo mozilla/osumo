@@ -117,6 +117,8 @@
 
   module.controller('AboutController', ['$scope', 'title', 'L10NService', function($scope, title, L10NService) {
     title(L10NService._('About'));
+    $scope.commitSha = window.COMMIT_SHA;
+    $scope.appcacheHash = window.APPCACHE_HASH;
   }]);
 
   module.controller('LegalController', ['$scope', 'title', 'L10NService', function($scope, title, L10NService) {

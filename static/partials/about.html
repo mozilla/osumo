@@ -1,7 +1,13 @@
 <div class="list-style-container">
   <p l10n>Offline SUMO is a free and open source application made to bring content on support.mozilla.org offline.</p>
-  <a href="https://github.com/mozilla/osumo" l10n role="button">Source Code</a>
 
+  <p class="text-center" l10n>Commit SHA1</p>
+  <a ng-href="https://github.com/mozilla/osumo/commit/{{ commitSha }}" target="_blank"><pre>{{ commitSha }}</pre></a>
+
+  <p class="text-center" l10n>Appcache Hash</p>
+  <pre>{{ appcacheHash }}</pre>
+
+  <a href="https://github.com/mozilla/osumo" l10n role="button">Source Code</a>
   <hr />
 
   <a href="/legal" l10n role="button">Legal Information</a>

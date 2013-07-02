@@ -4,6 +4,7 @@ from flask import Flask, render_template, make_response, abort, request, send_fi
 import requests
 
 from settings import (
+    COMMIT_SHA,
     TEMPLATES_FOLDER,
     BASE_URL,
     SUMO_URL,
@@ -15,7 +16,7 @@ from osumo.utils import (
     get_all_css_paths,
     get_all_script_paths,
     MINIFIED_PARTIALS,
-    version
+    appcache_hash
 )
 
 
@@ -40,6 +41,8 @@ def before_request():
     app.jinja_env.globals['scripts'] = get_all_script_paths()
     app.jinja_env.globals['csses'] = get_all_css_paths()
     app.jinja_env.globals['partials'] = MINIFIED_PARTIALS
+    app.jinja_env.globals['COMMIT_SHA'] = COMMIT_SHA
+    app.jinja_env.globals['APPCACHE_HASH'] = appcache_hash()
 
 
 @app.route('/manifest.webapp')
@@ -51,8 +54,7 @@ def manifest_file():
 @app.route('/manifest.appcache')
 def appcache():
     response = make_response(render_template('manifest.appcache',
-                                             files=APPCACHE_FILES,
-                                             version=version()))
+                                             files=APPCACHE_FILES))
 
     response.mimetype = 'text/cache-manifest'
     response.cache_control.no_cache = True

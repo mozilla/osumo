@@ -1,5 +1,5 @@
 CACHE MANIFEST
-# version {[ version ]}
+# version {[ APPCACHE_HASH ]}
 
 CACHE:
 {% for file in files %}{[ file ]}

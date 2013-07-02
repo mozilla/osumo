@@ -138,7 +138,7 @@ def get_all_css_paths():
     return csses
 
 
-def version():
+def appcache_hash():
     """Gets an version for the app itself.
 
     This is based on a hash of all the files in the appcache file.
@@ -193,7 +193,7 @@ else:
         return [PRODUCTION_JS_FILE[APP_FOLDER_LENGTH:]]
 
     hashes = get_appcache_files_hashes()
-    def version():
+    def appcache_hash():
         return hashes
 
     print "Setup done. Took: {} seconds".format(time.time() - start)
