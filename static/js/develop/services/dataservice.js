@@ -275,7 +275,11 @@
                 });
                 return;
               }
-              if (topicKey(locale, product, topic.value.slug) === topic.value.key && localeDoc.children.indexOf(topic.value.slug) >= 0 && (topic.value.children.length > 0 || topic.value.docs.length > 0)) {
+
+              // We need to check if the topic key agrees with the limitation
+              // of the slug, product, and locale. We also make sure that the
+              // topic actually has content and/or subtopics
+              if (topicKey(locale, product, topic.value.slug) === topic.value.key && (topic.value.children.length > 0 || topic.value.docs.length > 0)) {
                 topics.push({key: topic.value.key, name: topic.value.name, slug: topic.value.slug, product: product});
               }
               topic['continue']();
