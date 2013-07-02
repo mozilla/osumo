@@ -9,4 +9,7 @@ processes:
 mem: 64M
 instances: 1
 services: {}
-ignores: [".git", "devsettings.py"]
+ignores: [".git", "settings_local.py", "*.pyc", "*komodoproject", "*sublime*"]
+
+hooks:
+  pre-staging: make locale_js

@@ -21,9 +21,7 @@ div[viewer] {
 }
 
 .title-bar.bottom {
-  position: absolute;
-  left: 0;
-  bottom: 0;
+  /* Is there no easy way to stick something at the very bottom? */
 }
 
 #doc-content h1,

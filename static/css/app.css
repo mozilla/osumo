@@ -96,7 +96,7 @@ section[role="region"] > header:first-child h1 {
 }
 
 h1.really-big {
-  font-size: 40px;
+  font-size: 3.5rem;
   text-align: center;
   text-shadow: 1px 1px 2px rgb(34, 34, 34);
   font-weight: 100;

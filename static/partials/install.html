@@ -12,7 +12,7 @@
 
   <hr />
 
-  <label l10n>Select the product articles you'd like to read later</label>
+  <label l10n>Select the product articles you'd like to read</label>
   <section data-type="list">
     <ul>
       <li ng-hide="downloading.firefox">
@@ -73,54 +73,3 @@
     </ul>
   </section>
 </div>
-
-<!--
-<div class="row">
-  <div class="small-12 columns">
-
-
-    <div ng-hide="online">
-      <alert type="'alert'" showclose="true"><i10n>It looks like you're offline. Try connecting to the internet before using this.</i10n></alert>
-    </div>
-
-    <button id="install-app" class="expand" ng-hide="installed" ng-click="installApp()" l10n>Install App</button>
-
-    <hr ng-hide="installed" />
-
-    <p>oSUMO needs to download content in order to run offline. Please select
-    the products you are interested in and press 'Download Content'.</p>
-
-    <div class="center" l10n>Product</div>
-    <select id="installer-select-product" ng-model="product" ng-options="product.id as product.name for product in products">
-    </select>
-    <div class="center" l10n>Language</div>
-    <select id="installer-select-language" ng-model="locale" ng-options="language.id as language.name for language in languages">
-    </select>
-
-    <button id="install-bundle" class="expand" ng-click="installBundle()" l10n>Download Content</button>
-
-    <hr />
-
-    <h6 class="center" l10n>Installed Content</h6>
-
-    <table width="100%">
-      <thead>
-        <tr>
-          <th l10n>Product</th>
-          <th l10n>Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr ng-repeat="bundle in bundles">
-          <td>{{ bundle.name }}</td>
-          <td>
-            <a href="/{{ bundle.locale }}/products/{{ bundle.product }}" class="small expand button" l10n>Browse</a>
-            <a href="" class="small expand alert button" ng-click="deleteBundle(bundle)" l10n>Delete</a>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-
-  </div>
-</div>
--->

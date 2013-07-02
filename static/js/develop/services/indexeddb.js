@@ -145,10 +145,11 @@
       return deferred.promise;
     };
 
-    ObjectStore.prototype.delete = function(key) {
+    // Work around for https://github.com/rspivak/slimit/issues/52
+    ObjectStore.prototype['delete'] = function(key) {
       var deferred = $q.defer();
 
-      var request = this._objectStore.delete(key);
+      var request = this._objectStore['delete'](key);
       request.onsuccess = genericSuccess(deferred);
       request.onerror = genericError(deferred);
 

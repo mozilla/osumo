@@ -186,7 +186,9 @@
               product = result.value.products[i];
               bundles.push({id: result.value.key + "~" + product.slug, locale: result.value.key, product: product.slug, name: product.name + ' (' + result.value.name + ')'});
             }
-            result.continue();
+            // To work around a bug in slimit.
+            // https://github.com/rspivak/slimit/issues/52
+            result['continue']();
           });
         }
       );
@@ -216,7 +218,7 @@
           }
 
           locales.push({id: result.value.key, name: result.value.name});
-          result.continue();
+          result['continue']();
         });
       });
       return deferred.promise;
@@ -276,7 +278,7 @@
               if (topicKey(locale, product, topic.value.slug) === topic.value.key && localeDoc.children.indexOf(topic.value.slug) >= 0 && (topic.value.children.length > 0 || topic.value.docs.length > 0)) {
                 topics.push({key: topic.value.key, name: topic.value.name, slug: topic.value.slug, product: product});
               }
-              topic.continue();
+              topic['continue']();
             }
           );
         });

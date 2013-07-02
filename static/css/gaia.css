@@ -749,8 +749,8 @@ section[role="status"].has-icons p {
 }
 
 section[role="status"] a.icon {
-  width: 32px;
-  height: 32px;
+  width: 30px;
+  height: 30px;
   text-align: center;
   position: absolute;
   right: 20px;
@@ -768,7 +768,7 @@ section[role="status"] a.icon.close {
 }
 
 section[role="status"] a.icon.icon-download {
-  background-image: url("/static/img/status/icons/download-replace-me.png");
+  background-image: url("/static/img/status/icons/download.png");
   opacity: 0.8;
 }
 

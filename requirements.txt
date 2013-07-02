@@ -3,6 +3,9 @@ Jinja2==2.7
 MarkupSafe==0.18
 Werkzeug==0.8.3
 argparse==1.2.1
+cssmin==0.1.4
 gunicorn==0.17.4
+ply==3.4
 requests==1.2.3
+slimit==0.8.1
 wsgiref==0.1.2

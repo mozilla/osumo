@@ -21,6 +21,9 @@
   <div id="search-in-progress" class="list-style-container" ng-show="searching">
     <progress class="center"></progress>
   </div>
+  <div ng-show="!searchops">
+    <label l10n>You must enter a query and select a product in order to search.</label>
+  </div>
   <ul ng-show="results.length > 0">
     <li ng-repeat="doc in results">
       <a href="/{{ locale }}/kb/{{ doc.slug }}">

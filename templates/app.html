@@ -1,16 +1,11 @@
 <!DOCTYPE html>
-<html>
+<html manifest="/manifest.appcache">
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width">
-    <link rel="stylesheet" type="text/css" href="/static/css/gaia.css">
-    <link rel="stylesheet" type="text/css" href="/static/css/nav.css">
-    <link rel="stylesheet" type="text/css" href="/static/css/doc.css">
-    <link rel="stylesheet" type="text/css" href="/static/css/installer.css">
-    <link rel="stylesheet" type="text/css" href="/static/css/app.css">
-    <title>Offline Mozilla Support</title>
-
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    {% for css in csses %}
+    <link rel="stylesheet" type="text/css" href="{[ css ]}">{% endfor %}
+    <title>Offline Mozilla Support</title>
 
     <script>
       window.setSearchParams = function(locale, product) {
@@ -68,10 +63,14 @@
     <p ng-bind-html-unsafe="html"></p>
   </section>
 
+  {% autoescape off %}
+  {[ partials ]}
+  {% endautoescape %}
+
   <script src="/static/js/locales.js"></script>
   <script src="/static/js/vendors/angular.min.js"></script>
-    {% for script in scripts %}
-    <script src="{[ script ]}"></script>{% endfor %}
+  {% for script in scripts %}
+  <script src="{[ script ]}"></script>{% endfor %}
   <script src="/static/js/vendors/l10n.js"></script>
 </body>
 </html>
