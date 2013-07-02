@@ -44,7 +44,6 @@
     this.setup = function() {
       this.settingsDb = angularIndexedDb.open('osumo-settings', 1, function(db) {
         db.createObjectStore('meta', {keyPath: 'version'});
-        db.createObjectStore('locales', {keyPath: 'locale'});
       });
 
       this.mainDb = angularIndexedDb.open('osumo', DBVERSION, function(db) {
@@ -53,8 +52,9 @@
           stores[STORES[i]] = db.createObjectStore(STORES[i], {keyPath: 'key'});
         }
 
-        db.createObjectStore('images');
+        var imageStore = db.createObjectStore('images');
 
+        imageStore.createIndex('by_doc', 'doc');
         stores.topics.createIndex('by_product', 'product');
         stores.docs.createIndex('by_id', 'id');
       });
@@ -494,11 +494,11 @@
 
       this.mainDb.then(function(db) {
         var store = db.transaction('images').objectStore('images');
-        store.get(url).then(function(imageData) {
-          if (imageData === undefined) {
+        store.get(url).then(function(image) {
+          if (image === undefined) {
             deferred.reject();
           } else {
-            deferred.resolve(imageData);
+            deferred.resolve(image.data);
           }
         })
       });
@@ -506,7 +506,7 @@
       return deferred.promise;
     };
 
-    this.getImage = function(url) {
+    this.getImage = function(url, locale, doc) {
       var deferred = $q.defer();
 
 
@@ -520,7 +520,11 @@
               params: {url: url}
             }).success(function(data) {
               var store = db.transaction('images', 'readwrite').objectStore('images');
-              store.put(data, url);
+              var image = {
+                data: data,
+                doc: docKey(locale, doc)
+              };
+              store.put(image, url);
               deferred.resolve(data);
             }).error(function(data, status, headers, config) {
               deferred.reject(data);

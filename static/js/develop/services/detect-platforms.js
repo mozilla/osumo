@@ -23,7 +23,7 @@
     };
 
     this.isBrowser = function(browser) {
-      return BROWSERS[browser] === true;
+      return /(={0,1})(fx|m)(\d*)/.exec(browser);
     };
 
     var availableBrowsers = [

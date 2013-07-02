@@ -1,7 +1,7 @@
 'use strict';
 
 (function() {
-  angular.module('osumo').directive('img', ['$rootScope', '$timeout', 'DataService', 'L10NService', function($rootScope, $timeout, DataService, L10NService) {
+  angular.module('osumo').directive('img', ['$rootScope', '$timeout', '$route', 'DataService', 'L10NService', function($rootScope, $timeout, $route, DataService, L10NService) {
     var visible = function(element) {
       return element.offsetWidth > 0 || element.offsetHeight > 0;
     };
@@ -70,7 +70,7 @@
 
                 if (navigator.onLine) {
                   $rootScope.$safeApply(function() {
-                    DataService.getImage(originalSrc).then(function(imageData) {
+                    DataService.getImage(originalSrc, $route.current.params.locale, $route.current.params.doc).then(function(imageData) {
                       element.attr('src', imageData);
                       element.removeClass('placeholder-img');
                       element.unbind('click');

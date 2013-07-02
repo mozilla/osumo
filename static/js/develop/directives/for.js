@@ -5,51 +5,39 @@
 
     var EPSILON = 0.000001;
 
-    var extractBrowserVersion = function(symbol) {
-      var browser, version;
-      // Potential dragons ahead. Shouldn't be that bad.
-      // Basically we loop through until we find a valid browser
-      // identifier and then we get the version. Since we don't have
-      // any browser identifers that is the first part of another, this
-      // will work.
-      browser = '';
-      for (var j=0; j<symbol.length; j++) {
-        browser += symbol[j];
-        if (PlatformService.isBrowser(browser)) {
-          version = parseFloat(symbol.substring(j+1));
-          if (version - 35 < EPSILON) version = 3.5
-          break;
-        }
-      }
-
-      return {browser: browser, version: version};
-    };
-
     var processForData = function(forData) {
       forData = forData.split(',');
 
       var foundOS = false, foundBrowser = false;
       var oses = {};
       var browsers = [];
-      var symbol, browserData;
+      var symbol, browserData, match;
 
       for (var i=0, l=forData.length; i<l; i++) {
         if (PlatformService.isOS(forData[i])) {
           oses[forData[i]] = true;
-        } else if (PlatformService.isBrowser(forData[i])) {
-          symbol = forData[i];
-          if (symbol.substring(0, 1) === '=') {
-            symbol = symbol.substring(1);
-            browserData = extractBrowserVersion(symbol);
-            browserData.comparator = '=';
-          } else { // We assume it is >=
-            browserData = extractBrowserVersion(symbol);
-            browserData.comparator = '>=';
-          }
+        } else if (match = PlatformService.isBrowser(forData[i])) {
+          browserData = {
+            comparator: match[1].length === 0 ? '>=' : '=',
+            browser: match[2],
+            maxVersion: match[3]
+          };
+
           // Special case: fx3 and fx35 act like =fx3 and =fx35.
-          if (symbol === 'fx3' || symbol === 'fx35') {
+          if (browserData.maxVersion === '35') {
+            browserData.maxVersion = 3;
+            browserData.minVersion = 3.5;
             browserData.comparator = '=';
+          } else if (browserData.maxVersion === '3') {
+            browserData.maxVersion = 2.5;
+            browserData.minVersion = 3;
+            browserData.comparator = '=';
+          } else {
+            browserData.maxVersion = parseInt(browserData.maxVersion);
+            browserData.minVersion = browserData.maxVersion;
           }
+
+          browserData.maxVersion += (1 - EPSILON);
 
           browsers.push(browserData);
         }
@@ -63,9 +51,9 @@
         condition = conditions[i];
         switch (condition.comparator) {
           case '=':
-            return Math.abs(condition.version - version) < EPSILON;
+            return condition.minVersion <= version && version <= condition.maxVersion;
           case '>=':
-            return version - condition.version > -EPSILON;
+            return version - condition.minVersion > -EPSILON;
         }
       }
       return false;
@@ -148,8 +136,10 @@
         var hide = isInverted ? showImage : hideImage;
         var show = isInverted ? hideImage : showImage;
         if (shouldShow(platforms, PlatformService.browser, PlatformService.version, PlatformService.OS)) {
+          // console.log(forData, platforms, isInverted ? 'hide' : 'show');
           show(element);
         } else {
+          // console.log(forData, platforms, isInverted ? 'show' : 'hide');
           hide(element);
         }
       }
