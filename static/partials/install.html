@@ -63,7 +63,7 @@
     <ul>
       <li ng-repeat="bundle in bundles">
         <aside class="pack-end">
-          <button class="danger" l10n>Delete</button>
+          <button class="danger" l10n ng-click="deleteBundle(bundle)">Delete</button>
         </aside>
         <aside class="pack-end">
           <a href="/{{ bundle.locale }}/products/{{ bundle.product }}" role="button" l10n>Browse</a>

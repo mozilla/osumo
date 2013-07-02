@@ -1,7 +1,7 @@
 {
   "name": "Offline Mozilla Support",
   "description": "offline support.mozilla.org",
-  "version": "0.1",
+  "version": "0.2",
   "launch_path": "/",
   "icons": {
     "60": "/static/img/icon.png",

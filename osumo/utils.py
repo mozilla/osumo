@@ -45,6 +45,8 @@ def get_appcache_files_hashes():
         content = read_file(os.path.join(APP_FOLDER, fname.strip('/')))
         file_hashes.update(content)
 
+    read_file(os.path.join(APP_FOLDER, 'templates', 'app.html'))
+
     return file_hashes.hexdigest()
 
 
@@ -151,7 +153,7 @@ def generate_production_files():
 
     minified_js = minify_js(scripts)
     minified_css = minify_css(csses)
-    MINIFIED_PARTIALS = minify_partials(partials)
+    MINIFIED_PARTIALS = minify_partials(partials).decode('utf-8')
 
     with open(PRODUCTION_JS_FILE, 'w') as f:
         f.write(minified_js)

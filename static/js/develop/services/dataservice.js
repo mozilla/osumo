@@ -34,6 +34,10 @@
       return locale + '~' + docSlug;
     };
 
+    var bundleKey = function(locale, productSlug) {
+      return locale + '~' + productSlug;
+    };
+
     this.catastrophicFailure = null;
 
     /**
@@ -259,7 +263,8 @@
      * @returns {promise} A promise with a list of topics that has key as the
      *                    topic id and the name as the topic name.
      */
-    this.getAvailableTopics = function(locale, product) {
+    this.getAvailableTopics = function(locale, product, all) {
+      all = all || false;
       var deferred = $q.defer();
 
       this.mainDb.then(function(db) {
@@ -280,7 +285,11 @@
               // of the slug, product, and locale. We also make sure that the
               // topic actually has content and/or subtopics
               if (topicKey(locale, product, topic.value.slug) === topic.value.key && (topic.value.children.length > 0 || topic.value.docs.length > 0)) {
-                topics.push({key: topic.value.key, name: topic.value.name, slug: topic.value.slug, product: product});
+                if (all) {
+                  topics.push(topic.value);
+                } else {
+                  topics.push({key: topic.value.key, name: topic.value.name, slug: topic.value.slug, product: product});
+                }
               }
               topic['continue']();
             }
@@ -495,6 +504,7 @@
       this.mainDb.then(function(db) {
         var store = db.transaction('images').objectStore('images');
         store.get(url).then(function(image) {
+          console.log(image, url);
           if (image === undefined) {
             deferred.reject();
           } else {
@@ -508,7 +518,6 @@
 
     this.getImage = function(url, locale, doc) {
       var deferred = $q.defer();
-
 
       this.mainDb.then(function(db) {
         var store = db.transaction('images').objectStore('images');
@@ -533,6 +542,118 @@
             deferred.resolve(imageData);
           }
         });
+      });
+
+      return deferred.promise;
+    };
+
+    this.deleteDocument = function(store, locale, docslug) {
+      var deferred = $q.defer();
+
+
+
+      return deferred.promise;
+    };
+
+    this.deleteBundle = function(locale, product) {
+      var deferred = $q.defer();
+
+      this.mainDb.then(function(db) {
+
+        var allOps = [];
+        var topicsDeferred = $q.defer();
+
+        var trans = db.transaction(['indexes', 'locales'], 'readwrite');
+        var indexesStore = trans.objectStore('indexes');
+        var localesStore = trans.objectStore('locales');
+
+        self.getAvailableTopics(locale, product, true).then(function(topics) {
+          var trans = db.transaction(['docs', 'images', 'topics'], 'readwrite');
+
+          var topicsStore = trans.objectStore('topics');
+          var docsStore = trans.objectStore('docs');
+          var imagesStore = trans.objectStore('images');
+          var ops = [];
+          var dkey;
+
+          console.log('Deleting topics...');
+
+          var imageDeferred;
+          for (var i=0; i<topics.length; i++) {
+
+            // Deleting the documents
+            for (var j=0, l=topics[i].docs.length; j<l; j++) {
+              dkey = docKey(locale, topics[i].docs[j]);
+
+              ops.push(docsStore['delete'](dkey));
+
+              imageDeferred = $q.defer();
+              ops.push(imageDeferred.promise);
+
+              (function(imageDeferred){
+                imagesStore.index('by_doc').openCursor(IDBKeyRange.only(dkey)).then(function(result) {
+                  if (!result) {
+                    imageDeferred.resolve();
+                  } else {
+                    console.log('deleting image', result.primaryKey);
+                    imagesStore['delete'](result.primaryKey);
+                    result['continue']();
+                  }
+                });
+              })(imageDeferred);
+            }
+
+            ops.push(topicsStore['delete'](topics[i].key));
+          }
+
+
+          $q.all(ops).then(function() {
+            console.log("all topic ops resolved");
+            topicsDeferred.resolve();
+          }, function() { console.log('topicops reject') });
+        });
+
+        allOps.push(topicsDeferred.promise);
+        var indexDeleteOp = indexesStore['delete'](bundleKey(locale, product));
+        allOps.push(indexDeleteOp);
+        indexDeleteOp.then(function() { console.log('deleting index'); });
+
+        var localeDeferred = $q.defer();
+        allOps.push(localeDeferred.promise);
+
+        localesStore.get(locale).then(function(localeDoc) {
+          if (localeDoc) {
+            var newProducts = [];
+            for (var i=0; i<localeDoc.products; i++) {
+              if (localeDoc.products[i].slug !== product) {
+                newProducts.push(localeDoc.products[i]);
+              }
+            }
+            localeDoc.products = newProducts;
+
+            if (localeDoc.products.length > 0) {
+              console.log('updating locale');
+              localesStore.put(localeDoc).then(function() {
+                localeDeferred.resolve();
+                console.log('locale updated');
+              });
+            } else {
+              console.log('deleting locale');
+              localesStore['delete'](localeDoc.key).then(function() {
+                localeDeferred.resolve();
+                console.log('locale deleted');
+              });
+            }
+          } else {
+            deferred.reject();
+          }
+        });
+
+        $q.all(allOps).then(function() {
+          console.log("all done?");
+          deferred.resolve();
+        })
+
       });
 
       return deferred.promise;

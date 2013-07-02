@@ -149,6 +149,16 @@ angular.module('osumo').controller('InstallController', ['$q', '$scope', 'VERSIO
     });
   };
 
+  $scope.deleteBundle = function(bundle) {
+    console.log("start!");
+    var start = new Date().getTime();
+    DataService.deleteBundle(bundle.locale, bundle.product).then(function() {
+      $scope.bundles = DataService.getAvailableBundles();
+      $scope.checkedDownloadedForCurrentLocale();
+      $scope.toast({message: L10NService._('Deleted!') + ' ' + (new Date().getTime() - start) + 'ms', autoclose: 1500});
+    });
+  }
+
 
 
 }]);

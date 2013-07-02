@@ -1,5 +1,5 @@
 *.pyc
-devsettings.py
+settings_local.py
 *~
 docs/_build
 static/js/app.min.js

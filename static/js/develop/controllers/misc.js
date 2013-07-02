@@ -118,4 +118,8 @@
   module.controller('AboutController', ['$scope', 'title', 'L10NService', function($scope, title, L10NService) {
     title(L10NService._('About'));
   }]);
+
+  module.controller('LegalController', ['$scope', 'title', 'L10NService', function($scope, title, L10NService) {
+    title(L10NService._('Legal Information'));
+  }]);
 })();

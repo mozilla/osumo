@@ -47,6 +47,11 @@ app.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
     controller: 'AboutController'
   });
 
+  $routeProvider.when('/legal', {
+    templateUrl: '/static/partials/legal.html',
+    controller: 'LegalController'
+  });
+
   // Search needs to have a bar on the top of the page when pressed.
   // TODO: This is blocked until we migrate to firefox os like ui
   $routeProvider.when('/search', {
