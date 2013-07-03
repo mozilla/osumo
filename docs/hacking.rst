@@ -1,5 +1,0 @@
-.. _hacking-chapter:
-
-=======
-Hacking
-=======

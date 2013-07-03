@@ -11,7 +11,6 @@ Contents:
 
    overview
    running
-   hacking
    database
    offlinesearch
    contact
