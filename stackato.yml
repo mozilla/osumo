@@ -8,7 +8,9 @@ processes:
 
 mem: 64M
 instances: 1
-services: {}
+services: 
+  {}
+
 ignores: [".git", "settings_local.py", "*.pyc", "*komodoproject", "*sublime*"]
 
 hooks:

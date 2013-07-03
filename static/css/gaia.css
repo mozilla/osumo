@@ -1052,7 +1052,7 @@ body[role="application"] .button input {
 
 /* Spinner */
 progress:not([value]) {
-  background: url(/static/img/progress_activity/ui/activity.png) no-repeat center center / 100% auto;
+  background: url(/static/img/progress_activity/ui/spinner.png) no-repeat center center / 100% auto;
   animation: 0.9s rotate infinite steps(30);
   width: 2.9rem;
   height: 2.9rem;
