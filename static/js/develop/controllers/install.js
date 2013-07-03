@@ -127,12 +127,9 @@ angular.module('osumo').controller('InstallController', ['$q', '$scope', 'VERSIO
           return;
         }
 
-        var storeOps = [];
-        for (var objectStoreName in data) {
-          storeOps.push(DataService.addData(objectStoreName, data[objectStoreName]));
-        };
+        var hash = headers['X-Content-Hash'];
 
-        $q.all(storeOps).then(function() {
+        DataService.saveBundle(data, hash, product, $scope.locale).then(function() {
           $scope.toast({message: L10NService._('Downloaded!'), type: 'success', autoclose: 1500});
           $scope.downloading[product] = false;
           $scope.downloaded[product] = true;
@@ -158,8 +155,6 @@ angular.module('osumo').controller('InstallController', ['$q', '$scope', 'VERSIO
       $scope.toast({message: L10NService._('Deleted!') + ' ' + (new Date().getTime() - start) + 'ms', autoclose: 1500});
     });
   }
-
-
 
 }]);
 

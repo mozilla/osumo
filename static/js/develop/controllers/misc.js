@@ -41,22 +41,9 @@
     L10NService.reset();
     $scope.languages = DataService.getAvailableLanguages();
 
-    var prevRoute = null;
-    $scope.$on('$routeChangeSuccess', function(event, current, prev) {
-      prevRoute = prev;
-    });
-
     $scope.save = function(locale) {
       AppService.setDefaultLocale(locale).then(function() {
         var url = '/' + locale + '/products';
-        if (prevRoute) {
-          if (prevRoute.params.doc)
-            url = '/' + locale + '/kb/' + prevRoute.params.doc;
-          else if (prevRoute.params.product && prevRoute.params.topic)
-            url = '/' + locale + '/products/' + prevRoute.params.product + '/' + prevRoute.params.topic;
-          else if (prevRoute.params.product)
-            url = '/' + locale + '/products/' + prevRoute.params.product;
-        }
         $location.path(url);
       });
     };
@@ -99,20 +86,13 @@
     $scope.topic = DataService.getTopicExpanded($scope.locale, $scope.product, $route.current.params.topic);
     $scope.topic.then(function(topic) {
       title(topic.name);
+      console.log(topic);
     });
   }]);
 
 
   module.controller('NotFoundController', ['$scope', 'title', 'L10NService', function($scope, title, L10NService) {
     title(L10NService._('Page Not Found'));
-
-    // This is here so that if we changed language and it gives us a 404, it
-    // will redirect us to the product page.
-    $scope.$on('$routeChangeSuccess', function(event, current, prev) {
-      if (prev && prev.$$route.controller === 'SelectLanguageController') {
-        $location.path('/' + current.params.locale + '/products');
-      }
-    });
   }]);
 
   module.controller('AboutController', ['$scope', 'title', 'L10NService', function($scope, title, L10NService) {

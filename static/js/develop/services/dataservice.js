@@ -57,6 +57,7 @@
         }
 
         var imageStore = db.createObjectStore('images');
+        db.createObjectStore('bundles');
 
         imageStore.createIndex('by_doc', 'doc');
         stores.topics.createIndex('by_product', 'product');
@@ -103,10 +104,27 @@
       // Note that the url starts with en-US. It really does not matter which
       // one it starts. The GET parameters will always override it.
       return $http({
-        url: window.SUMO_URL + 'offline/get-bundles',
+        url: window.SUMO_URL + 'offline/get-bundle',
         method: 'GET',
-        params: {products: product, locales: locale}
+        params: {product: product, locale: locale}
       });
+    };
+
+    this.saveBundle = function(bundle, hash, product, locale) {
+      var storeOps = [];
+      for (var objectStoreName in bundle) {
+        storeOps.push(this.addData(objectStoreName, bundle[objectStoreName]));
+      };
+
+      var d = $q.defer();
+      this.mainDb.then(function(db) {
+        var store = db.transaction('bundles', 'readwrite').objectStore('bundles');
+        store.put(hash, bundleKey(locale, product)).then(function() {
+          d.resolve();
+        });
+      })
+      storeOps.push(d.promise);
+      return $q.all(storeOps);
     };
 
     /**
@@ -117,10 +135,11 @@
      *                      that object store.
      */
     this.addData = function(objectStoreName, data) {
-      var ops = [];
+      var deferred = $q.defer();
       var l = data.length;
 
       this.mainDb.then(function(db) {
+        var ops = [];
         var store = db.transaction(objectStoreName, 'readwrite').objectStore(objectStoreName);
 
         var storeOne = function(i) {
@@ -156,9 +175,13 @@
             ops.push(store.put(data[i]));
           }
         }
+
+        $q.all(ops).then(function() {
+          deferred.resolve();
+        });
       });
 
-      return $q.all(ops);
+      return deferred.promise;
     };
 
     /**
@@ -563,9 +586,10 @@
         var allOps = [];
         var topicsDeferred = $q.defer();
 
-        var trans = db.transaction(['indexes', 'locales'], 'readwrite');
+        var trans = db.transaction(['indexes', 'locales', 'bundles'], 'readwrite');
         var indexesStore = trans.objectStore('indexes');
         var localesStore = trans.objectStore('locales');
+        var bundlesStore = trans.objectStore('bundles');
 
         self.getAvailableTopics(locale, product, true).then(function(topics) {
           var trans = db.transaction(['docs', 'images', 'topics'], 'readwrite');
@@ -614,9 +638,7 @@
         });
 
         allOps.push(topicsDeferred.promise);
-        var indexDeleteOp = indexesStore['delete'](bundleKey(locale, product));
-        allOps.push(indexDeleteOp);
-        indexDeleteOp.then(function() { console.log('deleting index'); });
+
 
         var localeDeferred = $q.defer();
         allOps.push(localeDeferred.promise);
@@ -648,6 +670,10 @@
             deferred.reject();
           }
         });
+
+        var bkey = bundleKey(locale, product);
+        allOps.push(indexesStore['delete'](bkey));
+        allOps.push(bundlesStore['delete'](bkey));
 
         $q.all(allOps).then(function() {
           console.log("all done?");
