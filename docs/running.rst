@@ -51,6 +51,14 @@ your app in (it will error if you view it from a different URL!) and
 ``SUMO_URL`` is either an instance of kitsune running on your computer or if
 it is deployed, you can leave it out.
 
+To finally run the app:
+
+::
+
+  $ python server.py
+
+Follow the link you set as ``BASE_URL`` in your browser to view.
+
 Generating locales
 ==================
 
