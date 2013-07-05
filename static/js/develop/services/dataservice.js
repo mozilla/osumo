@@ -122,9 +122,41 @@
         store.put(hash, bundleKey(locale, product)).then(function() {
           d.resolve();
         });
-      })
+      });
       storeOps.push(d.promise);
       return $q.all(storeOps);
+    };
+
+    this.needsUpdate = function(product, locale) {
+      var bkey = bundleKey(locale, product);
+      var deferred = $q.defer();
+
+      var currentVersionPromise = this.mainDb.then(function(db) {
+        var store = db.transaction('bundles').objectStore('bundles');
+        return store.get(bkey);
+      });
+
+      var checkRequest = $http({
+        url: window.SUMO_URL + 'offline/bundle-version',
+        method: 'GET',
+        params: {product: product, locale: locale}
+      });
+
+      checkRequest.success(function(data, status, headers, config) {
+        currentVersionPromise.then(function(currentVersionHash) {
+          deferred.resolve(data.trim() !== currentVersionHash);
+        });
+      });
+
+      checkRequest.error(function(data, status, headers, config) {
+        if (status === 404 || status === 503) {
+          // In this case the server might not have the hash yet as it is
+          // not generated or redis is down. So we say that our version is okay
+          deferred.resolve(true);
+        }
+      });
+
+      return deferred.promise;
     };
 
     /**
@@ -566,14 +598,6 @@
           }
         });
       });
-
-      return deferred.promise;
-    };
-
-    this.deleteDocument = function(store, locale, docslug) {
-      var deferred = $q.defer();
-
-
 
       return deferred.promise;
     };

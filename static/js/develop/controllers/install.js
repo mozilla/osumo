@@ -127,7 +127,7 @@ angular.module('osumo').controller('InstallController', ['$q', '$scope', 'VERSIO
           return;
         }
 
-        var hash = headers['X-Content-Hash'];
+        var hash = headers('X-Content-Hash');
 
         DataService.saveBundle(data, hash, product, $scope.locale).then(function() {
           $scope.toast({message: L10NService._('Downloaded!'), type: 'success', autoclose: 1500});
