@@ -5,38 +5,6 @@
 
     var APPURL = BASE_URL + 'manifest.webapp';
 
-    /**
-     * Private method to initialize the database after after installation.
-     *
-     * @param {deferred} d  A deferred to resolve or reject once the operation
-     *                      is completed.
-     */
-    var _initializeDatabase = function(d) {
-      if (navigator.language)
-        L10NService.setLocale(navigator.language);
-
-      $rootScope.$safeApply(function() {
-        DataService.settingsDb.then(function(db) {
-          db.transaction('meta', 'readwrite').objectStore('meta').put({
-            version: VERSION,
-            locale: navigator.language || 'en-US' // TODO: change this to something more sane..
-          }).then(
-            function() {
-              $rootScope.$safeApply(function() {
-                d.resolve();
-              });
-            },
-            function(err) {
-              $rootScope.$safeApply(function() {
-                console.log('install errors', err);
-                d.reject(err);
-              });
-            }
-          );
-        });
-      });
-    };
-
     this.checkInstalled = function() {
       var deferred = $q.defer();
       if (this.installCompatible(deferred)) {
@@ -77,7 +45,6 @@
       $timeout(function() {
         $rootScope.toast({
           message: L10NService._('Your browser is not compatible and this app may not work as intended. Try using Firefox instead!'),
-          type: 'alert',
           showclose: 'false'
         }, "incompatible-browser");
       }, 0);
@@ -102,13 +69,12 @@
         request = window.navigator.mozApps.getSelf();
         request.onsuccess = function(e) {
           if (request.result) {
-            DataService.settingsDb.then(function(db) {
-              $rootScope.$safeApply(function() {
+            $rootScope.$apply(function() {
+              DataService.settingsDb.then(function(db) {
                 db.transaction('meta').objectStore('meta').get(VERSION).then(function(value) {
                   if (value === undefined || !value.installed) {
                     d.resolve();
-                    console.log('We are already running as an app. Initializing the database.');
-                    _initializeDatabase(d);
+                    console.log('We are already running as an app.');
                   }
                 });
               });
@@ -141,7 +107,9 @@
           if (reason === 'not installed') {
             install = window.navigator.mozApps.install(APPURL);
             install.onsuccess = function() {
-              _initializeDatabase(d);
+              $rootScope.$safeApply(function() {
+                d.resolve();
+              });
             };
 
             install.onerror = function(e) {
@@ -163,8 +131,11 @@
       L10NService.setDefaultLocale(locale);
       DataService.settingsDb.then(function(db) {
         var metaStore = db.transaction('meta', 'readwrite').objectStore('meta');
-        metaStore.put({version: VERSION, locale: locale}).then(function() {
-          deferred.resolve();
+        metaStore.get(VERSION).then(function(original) {
+          original.locale = locale;
+          metaStore.put(original).then(function() {
+            deferred.resolve();
+          });
         });
       });
 

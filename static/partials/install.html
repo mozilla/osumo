@@ -1,8 +1,12 @@
 <div id="installer">
 
-  <div id="install-button">
-    <button class="expand" ng-hide="installed" ng-click="installApp()" l10n>Install to device</button>
-    <hr ng-hide="installed" />
+  <div id="action-buttons">
+    <button ng-hide="installed" ng-click="installApp()" l10n>Install to device</button>
+    <br />
+    <button ng-click="checkUpdate($event)" l10n>
+      Check update
+    </button>
+    <hr />
   </div>
 
   <label l10n>Select a language</label>

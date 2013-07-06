@@ -2,7 +2,7 @@
 
 (function(){
 
-angular.module('osumo').controller('InstallController', ['$q', '$scope', 'VERSION', 'title', 'DataService', 'AppService', 'L10NService', 'PlatformService', function($q, $scope, VERSION, title, DataService, AppService, L10NService, PlatformService) {
+angular.module('osumo').controller('InstallController', ['$q', '$scope', '$rootScope', 'VERSION', 'title', 'DataService', 'AppService', 'L10NService', 'PlatformService', function($q, $scope, $rootScope, VERSION, title, DataService, AppService, L10NService, PlatformService) {
   L10NService.reset();
   setSearchParams();
   title(L10NService._('Mozilla Support'));
@@ -154,7 +154,17 @@ angular.module('osumo').controller('InstallController', ['$q', '$scope', 'VERSIO
       $scope.checkedDownloadedForCurrentLocale();
       $scope.toast({message: L10NService._('Deleted!') + ' ' + (new Date().getTime() - start) + 'ms', autoclose: 1500});
     });
-  }
+  };
+
+  $scope.checkUpdate = function(e) {
+    e.target.textContent = L10NService._('Checking...');
+    DataService.checkAllUpdates().then(function(update) {
+      e.target.textContent = L10NService._('Check update');
+      if (!update) {
+        $scope.toast({message: L10NService._('There is no updates available at this time.'), autoclose: 1500});
+      }
+    });
+  };
 
 }]);
 

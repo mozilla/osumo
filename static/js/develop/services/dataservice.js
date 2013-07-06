@@ -23,7 +23,7 @@
 
   var STORES = ['locales', 'docs', 'topics', 'indexes'];
 
-  angular.module('osumo').service('DataService', ['$rootScope', '$q', '$http', '$timeout', 'DBVERSION', 'angularIndexedDb', 'L10NService', function($rootScope, $q, $http, $timeout, DBVERSION, angularIndexedDb, L10NService) {
+  angular.module('osumo').service('DataService', ['$rootScope', '$q', '$http', '$timeout', 'VERSION', 'DBVERSION', 'angularIndexedDb', 'L10NService', function($rootScope, $q, $http, $timeout, VERSION, DBVERSION, angularIndexedDb, L10NService) {
 
     var self = this;
     var topicKey = function(locale, productSlug, topicSlug) {
@@ -47,7 +47,12 @@
      */
     this.setup = function() {
       this.settingsDb = angularIndexedDb.open('osumo-settings', 1, function(db) {
-        db.createObjectStore('meta', {keyPath: 'version'});
+        var store = db.createObjectStore('meta', {keyPath: 'version'});
+        store.put({
+          version: VERSION,
+          locale: navigator.language || 'en-US',
+          lastUpdated: 0
+        });
       });
 
       this.mainDb = angularIndexedDb.open('osumo', DBVERSION, function(db) {
@@ -124,10 +129,43 @@
         });
       });
       storeOps.push(d.promise);
-      return $q.all(storeOps);
+
+      var promise = $q.all(storeOps);
+      promise.then(function() {
+        self.updateLastUpdateTime();
+      });
+      return promise;
     };
 
-    this.needsUpdate = function(product, locale) {
+    this.checkAllUpdates = function() {
+      var deferred = $q.defer();
+
+      this.getAvailableBundles().then(function(bundles) {
+        var ops = [];
+
+        for (var i=0; i<bundles.length; i++) {
+          ops.push(self.checkUpdate(bundles[i].product, bundles[i].locale));
+        }
+
+        $q.all(ops).then(function(updates) {
+          var needsUpdate = false;
+          var bundlesToUpdate = [];
+
+          for (var i=0; i<updates.length; i++) {
+            needsUpdate = needsUpdate || updates[i];
+            if (updates[i] > 0)
+              bundlesToUpdate.push(bundles[i]);
+          }
+
+          $rootScope.$broadcast('articles-update', needsUpdate, bundlesToUpdate);
+          deferred.resolve(needsUpdate, bundlesToUpdate);
+        });
+      });
+
+      return deferred.promise;
+    };
+
+    this.checkUpdate = function(product, locale) {
       var bkey = bundleKey(locale, product);
       var deferred = $q.defer();
 
@@ -137,14 +175,15 @@
       });
 
       var checkRequest = $http({
-        url: window.SUMO_URL + 'offline/bundle-version',
+        url: window.SUMO_URL + 'offline/bundle-meta',
         method: 'GET',
         params: {product: product, locale: locale}
       });
 
       checkRequest.success(function(data, status, headers, config) {
         currentVersionPromise.then(function(currentVersionHash) {
-          deferred.resolve(data.trim() !== currentVersionHash);
+          console.log(data.hash, currentVersionHash, product, locale);
+          deferred.resolve(data.hash.trim() !== currentVersionHash);
         });
       });
 
@@ -152,8 +191,48 @@
         if (status === 404 || status === 503) {
           // In this case the server might not have the hash yet as it is
           // not generated or redis is down. So we say that our version is okay
-          deferred.resolve(true);
+          deferred.resolve(false);
         }
+      });
+
+      deferred.promise.then(function() {
+        self.updateLastUpdateTime();
+      })
+
+      return deferred.promise;
+    };
+
+    this.updateLastUpdateTime = function() {
+      var deferred = $q.defer();
+
+      this.settingsDb.then(function(db) {
+        var store = db.transaction('meta', 'readwrite').objectStore('meta');
+
+        store.get(VERSION).then(function(original) {
+          original.lastUpdated = new Date().getTime() / 1000;
+          store.put(original).then(function() {
+            deferred.resolve();
+          });
+        });
+      });
+
+      return deferred.promise;
+    };
+
+    this.getLastCheckTime = function() {
+      var deferred = $q.defer();
+
+      this.settingsDb.then(function(db) {
+        var store = db.transaction('meta', 'readwrite').objectStore('meta');
+
+        store.get(VERSION).then(function(original) {
+          if (original === undefined) {
+            // Initialization not done. So we're gonna do that now.
+            deferred.resolve(new Date().getTime() / 1000);
+          } else {
+            deferred.resolve(original.lastUpdated);
+          }
+        });
       });
 
       return deferred.promise;
@@ -670,7 +749,7 @@
         localesStore.get(locale).then(function(localeDoc) {
           if (localeDoc) {
             var newProducts = [];
-            for (var i=0; i<localeDoc.products; i++) {
+            for (var i=0; i<localeDoc.products.length; i++) {
               if (localeDoc.products[i].slug !== product) {
                 newProducts.push(localeDoc.products[i]);
               }

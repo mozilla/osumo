@@ -5,12 +5,12 @@
     font-size: 1.8rem;
 }
 
-#installer #install-button {
+#installer #action-buttons {
   margin-top: 2rem;
 }
 
-#installer #install-button > button {
-  margin: 0 2.2rem;
+#installer #action-buttons > button {
+  margin: 0 2.2rem 1rem 2.2rem;
   width: calc(100% - 4.4rem);
 }
 
@@ -38,4 +38,3 @@
   right: 2.0rem;
   text-align: right;
 }
-

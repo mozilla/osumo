@@ -61,10 +61,16 @@
   </section>
 
 
+
   <div ng-controller="ToastController">
     <section role="status" ng-class="{active: appNeedsUpgrade, 'has-icons': true}">
       <a href="" class="icon icon-upgrade" ng-click="upgradeApp()"></a>
       <p l10n>Your app is out of date and needs an upgrade.</p>
+    </section>
+
+    <section role="status" ng-class="{active: needsUpdate, 'has-icons': true}">
+      <a href="" class="icon icon-upgrade" ng-click="updateArticles()"></a>
+      <p l10n>Updates are available to the articles you've downloaded.</p>
     </section>
 
     <section role="status" ng-class="{active: active}">

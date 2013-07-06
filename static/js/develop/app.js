@@ -150,6 +150,18 @@ app.run(['$rootScope', '$location', 'AppService', 'DataService', 'L10NService', 
     });
   });
 
+  DataService.getLastCheckTime().then(function(lastUpdateTime) {
+    if (new Date().getTime() / 1000 - lastUpdateTime > 604800) {
+      DataService.checkAllUpdates();
+    }
+  });
+
+  $rootScope.$on('articles-update', function(e, needsUpdate, bundlesToUpdate) {
+    $rootScope.needsUpdate = needsUpdate;
+    $rootScope.bundlesToUpdate = bundlesToUpdate;
+    console.log(needsUpdate, bundlesToUpdate);
+  });
+
 }]);
 
 })();
