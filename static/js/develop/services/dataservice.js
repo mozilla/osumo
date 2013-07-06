@@ -264,7 +264,11 @@
               dataToStore = data[i];
             } else { // Merge
               dataToStore = result;
-              result.products = result.products.concat(data[i].products);
+              for (var j=0; j<data[i].products.length; j++) {
+                if (result.products.indexOf(data[i].products[j]) !== -1) {
+                  result.products.push(data[i].products[j]);
+                }
+              }
             }
 
             store.put(dataToStore).then(function() {

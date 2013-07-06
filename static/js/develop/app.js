@@ -99,7 +99,7 @@ app.directive('ngxSelected', function() {
   }
 });
 
-app.run(['$rootScope', '$location', 'AppService', 'DataService', 'L10NService', function($rootScope, $location, AppService, DataService, L10NService) {
+app.run(['$rootScope', '$location', '$q', 'AppService', 'DataService', 'L10NService', function($rootScope, $location, $q, AppService, DataService, L10NService) {
   // Toasting stuff is fun! Though we need butter here at the Mozilla MV office
   $rootScope.toast = function(toast) {
     $rootScope.$broadcast('toast', toast);
@@ -161,6 +161,39 @@ app.run(['$rootScope', '$location', 'AppService', 'DataService', 'L10NService', 
     $rootScope.bundlesToUpdate = bundlesToUpdate;
     console.log(needsUpdate, bundlesToUpdate);
   });
+
+  $rootScope.updateArticles = function() {
+    $rootScope.needsUpdate = false;
+    var ops = [];
+    var d, product, locale;
+    for (var i=0; i<$rootScope.bundlesToUpdate.length; i++) {
+      $rootScope.toast({message: L10NService._('Updating articles...'), showclose: false});
+      d = $q.defer();
+      (function(d){
+        product = $rootScope.bundlesToUpdate[i].product;
+        locale = $rootScope.bundlesToUpdate[i].locale;
+        DataService.getBundleFromSource(product, locale).success(function(data, status, headers) {
+          DataService.saveBundle(data, headers('X-Content-Hash'), product, locale).then(function() {
+            d.resolve();
+          });
+        }).error(function(data, status, headers) {
+          d.reject(status);
+          console.log("update failed", status);
+        });
+      })(d);
+      ops.push(d.promise);
+    }
+
+    $q.all(ops).then(
+      function() {
+        $rootScope.bundlesToUpdate = [];
+        $rootScope.toast({message: L10NService._('Articles are all updated!')});
+      },
+      function() {
+        $rootScope.toast({message: L10NService._('Update failed. Please try again later.')});
+      }
+    );
+  };
 
 }]);
 
