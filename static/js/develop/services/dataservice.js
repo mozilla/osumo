@@ -103,7 +103,6 @@
      * @param {String} product  The product's slug (such as 'firefox').
      * @param {String} locale  The locale's code name (such as 'en-US').
      * @returns {$http}  An angular $http request.
-     * s
      */
     this.getBundleFromSource = function(product, locale) {
       // Note that the url starts with en-US. It really does not matter which
@@ -552,24 +551,6 @@
 
       return deferred.promise;
     };
-
-    /**
-     * Gets a document via its id. For search
-     */
-    this.getDocById = function(id) {
-      var deferred = $q.defer();
-
-      this.mainDb.then(function(db) {
-        var store = db.transaction('docs').objectStore('docs');
-        var index = store.index('by_id');
-        index.get(id).then(function(doc) {
-          deferred.resolve(doc);
-        });
-      });
-
-      return deferred.promise;
-    };
-
 
     /**
      * Gets an index.
