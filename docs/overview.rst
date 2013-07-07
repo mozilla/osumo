@@ -40,3 +40,12 @@ The server also serves all the static files and builds the JavaScript and other
 files that needs to be generated.
 
 Most of the interesting code lives under static/js/develop/ and static/partials/.
+
+Component on Kitsune
+====================
+
+The offline sumo app requires a component on Kitsune as we need to be able to
+get the data from the production wiki. Currently, one route is provided:
+/offline/get-bundles. This url will return a bundle that is to be directly
+stored into client sides' IndexedDB. The details of this structure is detailed
+in :ref:`database-chapter`.
