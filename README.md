@@ -30,6 +30,8 @@ Another part of this project also lives in
 [kitsune](https://github.com/mozilla/kitsune). So take a look at that project
 as well.
 
+To see some developer docs, go to https://osumo.readthedocs.org
+
 License
 =======
 
