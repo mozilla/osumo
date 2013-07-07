@@ -86,7 +86,6 @@
     $scope.topic = DataService.getTopicExpanded($scope.locale, $scope.product, $route.current.params.topic);
     $scope.topic.then(function(topic) {
       title(topic.name);
-      console.log(topic);
     });
   }]);
 
