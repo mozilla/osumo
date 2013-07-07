@@ -149,3 +149,8 @@ progress:not(value).center {
 #legal h1 {
   text-align: center;
 }
+
+#about pre {
+  text-align: center;
+  font-size: 13px;
+}

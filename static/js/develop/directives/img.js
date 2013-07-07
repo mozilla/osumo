@@ -32,7 +32,15 @@
               };
 
               // We guess to see if it is an inline image or a block image.
-              // We observe that the block image do not have surrounding texts
+              // We observe that the block image do not have surrounding texts.
+              // Unless the block image is by itself in a table (?). So we also
+              // check to see if we are contained in a td. We check only 3
+              // levels back as it seems any further it is likely something
+              // weird and we should just use normal checking procedure. If we
+              // are in a table.. we probably will be an inline image?
+              // See: en-US/kb/customize-navigation-buttons-back-home-bookmarks.
+              // (1 level back: only td and image, 2 levels back: td, span.for,
+              //  img, 3 levels...????)
               var prev = element[0].previousSibling;
               var next = element[0].nextSibling;
 
@@ -53,7 +61,19 @@
                 nextCheckedout = next === null ? true : next.nodeName.toLowerCase() !== '#text';
               }
 
-              if ((prevCheckedout && nextCheckedout) || element.parent().text().trim().length === 0) {
+              var j = 3;
+              var parent = element, inTable = false;
+              while (j >= 0) {
+                parent = parent.parent();
+                if (parent[0].nodeName.toLowerCase() === 'td') {
+                  j = -1;
+                  inTable = true;
+                } else {
+                  j--;
+                }
+              }
+
+              if (!inTable && ((prevCheckedout && nextCheckedout) || element.parent().text().trim().length === 0)) {
                 // block
                 element.attr('src', '/static/img/placeholder-large.png');
               } else {

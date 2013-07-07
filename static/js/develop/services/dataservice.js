@@ -623,7 +623,6 @@
       this.mainDb.then(function(db) {
         var store = db.transaction('images').objectStore('images');
         store.get(url).then(function(image) {
-          console.log(image, url);
           if (image === undefined) {
             deferred.reject();
           } else {
