@@ -553,6 +553,24 @@
     };
 
     /**
+     * Gets a document via its id. For search
+     */
+    this.getDocById = function(id) {
+      var deferred = $q.defer();
+
+      this.mainDb.then(function(db) {
+        var store = db.transaction('docs').objectStore('docs');
+        var index = store.index('by_id');
+        index.get(id).then(function(doc) {
+          deferred.resolve(doc);
+        });
+      });
+
+      return deferred.promise;
+    };
+
+
+    /**
      * Gets an index.
      */
     this.search = function(queryTerms, bundlekey) {
