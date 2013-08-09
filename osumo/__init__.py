@@ -20,18 +20,9 @@ from osumo.utils import (
 )
 
 
-class CustomFlask(Flask):
-    jinja_options = Flask.jinja_options.copy()
-    # This way we don't collide with angular.
-    jinja_options.update({
-        'variable_start_string': '{[',
-        'variable_end_string': ']}'
-    })
-
-
-app = CustomFlask(__name__,
-                  template_folder=TEMPLATES_FOLDER,
-                  static_folder=STATIC_FOLDER)
+app = Flask(__name__,
+            template_folder=TEMPLATES_FOLDER,
+            static_folder=STATIC_FOLDER)
 
 
 @app.before_request
