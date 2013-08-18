@@ -1,5 +1,13 @@
 'use strict';
 
+window.setSearchParams = function(locale, product) {
+  locale = locale || '';
+  product = product || '';
+
+  document.getElementById('search-locale').value = locale;
+  document.getElementById('search-product').value = product;
+};
+
 (function() {
 
 var app = angular.module('osumo', ['angularIndexedDb', 'angular_l10n']);

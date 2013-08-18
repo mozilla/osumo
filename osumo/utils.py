@@ -3,9 +3,11 @@ import os
 import re
 
 from cssmin import cssmin
+import requests
 from slimit import minify
 
 from settings import (
+    SUMO_URL,
     APP_FOLDER,
     APP_FOLDER_LENGTH,
     CSS_FOLDER,
@@ -23,6 +25,8 @@ from settings import (
 APPCACHE_FILES = ['/static/js/locales.js']
 MINIFIED_PARTIALS = ''
 
+LANGUAGES = requests.get(SUMO_URL + 'offline/get-languages').content
+
 
 def get_files_in_dirs(*paths):
     dirs = []
@@ -39,11 +43,12 @@ def read_file(path):
         return f.read()
 
 
-def get_appcache_files_hashes():
+def get_appcache_files_hashes(exclude=set(['/meta.js'])):
     file_hashes = hashlib.sha1()
     for fname in APPCACHE_FILES:
-        content = read_file(os.path.join(APP_FOLDER, fname.strip('/')))
-        file_hashes.update(content)
+        if fname not in exclude:
+            content = read_file(os.path.join(APP_FOLDER, fname.strip('/')))
+            file_hashes.update(content)
 
     read_file(os.path.join(APP_FOLDER, 'templates', 'app.html'))
 
@@ -145,6 +150,7 @@ def appcache_hash():
     """
     return get_appcache_files_hashes()
 
+
 def generate_production_files():
     global MINIFIED_PARTIALS  # there goes testability.
     scripts = get_all_script_paths()
@@ -168,6 +174,8 @@ APPCACHE_FILES.extend(get_files_in_dirs(
     os.path.join(STATIC_FOLDER, 'fonts'),
     os.path.join(STATIC_FOLDER, 'js', 'vendors')
 ))
+
+APPCACHE_FILES = ['/meta.js'] + APPCACHE_FILES
 
 if DEBUG:
     APPCACHE_FILES.extend(get_all_script_paths())

@@ -16,6 +16,7 @@ from osumo.utils import (
     get_all_css_paths,
     get_all_script_paths,
     MINIFIED_PARTIALS,
+    LANGUAGES,
     appcache_hash
 )
 
@@ -27,13 +28,9 @@ app = Flask(__name__,
 
 @app.before_request
 def before_request():
-    app.jinja_env.globals['BASE_URL'] = BASE_URL
-    app.jinja_env.globals['SUMO_URL'] = SUMO_URL
     app.jinja_env.globals['scripts'] = get_all_script_paths()
     app.jinja_env.globals['csses'] = get_all_css_paths()
     app.jinja_env.globals['partials'] = MINIFIED_PARTIALS
-    app.jinja_env.globals['COMMIT_SHA'] = COMMIT_SHA
-    app.jinja_env.globals['APPCACHE_HASH'] = appcache_hash()
 
 
 @app.route('/manifest.webapp')
@@ -67,6 +64,20 @@ def images():
         return response
     else:
         return abort(response.status_code)
+
+
+@app.route('/meta.js')
+def meta_js():
+    context = {
+        'COMMIT_SHA': COMMIT_SHA,
+        'APPCACHE_HASH': appcache_hash(),
+        'BASE_URL': BASE_URL,
+        'SUMO_URL': SUMO_URL,
+        'LANGUAGES': LANGUAGES
+    }
+    response = make_response(render_template('meta.js', **context))
+    response.mimetype = 'application/javascript'
+    return response
 
 
 # Catch all URL for HTML push state
