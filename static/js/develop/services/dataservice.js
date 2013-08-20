@@ -181,8 +181,11 @@
 
       checkRequest.success(function(data, status, headers, config) {
         currentVersionPromise.then(function(currentVersionHash) {
-          console.log(data.hash, currentVersionHash, product, locale);
-          deferred.resolve(data.hash.trim() !== currentVersionHash);
+          if (!data.error) {
+            deferred.resolve(data.hash.trim() !== currentVersionHash);
+          } else {
+            deferred.resolve(false);
+          }
         });
       });
 
