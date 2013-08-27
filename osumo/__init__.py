@@ -1,6 +1,14 @@
 import urllib
 
-from flask import Flask, render_template, make_response, abort, request, send_file
+from flask import (
+    Flask,
+    render_template,
+    make_response,
+    abort,
+    request,
+    send_file
+)
+
 import requests
 
 from settings import (
@@ -9,7 +17,8 @@ from settings import (
     BASE_URL,
     SUMO_URL,
     STATIC_FOLDER,
-    MANIFEST_FILE_LOCATION
+    MANIFEST_FILE_LOCATION,
+    DEBUG
 )
 from osumo.utils import (
     APPCACHE_FILES,
@@ -33,6 +42,13 @@ def before_request():
     app.jinja_env.globals['partials'] = MINIFIED_PARTIALS
 
 
+@app.after_request
+def after_request(response):
+    if DEBUG:
+        response.cache_control.no_cache = True
+    return response
+
+
 @app.route('/manifest.webapp')
 def manifest_file():
     return send_file(MANIFEST_FILE_LOCATION,
@@ -42,7 +58,8 @@ def manifest_file():
 @app.route('/manifest.appcache')
 def appcache():
     response = make_response(render_template('manifest.appcache',
-                                             files=APPCACHE_FILES))
+                                             files=APPCACHE_FILES,
+                                             APPCACHE_HASH=appcache_hash()))
 
     response.mimetype = 'text/cache-manifest'
     response.cache_control.no_cache = True

@@ -4,7 +4,7 @@ import subprocess
 DEBUG = False
 
 DEPLOY_IP = '127.0.0.1'
-PORT = 5291
+DEPLOY_PORT = 5291
 
 BASE_URL = 'http://osumo.paas.allizom.org/'
 SUMO_URL = 'https://support.mozilla.org/'

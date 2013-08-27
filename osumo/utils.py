@@ -1,4 +1,5 @@
 import hashlib
+import json
 import os
 import re
 
@@ -25,7 +26,8 @@ from settings import (
 APPCACHE_FILES = ['/static/js/locales.js']
 MINIFIED_PARTIALS = ''
 
-LANGUAGES = requests.get(SUMO_URL + 'offline/get-languages').content
+LANGUAGES = requests.get(SUMO_URL + 'offline/get-languages').json()
+LANGUAGES = json.dumps(LANGUAGES['languages'])
 
 
 def get_files_in_dirs(*paths):

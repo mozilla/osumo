@@ -167,7 +167,6 @@ app.run(['$rootScope', '$location', '$q', 'AppService', 'DataService', 'L10NServ
   $rootScope.$on('articles-update', function(e, needsUpdate, bundlesToUpdate) {
     $rootScope.needsUpdate = needsUpdate;
     $rootScope.bundlesToUpdate = bundlesToUpdate;
-    console.log(needsUpdate, bundlesToUpdate);
   });
 
   $rootScope.updateArticles = function() {
