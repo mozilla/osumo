@@ -14,4 +14,7 @@ services:
 ignores: [".git", "settings_local.py", "*.pyc", "*komodoproject", "*sublime*"]
 
 hooks:
-  pre-staging: make locale_js
+  pre-staging: 
+    - make locale_js
+    - npm install -g uglifyjs
+
