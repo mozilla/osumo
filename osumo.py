@@ -28,6 +28,8 @@ LANGUAGES = json.dumps(LANGUAGES['languages'])
 # Sets up the assets
 assets = Environment(app)
 assets.debug = app.debug
+# we don't need this as manifest.appcache will change
+assets.url_expire = False
 
 css = Bundle(
     'css/develop/gaia.css',
@@ -52,9 +54,23 @@ assets.register('js_all', js)
 
 # Sets up the angular partials
 # TODO!!
-PARTIALS = ""
+PARTIALS = u''
 if not app.debug:
-    pass
+    inline_partial = unicode("""
+    <script id="{path}" type="text/ng-template">
+    {content}
+    </script>
+    """)
+    for root, subdir, fnames in os.walk('static/partials'):
+        for filename in fnames:
+            if filename.endswith('.html'):
+                with open(os.path.join(root, filename)) as f:
+                    content = f.read().decode('utf-8')
+                    content = unicode(content)
+
+                PARTIALS += inline_partial.format(path=('/static/partials/' +
+                                                        filename),
+                                                  content=content)
 
 # Sets up Appcache
 appcache = Appcache(app)
@@ -63,9 +79,10 @@ if app.debug:
                                '/static/css/app.min.css')
 else:
     appcache.add_excluded_urls('/static/js/develop')
-    appcache.add_excluded_urls('/static/js/css')
+    appcache.add_excluded_urls('/static/css/develop')
     appcache.add_excluded_urls('/static/partials')
 
+appcache.add_excluded_urls('/static/js/tests')
 appcache.add_excluded_urls('/static/.webassets-cache')
 appcache.add_folder('static')
 appcache.add_urls('/meta.js', '/')
