@@ -1,11 +1,13 @@
-Flask==0.9
-Jinja2==2.7
+Flask==0.10.1
+-e git://github.com/shuhaowu/flask-appcache@af63d1d34f6f22102ee69283f60c524004d2dc75#egg=Flask_Appcache-dev
+Flask-Assets==0.8
+Jinja2==2.7.1
 MarkupSafe==0.18
-Werkzeug==0.8.3
+Werkzeug==0.9.4
 argparse==1.2.1
 cssmin==0.1.4
 gunicorn==0.17.4
-ply==3.4
+itsdangerous==0.23
 requests==1.2.3
-slimit==0.8.1
+webassets==0.8
 wsgiref==0.1.2
