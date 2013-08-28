@@ -3,8 +3,9 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    {% for css in csses %}
-    <link rel="stylesheet" type="text/css" href="{{ css }}">{% endfor %}
+    {% assets "css_all" %}
+    <link rel="stylesheet" type="text/css" href="{{ ASSET_URL }}">
+    {% endassets %}
     <title>Offline Mozilla Support</title>
 
     <script src="/meta.js"></script>
@@ -73,8 +74,9 @@
 
   <script src="/static/js/locales.js"></script>
   <script src="/static/js/vendors/angular.min.js"></script>
-  {% for script in scripts %}
-  <script src="{{ script }}"></script>{% endfor %}
+  {% assets "js_all" %}
+  <script src="{{ ASSET_URL }}"></script>
+  {% endassets %}
   <script src="/static/js/vendors/l10n.js"></script>
 </body>
 </html>
