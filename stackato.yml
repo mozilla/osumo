@@ -4,17 +4,19 @@ framework:
   runtime: python27
 
 processes:
-  web: gunicorn -b 0.0.0.0:$PORT osumo:app
+  web: gunicorn -b 0.0.0.0:$PORT osumo:app 
 
 mem: 64M
 instances: 1
 services: 
   {}
 
-ignores: [".git", "settings_local.py", "*.pyc", "*komodoproject", "*sublime*"]
+ignores: [".git", "settings_local.py", "*.pyc", "*komodoproject", "*sublime*", "static/js/app.min.js", "static/css/app.min.css"]
 
 hooks:
   pre-staging: 
     - make locale_js
-    - npm install -g uglifyjs
-
+  post-staging:
+    - npm install uglify-js
+  pre-running:
+    - export PATH=/app/app/node_modules/uglify-js/bin:$PATH
