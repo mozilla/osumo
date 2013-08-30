@@ -180,8 +180,14 @@ app.run(['$rootScope', '$location', '$q', 'AppService', 'DataService', 'L10NServ
         product = $rootScope.bundlesToUpdate[i].product;
         locale = $rootScope.bundlesToUpdate[i].locale;
         DataService.getBundleFromSource(product, locale).success(function(data, status, headers) {
-          DataService.saveBundle(data, headers('X-Content-Hash'), product, locale).then(function() {
-            d.resolve();
+
+          // Normally we just get headers('X-Content-Hash')..
+          // But... bug 911299
+          console.log(product, locale);
+          DataService.getBundleHash(product, locale).then(function(hash) {
+            DataService.saveBundle(data, hash, product, locale).then(function() {
+              d.resolve();
+            });
           });
         }).error(function(data, status, headers) {
           d.reject(status);

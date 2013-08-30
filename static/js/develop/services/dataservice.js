@@ -164,6 +164,31 @@
       return deferred.promise;
     };
 
+    this.getBundleHash = function(product, locale) {
+      var bkey = bundleKey(locale, product);
+      var deferred = $q.defer();
+
+      var req = $http({
+        url: window.SUMO_URL + 'offline/bundle-meta',
+        method: 'GET',
+        params: {product: product, locale: locale}
+      });
+
+      req.success(function(data, status, headers, config) {
+        if (data.error) {
+          deferred.reject(data);
+        } else {
+          deferred.resolve(data.hash.trim());
+        }
+      });
+
+      req.error(function() {
+        deferred.reject(arguments);
+      });
+
+      return deferred.promise;
+    };
+
     this.checkUpdate = function(product, locale) {
       var bkey = bundleKey(locale, product);
       var deferred = $q.defer();
@@ -173,29 +198,14 @@
         return store.get(bkey);
       });
 
-      var checkRequest = $http({
-        url: window.SUMO_URL + 'offline/bundle-meta',
-        method: 'GET',
-        params: {product: product, locale: locale}
-      });
+      var hashCheck = this.getBundleHash(product, locale);
 
-      checkRequest.success(function(data, status, headers, config) {
+      hashCheck.then(function(hash) {
         currentVersionPromise.then(function(currentVersionHash) {
-          if (!data.error) {
-            console.log(data.hash, currentVersionHash);
-            deferred.resolve(data.hash.trim() !== currentVersionHash);
-          } else {
-            deferred.resolve(false);
-          }
+          deferred.resolve(hash !== currentVersionHash);
         });
-      });
-
-      checkRequest.error(function(data, status, headers, config) {
-        if (status === 404 || status === 503) {
-          // In this case the server might not have the hash yet as it is
-          // not generated or redis is down. So we say that our version is okay
-          deferred.resolve(false);
-        }
+      }, function() {
+        deferred.resolve(false);
       });
 
       deferred.promise.then(function() {

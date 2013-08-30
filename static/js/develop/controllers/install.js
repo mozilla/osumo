@@ -104,14 +104,17 @@ angular.module('osumo').controller('InstallController', ['$q', '$scope', '$rootS
           return;
         }
 
-        var hash = headers('X-Content-Hash');
-
-        DataService.saveBundle(data, hash, product, $scope.locale).then(function() {
-          $scope.toast({message: L10NService._('Downloaded!'), type: 'success', autoclose: 1500});
-          $scope.downloading[product] = false;
-          $scope.downloaded[product] = true;
-          $scope.bundles = DataService.getAvailableBundles();
+        // Normally we do this, but we need to work around bug 911299
+        // var hash = headers('X-Content-Hash');
+        DataService.getBundleHash(product, $scope.locale).then(function(hash) {
+          DataService.saveBundle(data, hash, product, $scope.locale).then(function() {
+            $scope.toast({message: L10NService._('Downloaded!'), type: 'success', autoclose: 1500});
+            $scope.downloading[product] = false;
+            $scope.downloaded[product] = true;
+            $scope.bundles = DataService.getAvailableBundles();
+          });
         });
+
       }).error(function(data, status, headers) {
         if (status === 0) {
           $scope.toast({message: L10NService._('It seems like you don\'t have a network connection'), type: 'error'});
