@@ -14,7 +14,7 @@
 </div>
 
 <section role="status" ng-class="{active: numOfUnloadedImages() > 0, 'has-icons': true}">
-  <a href="" class="icon icon-download"></a>
+  <a href="" class="icon icon-download" ng-click="loadAllImages()"></a>
   <p><l10n>This page contains {{ numOfUnloadedImages() }} unloaded images.</l10n></p>
 </section>
 
