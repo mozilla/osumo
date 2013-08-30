@@ -24,29 +24,6 @@ angular.module('osumo').controller('InstallController', ['$q', '$scope', '$rootS
   $scope.installed = false;
   $scope.bundles = DataService.getAvailableBundles();
 
-  /**
-   * Checks if a product is downloaded (in conjucture with the current
-   * selected locale)
-   */
-  $scope.isProductDownloaded = function(product) {
-    var deferred = $q.defer()
-    $scope.bundles.then(function(bundles) {
-
-      // Since we don't really have a lot of things in bundles. This should be
-      // fine.
-      for (var i=0; i<bundles.length; i++) {
-        if (bundles[i].locale === $scope.locale && bundles[i].product === product) {
-          deferred.resolve(true);
-          break;
-        }
-      }
-
-      deferred.resolve(false);
-    });
-    return deferred.promise;
-  };
-
-
   $scope.downloading = {
     firefox: false,
     'firefox-os': false,
@@ -152,7 +129,8 @@ angular.module('osumo').controller('InstallController', ['$q', '$scope', '$rootS
     DataService.deleteBundle(bundle.locale, bundle.product).then(function() {
       $scope.bundles = DataService.getAvailableBundles();
       $scope.checkedDownloadedForCurrentLocale();
-      $scope.toast({message: L10NService._('Deleted!') + ' ' + (new Date().getTime() - start) + 'ms', autoclose: 1500});
+      $scope.toast({message: L10NService._('Deleted!'), autoclose: 1500});
+      console.log('Took ' + (new Date().getTime() - start) + 'ms');
     });
   };
 

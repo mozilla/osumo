@@ -1,4 +1,5 @@
 import json
+import logging
 import urllib
 import os
 
@@ -20,6 +21,13 @@ app = Flask(__name__)
 app.config.from_pyfile("settings.py")
 app.config.from_pyfile("settings_local.py", silent=True)
 
+# setup logging
+@app.before_first_request
+def setup_logging():
+    if not app.debug:
+        app.logger.addHandler(logging.StreamHandler())
+        app.logger.setLevel(logging.INFO)
+
 # Getting the supported languages from SUMO
 LANGUAGES = requests.get((app.config['SUMO_URL'] +
                          'offline/get-languages')).json()
@@ -27,6 +35,7 @@ LANGUAGES = json.dumps(LANGUAGES['languages'])
 
 # Sets up the assets
 assets = Environment(app)
+assets.auto_build = app.debug
 assets.debug = app.debug
 # we don't need this as manifest.appcache will change
 assets.url_expire = False
@@ -52,8 +61,11 @@ for root, subdir, fnames in os.walk('static/js/develop'):
 js = Bundle(*scripts, filters='uglifyjs', output='js/app.min.js')
 assets.register('js_all', js)
 
+if not app.debug:
+    css.build()
+    js.build()
+
 # Sets up the angular partials
-# TODO!!
 PARTIALS = u''
 if not app.debug:
     inline_partial = unicode("""

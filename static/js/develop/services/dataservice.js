@@ -182,6 +182,7 @@
       checkRequest.success(function(data, status, headers, config) {
         currentVersionPromise.then(function(currentVersionHash) {
           if (!data.error) {
+            console.log(data.hash, currentVersionHash);
             deferred.resolve(data.hash.trim() !== currentVersionHash);
           } else {
             deferred.resolve(false);
@@ -266,9 +267,15 @@
               dataToStore = data[i];
             } else { // Merge
               dataToStore = result;
+
+              var currentSlugs = [];
+              for (var j=0; j<result.products.length; j++) {
+                currentSlugs.push(result.products[j].slug);
+              }
+
               for (var j=0; j<data[i].products.length; j++) {
-                if (result.products.indexOf(data[i].products[j]) !== -1) {
-                  result.products.push(data[i].products[j]);
+                if (currentSlugs.indexOf(data[i].products[j].slug) === -1) {
+                  dataToStore.products.push(data[i].products[j]);
                 }
               }
             }

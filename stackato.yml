@@ -4,14 +4,17 @@ framework:
   runtime: python27
 
 processes:
-  web: gunicorn -b 0.0.0.0:$PORT osumo:app 
+  web: gunicorn -b 0.0.0.0:$PORT -k gevent -w 4 osumo:app
 
-mem: 64M
-instances: 1
+mem: 128M
 services: 
   {}
 
 ignores: [".git", "settings_local.py", "*.pyc", "*komodoproject", "*sublime*", "static/js/app.min.js", "static/css/app.min.css"]
+
+requirements:
+  staging:
+    ubuntu: [libevent-dev]
 
 hooks:
   pre-staging: 

@@ -4,7 +4,7 @@ import subprocess
 DEBUG = False
 
 DEPLOY_IP = '127.0.0.1'
-DEPLOY_PORT = 5291
+DEPLOY_PORT = int(os.environ.get("PORT", 5291))
 
 BASE_URL = 'http://osumo.paas.allizom.org/'
 SUMO_URL = 'http://fakesumo.paas.allizom.org/'
