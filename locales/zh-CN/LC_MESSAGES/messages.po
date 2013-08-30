@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1\n"
 "Report-Msgid-Bugs-To: First Last <email@email.com> \n"
-"POT-Creation-Date: 2013-06-27T17:10:47.231840\n"
+"POT-Creation-Date: 2013-08-30T10:44:47.997582\n"
 "PO-Revision-Date: 2013-06-25T14:45:00\n"
 "Last-Translator: Shuhao Wu <shuhao@shuhaowu.com>\n"
 "Language-Team: Team <team@email.com>\n"
@@ -12,43 +12,52 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: angular-l10n\n"
 
-#: templates/app.html:53
-msgid "Upgrade"
-msgstr "升级"
+#: static/partials/search.html:25
+msgid "You must enter a query and select a product in order to search."
+msgstr ""
 
-#: static/partials/search.html:15
-msgid "No results found."
-msgstr "没有结果。"
+#: static/partials/select_doc.html:10
+msgid "Articles"
+msgstr "文章"
+
+#: static/partials/install.html:70
+msgid "Delete"
+msgstr "删除"
+
+#: static/partials/install.html:41
+msgid "OS made by Mozilla"
+msgstr ""
 
 #: static/js/develop/filters.js:43
 msgid " ago"
 msgstr "前"
 
-#: templates/app.html:39
+#: templates/app.html:28
 msgid "Browse"
 msgstr "浏览"
 
-#: templates/app.html:33
-msgid "Menu"
-msgstr "菜单"
+#: static/partials/doc.html:21
+msgid "Last updated"
+msgstr "上次更新"
 
 #: static/js/develop/filters.js:38
 msgid " days"
 msgstr "天"
 
-#: static/partials/settings.html:5
-msgid "Default Language"
-msgstr "默认语言"
+#: templates/app.html:33
+#, fuzzy
+msgid "About"
+msgstr "大概"
 
-#: static/partials/doc.html:6
-msgid "Get all images"
-msgstr "下载所有图片"
+#: static/js/develop/controllers/install.js:117
+msgid "It seems like you don\\'t have a network connection"
+msgstr ""
 
 #: static/js/develop/filters.js:28
 msgid "about a minute"
 msgstr "一分种左右"
 
-#: static/js/develop/controllers/select.js:37
+#: static/js/develop/controllers/misc.js:72
 msgid "Firefox on Android"
 msgstr ""
 
@@ -58,171 +67,337 @@ msgid ""
 "website which requires an internet connection."
 msgstr ""
 
-#: static/js/develop/filters.js:30
-msgid " minutes"
-msgstr "分"
+#: templates/app.html:32
+msgid "Other"
+msgstr "其他"
 
-#: templates/app.html:45
-msgid "Online Support Site"
-msgstr "在线技术支持"
+#: static/partials/install.html:19
+msgid "Select the product articles you'd like to read"
+msgstr ""
+
+#: static/partials/select_doc.html:2
+msgid "Subtopics"
+msgstr "副主题"
 
 #: templates/app.html:56
 msgid "Your app is out of date and needs an upgrade."
 msgstr "您的软件需要更新。"
 
-#: static/js/develop/controllers/select.js:9
-msgid "Select Language"
-msgstr "选择语言"
+#: static/js/develop/app.js:200
+#, fuzzy
+msgid "Update failed. Please try again later."
+msgstr "更新失败，请稍后再试。"
 
-#: static/partials/settings.html:9
-msgid "Save"
-msgstr "保存"
+#: static/partials/about.html:4
+msgid "Offline SUMO is currently in alpha and is highly experimental."
+msgstr ""
 
-#: static/js/develop/services/dataservice.js:78
+#: static/partials/404.html:4
+msgid "Back to main page"
+msgstr "返回到主页"
+
+#: static/js/develop/services/dataservice.js:88
 msgid "A fatal error occurred. Please try again later."
 msgstr "发生了一个严重的问题，请稍后再试。"
 
-#: static/partials/install.html:16
-msgid "Product"
-msgstr "产品"
+#: static/partials/install.html:6
+msgid ""
+"\n"
+"      Check update\n"
+"    "
+msgstr ""
 
-#: static/partials/doc.html:20
+#: static/partials/doc.html:12
 msgid "click here."
 msgstr "点击这里。"
 
-#: static/js/develop/controllers/select.js:34
+#: static/js/develop/controllers/misc.js:94
+msgid "Page Not Found"
+msgstr ""
+
+#: static/js/develop/controllers/misc.js:69
 msgid "Firefox OS"
 msgstr ""
 
-#: static/partials/doc.html:11
-msgid "Last updated"
-msgstr "上次更新"
+#: static/partials/search.html:14
+msgid "Warning: You don't have any content downloaded! You can download some "
+msgstr ""
 
-#: static/js/develop/filters.js:34
-msgid " hours"
-msgstr "小时"
+#: static/partials/install.html:53
+msgid "Firefox for Android"
+msgstr ""
 
-#: static/partials/install.html:27
-msgid "Installed Content"
-msgstr "已安装内容"
+#: templates/app.html:27
+msgid "Navigation"
+msgstr ""
 
-#: static/partials/install.html:9
-msgid "Install App"
-msgstr "安装"
+#: static/js/develop/controllers/install.js:119
+msgid ""
+"Downloading product failed with: ' + status)});\n"
+"        }\n"
+"        $scope.downloading[product] = false;\n"
+"      });\n"
+"    });\n"
+"  };\n"
+"\n"
+"  $scope.deleteBundle = function(bundle) {\n"
+"    console.log(\"start!"
+msgstr ""
+
+#: static/js/develop/app.js:177
+msgid "Updating articles..."
+msgstr ""
+
+#: static/js/develop/filters.js:32
+msgid "about an hour"
+msgstr "大概一小时"
+
+#: templates/app.html:29
+#, fuzzy
+msgid "Manage Articles"
+msgstr "文章"
+
+#: static/js/develop/controllers/install.js:102
+msgid "There are no documents for this language."
+msgstr ""
+
+#: static/js/develop/filters.js:30
+msgid " minutes"
+msgstr "分"
+
+#: static/partials/about.html:2
+msgid ""
+"Offline SUMO is a free and open source application made to bring content on "
+"support.mozilla.org offline."
+msgstr ""
 
 #: static/js/develop/filters.js:36
 msgid "one day"
 msgstr "一天"
 
-#: static/partials/install.html:14
-msgid "Download Content"
+#: static/js/develop/app.js:197
+msgid "Articles are all updated!"
+msgstr ""
+
+#: static/partials/install.html:66
+#, fuzzy
+msgid "Downloaded content"
 msgstr "下载内容"
 
-#: static/partials/doc.html:20
-msgid ""
-"The content you're looking for has been archived. To view it on support."
-"mozilla.org, "
-msgstr "这篇文章过时了。如果您想在support.mozilla.org上看这篇文章，"
-
-#: static/js/develop/app.js:69
-msgid "Offline Mozilla Support"
-msgstr "离线Mozilla技术支持"
-
-#: static/partials/select_doc.html:3
-msgid "Subtopics"
-msgstr "副主题"
-
-#: static/js/develop/services/appservice.js:79
+#: static/js/develop/services/appservice.js:47
 msgid ""
 "Your browser is not compatible and this app may not work as intended. Try "
 "using Firefox instead!"
 msgstr "您的浏览器和这个程序不兼容。您可以用Firefox来运行这个程序。"
 
-#: static/partials/select_doc.html:6
-msgid "Articles"
-msgstr "文章"
+#: static/partials/about.html:12
+msgid "Source Code"
+msgstr ""
 
-#: templates/app.html:42
+#: templates/app.html:???
 msgid "Search"
 msgstr "搜索"
 
-#: static/partials/install.html:19
-msgid "Language"
-msgstr "语言"
+#: templates/app.html:30
+#, fuzzy
+msgid "Switch Language"
+msgstr "选择语言"
 
-#: templates/app.html:29
-msgid "Offline Support"
-msgstr "离线支持"
-
-#: static/js/develop/services/dataservice.js:72
+#: static/js/develop/services/dataservice.js:82
 msgid ""
 "It seems like you are using private browsing mode. This app does not support "
 "that mode and will not function correctly."
 msgstr ""
 
-#: templates/app.html:43
-msgid "Install"
+#: static/js/develop/app.js:82
+msgid "Offline Mozilla Support"
+msgstr "离线Mozilla技术支持"
+
+#: templates/app.html:34
+msgid "Switch to online site"
+msgstr ""
+
+#: static/partials/install.html:4
+#, fuzzy
+msgid "Install to device"
 msgstr "安装"
 
-#: static/partials/doc.html:7
-msgid "This page contains {{ numOfUnloadedImages() }} unloaded images."
-msgstr "这篇文章里有{{ numOfUnloadedImages() }}张未下载的图片。"
+#: static/partials/search.html:14
+msgid "here"
+msgstr ""
+
+#: static/partials/404.html:3
+msgid "Sorry, we couldn't find the page you were looking for."
+msgstr ""
+
+#: static/js/develop/filters.js:34
+msgid "about "
+msgstr "大概"
+
+#: static/js/develop/controllers/misc.js:56
+#, fuzzy
+msgid "Products"
+msgstr "产品"
+
+#: static/partials/about.html:9
+msgid "Appcache Hash"
+msgstr ""
+
+#: static/partials/doc.html:12
+msgid ""
+"The content you're looking for has been archived. To view it on support."
+"mozilla.org, "
+msgstr "这篇文章过时了。如果您想在support.mozilla.org上看这篇文章，"
+
+#: static/js/develop/controllers/misc.js:66
+msgid "Firefox"
+msgstr ""
+
+#: static/js/develop/controllers/install.js:110
+#, fuzzy
+msgid "Downloaded!"
+msgstr "下载内容"
 
 #: static/js/develop/filters.js:41
 msgid "in "
 msgstr ""
 
-#: static/partials/install.html:41
-msgid "Delete"
+#: static/js/develop/controllers/install.js:140
+msgid "Check update"
+msgstr ""
+
+#: static/partials/search.html:44
+msgid "Found {{ results.length }} results in {{ timeTaken }} seconds."
+msgstr ""
+
+#: static/partials/doc.html:18
+msgid "This page contains {{ numOfUnloadedImages() }} unloaded images."
+msgstr "这篇文章里有{{ numOfUnloadedImages() }}张未下载的图片。"
+
+#: static/js/develop/controllers/install.js:132
+#, fuzzy
+msgid "Deleted!"
 msgstr "删除"
 
-#: static/partials/select_product.html:3
-msgid "Select Product"
-msgstr "选择产品"
+#: static/partials/search.html:6
+msgid "Choose a product to search in"
+msgstr ""
 
-#: static/js/develop/controllers/select.js:31
-msgid "Firefox"
+#: static/js/develop/controllers/install.js:142
+msgid "There is no updates available at this time."
+msgstr ""
+
+#: static/js/develop/controllers/install.js:138
+msgid "Checking..."
+msgstr ""
+
+#: static/partials/select_topic.html:2
+msgid "Topics"
+msgstr "主题"
+
+#: static/partials/install.html:28
+msgid "Desktop web browser by Mozilla"
+msgstr ""
+
+#: static/js/develop/directives/img.js:89
+msgid "A data connection is needed for downloading images."
+msgstr "在下载图片之前必须连网。"
+
+#: static/partials/search.html:20
+msgid "Results"
+msgstr ""
+
+#: static/partials/install.html:12
+#, fuzzy
+msgid "Select a language"
+msgstr "选择语言"
+
+#: static/partials/about.html:6
+msgid "Commit SHA1"
+msgstr ""
+
+#: static/partials/search.html:39
+msgid "No results found."
+msgstr "没有结果。"
+
+#: static/js/develop/filters.js:34
+msgid " hours"
+msgstr "小时"
+
+#: static/partials/install.html:54
+msgid "Web browser for phones and tablets"
+msgstr ""
+
+#: templates/app.html:61
+msgid "Updates are available to the articles you've downloaded."
 msgstr ""
 
 #: static/js/develop/filters.js:26
 msgid "less than a minute"
 msgstr "一分钟以内"
 
-#: static/partials/select_topic.html:3
-msgid "Topics"
-msgstr "主题"
+#: static/partials/install.html:13
+#, fuzzy
+msgid "Download"
+msgstr "下载内容"
 
-#: static/js/develop/directives/img.js:83
-msgid "A data connection is needed for downloading images."
-msgstr "在下载图片之前必须连网。"
-
-#: static/partials/install.html:33
-msgid "Actions"
+#: static/partials/search.html:2
+msgid "Query"
 msgstr ""
 
-#: static/js/develop/controllers/settings.js:13
-msgid "Saved."
-msgstr "已保存"
+#: static/js/develop/controllers/misc.js:104
+msgid "Legal Information"
+msgstr ""
 
-#: static/js/develop/filters.js:34
-msgid "about "
-msgstr "大概"
+#: static/js/develop/controllers/install.js:8
+#, fuzzy
+msgid "Mozilla Support"
+msgstr "离线Mozilla技术支持"
 
-#: static/js/develop/filters.js:32
-msgid "about an hour"
-msgstr "大概一小时"
+#~ msgid "Upgrade"
+#~ msgstr "升级"
 
-#: static/js/develop/controllers/install.js:7
-msgid "Installer"
-msgstr "安装"
+#~ msgid "Menu"
+#~ msgstr "菜单"
 
-#: templates/app.html:68
-msgid "Loading..."
-msgstr "载入中"
+#~ msgid "Default Language"
+#~ msgstr "默认语言"
 
-#: templates/app.html:44
-msgid "Settings"
-msgstr "设置"
+#~ msgid "Get all images"
+#~ msgstr "下载所有图片"
+
+#~ msgid "Online Support Site"
+#~ msgstr "在线技术支持"
+
+#~ msgid "Save"
+#~ msgstr "保存"
+
+#~ msgid "Installed Content"
+#~ msgstr "已安装内容"
+
+#~ msgid "Install App"
+#~ msgstr "安装"
+
+#~ msgid "Language"
+#~ msgstr "语言"
+
+#~ msgid "Offline Support"
+#~ msgstr "离线支持"
+
+#~ msgid "Install"
+#~ msgstr "安装"
+
+#~ msgid "Select Product"
+#~ msgstr "选择产品"
+
+#~ msgid "Saved."
+#~ msgstr "已保存"
+
+#~ msgid "Loading..."
+#~ msgstr "载入中"
+
+#~ msgid "Settings"
+#~ msgstr "设置"
 
 #, fuzzy
 #~ msgid "Search Query"

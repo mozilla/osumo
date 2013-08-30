@@ -171,8 +171,11 @@ if __name__ == "__main__":
                         strings = extract_from_js(f, p)
                     elif fname.endswith(".html") or fname.endswith(".htm"):
                         strings = extract_from_html(f, p)
+                    else:
+                        strings = None
 
-                all_strings |= strings
+                if strings:
+                    all_strings |= strings
 
     print "Parsing done! {} strings found.".format(len(all_strings))
 
