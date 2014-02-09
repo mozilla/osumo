@@ -142,7 +142,7 @@ angular.module('osumo').controller('InstallController', ['$q', '$scope', '$rootS
     DataService.checkAllUpdates().then(function(update) {
       e.target.textContent = L10NService._('Check update');
       if (!update) {
-        $scope.toast({message: L10NService._('There is no updates available at this time.'), autoclose: 1500});
+        $scope.toast({message: L10NService._('There are no updates available at this time.'), autoclose: 1500});
       }
     });
   };
