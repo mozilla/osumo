@@ -3,8 +3,8 @@ msgstr ""
 "Project-Id-Version: 1\n"
 "Report-Msgid-Bugs-To: First Last <email@email.com> \n"
 "POT-Creation-Date: 2013-08-30T10:44:47.997582\n"
-"PO-Revision-Date: YEAR-MM-DD HH:MM\n"
-"Last-Translator: First Last <email@email.com>\n"
+"PO-Revision-Date: 2015-03-15 18:30\n"
+"Last-Translator: Tim P <pollti@gmx.net>\n"
 "Language-Team: Team <team@email.com>\n"
 "Language: \n"
 "MIME-Version: 1.0\n"
@@ -14,89 +14,91 @@ msgstr ""
 
 #: static/partials/search.html:25
 msgid "You must enter a query and select a product in order to search."
-msgstr ""
+msgstr "Um zu suchen, müssen Sie etwas eingeben und ein Produkt auswählen."
 
 #: static/partials/select_doc.html:10
 msgid "Articles"
-msgstr ""
+msgstr "Artikel"
 
 #: static/partials/install.html:70
 msgid "Delete"
-msgstr ""
+msgstr "Löschen"
 
 #: static/partials/install.html:41
 msgid "OS made by Mozilla"
-msgstr ""
+msgstr "Betriebssystem von Mozilla"
 
 #: static/js/develop/filters.js:43
 msgid " ago"
-msgstr ""
+msgstr " zuvor"
 
 #: templates/app.html:28
 msgid "Browse"
-msgstr ""
+msgstr "Durchsuchen"
 
 #: static/partials/doc.html:21
 msgid "Last updated"
-msgstr ""
+msgstr "Letzte Aktualisierung"
 
 #: static/js/develop/filters.js:38
 msgid " days"
-msgstr ""
+msgstr " Tage"
 
 #: templates/app.html:33
 msgid "About"
-msgstr ""
+msgstr "Über"
 
 #: static/js/develop/controllers/install.js:117
 msgid "It seems like you don\\'t have a network connection"
-msgstr ""
+msgstr "Es scheint keine Netzwerkverbindung zu bestehen"
 
 #: static/js/develop/filters.js:28
 msgid "about a minute"
-msgstr ""
+msgstr "etwa eine Minute"
 
 #: static/js/develop/controllers/misc.js:72
 msgid "Firefox on Android"
-msgstr ""
+msgstr "Firefox für Android"
 
 #: static/js/develop/directives/a.js:27
 msgid ""
 "It looks like you are offline! This link will take you to an external "
 "website which requires an internet connection."
 msgstr ""
+"Sie scheinen offline zu sein! Dieser Link bringt Sie auf eine externe "
+"Webseite, die eine Internetverbindung erfordert."
 
 #: templates/app.html:32
 msgid "Other"
-msgstr ""
+msgstr "Andere"
 
 #: static/partials/install.html:19
 msgid "Select the product articles you'd like to read"
-msgstr ""
+msgstr "Wählen Sie die Produktartikel, die Sie lesen möchten"
 
 #: static/partials/select_doc.html:2
 msgid "Subtopics"
-msgstr ""
+msgstr "Unterthemen"
 
 #: templates/app.html:56
 msgid "Your app is out of date and needs an upgrade."
-msgstr ""
+msgstr "Ihre App ist veraltet und benötigt eine Aktualisierung."
 
 #: static/js/develop/app.js:200
 msgid "Update failed. Please try again later."
-msgstr ""
+msgstr "Update fehlgeschlagen. Versuchen Sie es bitte später erneut."
 
 #: static/partials/about.html:4
 msgid "Offline SUMO is currently in alpha and is highly experimental."
-msgstr ""
+msgstr "Offline-SUMO ist derzeit im Alpha-Stadium und entsprechend experimentell."
 
 #: static/partials/404.html:4
 msgid "Back to main page"
-msgstr ""
+msgstr "Zurück zur Hauptseite"
 
 #: static/js/develop/services/dataservice.js:88
 msgid "A fatal error occurred. Please try again later."
-msgstr ""
+msgstr "Ein schwerer Fehler ist aufgetreten. Bitte versuchen Sie es später erneut."
 
 #: static/partials/install.html:6
 msgid ""
@@ -104,30 +106,33 @@ msgid ""
 "      Check update\n"
 "    "
 msgstr ""
+"\n"
+"      Auf Update prüfen\n"
+"    "
 
 #: static/partials/doc.html:12
 msgid "click here."
-msgstr ""
+msgstr "klicken Sie hier."
 
 #: static/js/develop/controllers/misc.js:94
 msgid "Page Not Found"
-msgstr ""
+msgstr "Seite nicht gefunden"
 
 #: static/js/develop/controllers/misc.js:69
 msgid "Firefox OS"
-msgstr ""
+msgstr "Firefox OS"
 
 #: static/partials/search.html:14
 msgid "Warning: You don't have any content downloaded! You can download some "
-msgstr ""
+msgstr "Warnung: Sie haben keinen Inhalt heruntergeladen! Sie können welche herunterladen "
 
 #: static/partials/install.html:53
 msgid "Firefox for Android"
-msgstr ""
+msgstr "Firefox für Android"
 
 #: templates/app.html:27
 msgid "Navigation"
-msgstr ""
+msgstr "Navigation"
 
 #: static/js/develop/controllers/install.js:119
 msgid ""
@@ -141,203 +146,220 @@ msgid ""
 "  $scope.deleteBundle = function(bundle) {\n"
 "    console.log(\"start!"
 msgstr ""
+"Herunterladen des Produkts fehlgeschlagen: ' + status)});\n"
+"        }\n"
+"        $scope.downloading[product] = false;\n"
+"      });\n"
+"    });\n"
+"  };\n"
+"\n"
+"  $scope.deleteBundle = function(bundle) {\n"
+"    console.log(\"start!"
 
 #: static/js/develop/app.js:177
 msgid "Updating articles..."
-msgstr ""
+msgstr "Artikel aktualisieren…"
 
 #: static/js/develop/filters.js:32
 msgid "about an hour"
-msgstr ""
+msgstr "etwa eine Stunde"
 
 #: templates/app.html:29
 msgid "Manage Articles"
-msgstr ""
+msgstr "Artikel verwalten"
 
 #: static/js/develop/controllers/install.js:102
 msgid "There are no documents for this language."
-msgstr ""
+msgstr "Es gibt keine Dokumente für diese Sprache."
 
 #: static/js/develop/filters.js:30
 msgid " minutes"
-msgstr ""
+msgstr " Minuten"
 
 #: static/partials/about.html:2
 msgid ""
 "Offline SUMO is a free and open source application made to bring content on "
 "support.mozilla.org offline."
 msgstr ""
+"Offline-SUMO ist eine freie und quelloffene Anwendung, die entwickelt wurde, "
+"um die Inhalte von support.mozilla.org offline zur Verfügung zu stellen."
 
 #: static/js/develop/filters.js:36
 msgid "one day"
-msgstr ""
+msgstr "ein Tag"
 
 #: static/js/develop/app.js:197
 msgid "Articles are all updated!"
-msgstr ""
+msgstr "Alle Artikel wurden aktualisiert!"
 
 #: static/partials/install.html:66
 msgid "Downloaded content"
-msgstr ""
+msgstr "Heruntergeladener Inhalt"
 
 #: static/js/develop/services/appservice.js:47
 msgid ""
 "Your browser is not compatible and this app may not work as intended. Try "
 "using Firefox instead!"
 msgstr ""
+"Ihr Browser ist nicht kompatibel, weshalb diese App möglicherweise nicht"
+"wie erwartet funktioniert. Verwenden Sie stattdessen Firefox!"
 
 #: static/partials/about.html:12
 msgid "Source Code"
-msgstr ""
+msgstr "Quellcode"
 
 #: templates/app.html:???
 msgid "Search"
-msgstr ""
+msgstr "Suche"
 
 #: templates/app.html:30
 msgid "Switch Language"
-msgstr ""
+msgstr "Sprache wechseln"
 
 #: static/js/develop/services/dataservice.js:82
 msgid ""
 "It seems like you are using private browsing mode. This app does not support "
 "that mode and will not function correctly."
 msgstr ""
+"Sie verwenden anscheinend den privaten Modus. Dieser wird von dieser App "
+"nicht unterstützt, weshalb sie möglicherweise nicht korrekt funktioniert."
 
 #: static/js/develop/app.js:82
 msgid "Offline Mozilla Support"
-msgstr ""
+msgstr "Offline-Mozilla-Hilfe"
 
 #: templates/app.html:34
 msgid "Switch to online site"
-msgstr ""
+msgstr "Zur Onlineseite wechseln"
 
 #: static/partials/install.html:4
 msgid "Install to device"
-msgstr ""
+msgstr "Auf dem Gerät installieren"
 
 #: static/partials/search.html:14
 msgid "here"
-msgstr ""
+msgstr "hier"
 
 #: static/partials/404.html:3
 msgid "Sorry, we couldn't find the page you were looking for."
-msgstr ""
+msgstr "Entschuldigung, wir konnten die von Ihnen gesuchte Seite nicht finden."
 
 #: static/js/develop/filters.js:34
 msgid "about "
-msgstr ""
+msgstr "über "
 
 #: static/js/develop/controllers/misc.js:56
 msgid "Products"
-msgstr ""
+msgstr "Produkte"
 
 #: static/partials/about.html:9
 msgid "Appcache Hash"
-msgstr ""
+msgstr "Appcache-Hash"
 
 #: static/partials/doc.html:12
 msgid ""
 "The content you're looking for has been archived. To view it on support."
 "mozilla.org, "
 msgstr ""
+"Der von Ihnen gesuchte Inhalt wurde archiviert. Um ihn auf support."
+"mozilla.org zu sehen, "
 
 #: static/js/develop/controllers/misc.js:66
 msgid "Firefox"
-msgstr ""
+msgstr "Firefox"
 
 #: static/js/develop/controllers/install.js:110
 msgid "Downloaded!"
-msgstr ""
+msgstr "Heruntergeladen!"
 
 #: static/js/develop/filters.js:41
 msgid "in "
-msgstr ""
+msgstr "in "
 
 #: static/js/develop/controllers/install.js:140
 msgid "Check update"
-msgstr ""
+msgstr "Auf Aktualisierungen prüfen"
 
 #: static/partials/search.html:44
 msgid "Found {{ results.length }} results in {{ timeTaken }} seconds."
-msgstr ""
+msgstr "{{ results.length }} Ergebnisse in {{ timeTaken }} Sekunden gefunden."
 
 #: static/partials/doc.html:18
 msgid "This page contains {{ numOfUnloadedImages() }} unloaded images."
-msgstr ""
+msgstr "Diese Seite enthält {{ numOfUnloadedImages() }} ungeladene Bilder."
 
 #: static/js/develop/controllers/install.js:132
 msgid "Deleted!"
-msgstr ""
+msgstr "Gelöscht!"
 
 #: static/partials/search.html:6
 msgid "Choose a product to search in"
-msgstr ""
+msgstr "Wählen Sie ein zu durchsuchendes Produkt"
 
 #: static/js/develop/controllers/install.js:142
 msgid "There is no updates available at this time."
-msgstr ""
+msgstr "Derzeit sind keine Aktualisierungen vefügbar."
 
 #: static/js/develop/controllers/install.js:138
 msgid "Checking..."
-msgstr ""
+msgstr "Prüfen…"
 
 #: static/partials/select_topic.html:2
 msgid "Topics"
-msgstr ""
+msgstr "Themen"
 
 #: static/partials/install.html:28
 msgid "Desktop web browser by Mozilla"
-msgstr ""
+msgstr "Desktop-Browser von Mozilla"
 
 #: static/js/develop/directives/img.js:89
 msgid "A data connection is needed for downloading images."
-msgstr ""
+msgstr "Zum Herunterladen von Bildern wird eine Datenverbindung benötigt."
 
 #: static/partials/search.html:20
 msgid "Results"
-msgstr ""
+msgstr "Ergebnisse"
 
 #: static/partials/install.html:12
 msgid "Select a language"
-msgstr ""
+msgstr "Sprache wählen"
 
 #: static/partials/about.html:6
 msgid "Commit SHA1"
-msgstr ""
+msgstr "Commit SHA1"
 
 #: static/partials/search.html:39
 msgid "No results found."
-msgstr ""
+msgstr "Keine Ergebnisse gefunden."
 
 #: static/js/develop/filters.js:34
 msgid " hours"
-msgstr ""
+msgstr " Stunden"
 
 #: static/partials/install.html:54
 msgid "Web browser for phones and tablets"
-msgstr ""
+msgstr "Internetbrowser für Smartphones und Tablets"
 
 #: templates/app.html:61
 msgid "Updates are available to the articles you've downloaded."
-msgstr ""
+msgstr "Für die heruntergeladenen Artikel sind Updates verfügbar."
 
 #: static/js/develop/filters.js:26
 msgid "less than a minute"
-msgstr ""
+msgstr "weniger als eine Minute"
 
 #: static/partials/install.html:13
 msgid "Download"
-msgstr ""
+msgstr "Download"
 
 #: static/partials/search.html:2
 msgid "Query"
-msgstr ""
+msgstr "Suchanfrage"
 
 #: static/js/develop/controllers/misc.js:104
 msgid "Legal Information"
-msgstr ""
+msgstr "Rechtsinformationen"
 
 #: static/js/develop/controllers/install.js:8
 msgid "Mozilla Support"
-msgstr ""
+msgstr "Mozilla-Hilfe"
